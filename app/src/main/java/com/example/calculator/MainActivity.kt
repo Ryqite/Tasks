@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         val expr = input.replace(" ", "")
         val numbers = mutableListOf<Double>()
         val operators = mutableListOf<Char>()
-        // Разбиваем на числа и операторы
         var currentNum = ""
         for (char in expr) {
             if (char in "+-*/") {
@@ -64,7 +63,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         numbers.add(currentNum.toDouble())
-        // Сначала обрабатываем * и /
         var i = 0
         while (i < operators.size) {
             when (operators[i]) {
@@ -83,13 +81,14 @@ class MainActivity : AppCompatActivity() {
                 else -> i++
             }
         }
-        // Затем обрабатываем + и -
         var result = numbers[0]
-        for (i in operators.indices) {
+        i = 0
+        while (i < operators.size) {
             when (operators[i]) {
                 '+' -> result += numbers[i + 1]
                 '-' -> result -= numbers[i + 1]
             }
+            i++
         }
         return result
     }
