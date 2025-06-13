@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
      * Starts new Activity (LogPage)
      */
     private fun logPage() {
-        val intent = Intent(this, LogPage::class.java)
-            .putExtra("Operations", ArrayList(operationLogs))
+        val intent =
+            Intent(this, LogPage::class.java).putExtra("Operations", ArrayList(operationLogs))
         startActivity(intent)
     }
 
@@ -48,20 +48,49 @@ class MainActivity : AppCompatActivity() {
      * @return the result of expression [input]
      */
     private fun count(input: String): Double {
-
         if (input.isEmpty()) return 0.0
-
-        val operatorInd = input.indexOfFirst { it in "+-*/" }
-        val num1 = input.trim().substring(0, operatorInd).toDouble()
-        val num2 = input.trim().substring(operatorInd + 1).toDouble()
-        val operator = input[operatorInd]
-        val result = when (operator) {
-            '+' -> num1 + num2
-            '-' -> num1 - num2
-            '*' -> num1 * num2
-            '/' -> num1 / num2
-            else -> 0
+        val expr = input.replace(" ", "")
+        val numbers = mutableListOf<Double>()
+        val operators = mutableListOf<Char>()
+        // Разбиваем на числа и операторы
+        var currentNum = ""
+        for (char in expr) {
+            if (char in "+-*/") {
+                numbers.add(currentNum.toDouble())
+                operators.add(char)
+                currentNum = ""
+            } else {
+                currentNum += char
+            }
         }
-        return result as Double
+        numbers.add(currentNum.toDouble())
+        // Сначала обрабатываем * и /
+        var i = 0
+        while (i < operators.size) {
+            when (operators[i]) {
+                '*' -> {
+                    numbers[i] = numbers[i] * numbers[i + 1]
+                    numbers.removeAt(i + 1)
+                    operators.removeAt(i)
+                }
+
+                '/' -> {
+                    numbers[i] = numbers[i] / numbers[i + 1]
+                    numbers.removeAt(i + 1)
+                    operators.removeAt(i)
+                }
+
+                else -> i++
+            }
+        }
+        // Затем обрабатываем + и -
+        var result = numbers[0]
+        for (i in operators.indices) {
+            when (operators[i]) {
+                '+' -> result += numbers[i + 1]
+                '-' -> result -= numbers[i + 1]
+            }
+        }
+        return result
     }
 }
