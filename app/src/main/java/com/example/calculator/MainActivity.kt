@@ -13,22 +13,33 @@ class MainActivity : AppCompatActivity() {
         binding = MainScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.buttonEquals.setOnClickListener {
-            var input = binding.editTextText2.text.toString()
-            var result = count(input).toString()
+            val input = binding.editTextText2.text.toString()
+            val result = count(input).toString()
             binding.textAnswer.text = result
             operationLogs.add(LogData(input, result))
         }
         binding.buttonLog.setOnClickListener {
             logPage()
         }
+        binding.buttonProfile.setOnClickListener {
+            userProfile()
+        }
     }
 
     /**
-     * Start new Activity (LogPage)
+     * Starts new Activity (LogPage)
      */
     private fun logPage() {
         val intent = Intent(this, LogPage::class.java)
             .putExtra("Operations", ArrayList(operationLogs))
+        startActivity(intent)
+    }
+
+    /**
+     * Starts new Activity (UserProfile)
+     */
+    private fun userProfile() {
+        val intent = Intent(this, UserProfile::class.java)
         startActivity(intent)
     }
 
