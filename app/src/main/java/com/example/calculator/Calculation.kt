@@ -1,0 +1,72 @@
+package com.example.calculator
+
+class Calculation {
+    /**
+     * @param input its expression from the EditText
+     * @return the result of expression [input]
+     */
+    fun count(input: String): Double {
+        /**
+         * [replace] in [expr] deletes spaces
+         * [numbers] and [operators] are lists for storage numbers and operators of expression
+         * [currentNum] keeps current number as string
+         */
+        if (input.isEmpty()) return 0.0
+        val expr = input.replace(" ", "")
+        val numbers = mutableListOf<Double>()
+        val operators = mutableListOf<Char>()
+        var currentNum = ""
+        /**
+         * this for cycle is used to fill lists. it sums chars until finds operator,
+         * then adds both number and operator into lists
+         */
+        for (char in expr) {
+            if (char in "+-*/") {
+                numbers.add(currentNum.toDouble())
+                operators.add(char)
+                currentNum = ""
+            } else {
+                currentNum += char
+            }
+        }
+        numbers.add(currentNum.toDouble())
+        /**
+         * this while cycle goes through operators list and finds operators '*' and '/',
+         * after that it does mathematical method with nearest numbers of certain operator,
+         * saves the result in first number and then deletes both operator and second number
+         */
+        var i = 0
+        while (i < operators.size) {
+            when (operators[i]) {
+                '*' -> {
+                    numbers[i] = numbers[i] * numbers[i + 1]
+                    numbers.removeAt(i + 1)
+                    operators.removeAt(i)
+                }
+
+                '/' -> {
+                    numbers[i] = numbers[i] / numbers[i + 1]
+                    numbers.removeAt(i + 1)
+                    operators.removeAt(i)
+                }
+
+                else -> i++
+            }
+        }
+        /**
+         * this while cycle works the same as last one except thing,
+         * that it works with operators '+' and '-' and doesn't deletes
+         * operators and number, but just steps to next ones
+         */
+        var result = numbers[0]
+        i = 0
+        while (i < operators.size) {
+            when (operators[i]) {
+                '+' -> result += numbers[i + 1]
+                '-' -> result -= numbers[i + 1]
+            }
+            i++
+        }
+        return result
+    }
+}

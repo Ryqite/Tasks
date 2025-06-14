@@ -7,7 +7,11 @@ plugins {
 android {
     namespace = "com.example.calculator"
     compileSdk = 35
-
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
     defaultConfig {
         applicationId = "com.example.calculator"
         minSdk = 30
@@ -38,7 +42,16 @@ android {
 }
 
 dependencies {
-    dokkaPlugin("org.jetbrains.dokka:android-documentation-plugin:2.0.0")
+    implementation(libs.junit.junit)
+    implementation(libs.junit.jupiter)
+    testImplementation(libs.google.truth)
+    androidTestImplementation(libs.google.truth)
+    testImplementation(libs.truth.java8.extension)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.mockito.junit.jupiter)
+    dokkaPlugin(libs.android.documentation.plugin)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
