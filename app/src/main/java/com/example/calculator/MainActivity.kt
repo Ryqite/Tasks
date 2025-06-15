@@ -8,23 +8,33 @@ import com.example.calculator.databinding.MainScreenBinding
 class MainActivity : AppCompatActivity() {
     lateinit var binding: MainScreenBinding
     val operationLogs = mutableListOf<LogData>()
+    val calculation = Calculation()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        /**
+         * this button call gets the input of editText field,
+         * invoke the [count] function of [Calculation] class,
+         * set textAnswer value to the [result] value
+         * and storage expression information to [operationLogs]
+         */
         binding.buttonEquals.setOnClickListener {
-            var input = binding.editTextText2.text.toString()
-            var result = count(input).toString()
+            val input = binding.editTextText2.text.toString()
+            val result = calculation.count(input).toString()
             binding.textAnswer.text = result
             operationLogs.add(LogData(input, result))
         }
         binding.buttonLog.setOnClickListener {
             logPage()
         }
+        binding.buttonProfile.setOnClickListener {
+            userProfile()
+        }
     }
 
     /**
-     * Start new Activity (LogPage)
+     * Starts new Activity (LogPage) and puts logs data in intent
      */
     private fun logPage() {
         val intent = Intent(this, LogPage::class.java)
@@ -33,24 +43,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * @param input its expression from the EditText
-     * @return the result of expression [input]
+     * Starts new Activity (UserProfile)
      */
-    private fun count(input: String): Double {
-
-        if (input.isEmpty()) return 0.0
-
-        val operatorInd = input.indexOfFirst { it in "+-*/" }
-        val num1 = input.trim().substring(0, operatorInd).toDouble()
-        val num2 = input.trim().substring(operatorInd + 1).toDouble()
-        val operator = input[operatorInd]
-        val result = when (operator) {
-            '+' -> num1 + num2
-            '-' -> num1 - num2
-            '*' -> num1 * num2
-            '/' -> num1 / num2
-            else -> 0
-        }
-        return result as Double
+    private fun userProfile() {
+        val intent = Intent(this, UserProfile::class.java)
+        startActivity(intent)
     }
+
 }
