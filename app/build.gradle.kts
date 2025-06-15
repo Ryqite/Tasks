@@ -12,6 +12,7 @@ android {
             it.useJUnitPlatform()
         }
     }
+
     defaultConfig {
         applicationId = "com.example.calculator"
         minSdk = 30
@@ -42,22 +43,19 @@ android {
 }
 
 dependencies {
-    implementation(libs.junit.junit)
-    implementation(libs.junit.jupiter)
-    testImplementation(libs.google.truth)
-    androidTestImplementation(libs.google.truth)
-    testImplementation(libs.truth.java8.extension)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.mockito.junit.jupiter)
-    dokkaPlugin(libs.android.documentation.plugin)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.truth.java8.extension)
+    testImplementation(libs.mockito.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.google.truth)
+    dokkaPlugin(libs.android.documentation.plugin)
 }
