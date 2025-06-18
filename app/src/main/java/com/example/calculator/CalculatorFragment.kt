@@ -14,9 +14,7 @@ class CalculatorFragment : Fragment() {
     val operationLogs = mutableListOf<LogData>()
     val calculation = Calculation()
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = CalculatorBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,11 +46,16 @@ class CalculatorFragment : Fragment() {
      * Starts new Activity (LogPage) and puts logs data in intent
      */
     private fun logPage() {
-        parentFragmentManager.commit {
-            replace<LogPageFragment>(R.id.container)
-            setReorderingAllowed(true)
-            addToBackStack(null)
+        val logFragment = LogPageFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable("Operations", ArrayList(operationLogs))
+            }
         }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, logFragment)
+            .addToBackStack(null)
+            .setReorderingAllowed(true)
+            .commit()
     }
 
     /**

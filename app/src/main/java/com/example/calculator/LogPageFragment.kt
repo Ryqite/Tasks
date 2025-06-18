@@ -19,9 +19,15 @@ class LogPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val operations =
-            arguments?.getSerializable("OPERATIONS_KEY") as? ArrayList<LogData> ?: arrayListOf()
+        val operations = arguments?.getSerializable("Operations") as List<LogData>
         binding.rvLog.layoutManager = LinearLayoutManager(requireContext())
         binding.rvLog.adapter = LogAdapter(operations)
+        binding.buttonBackLogPage.setOnClickListener {
+            backToMainScreen()
+        }
+    }
+
+    fun backToMainScreen() {
+        parentFragmentManager.popBackStack()
     }
 }
