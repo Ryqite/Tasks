@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">compose-todo</string>
+    <string name="title_activity_note_page">NotePage</string>
 </resources>
