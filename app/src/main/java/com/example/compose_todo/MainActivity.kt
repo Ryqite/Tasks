@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -53,9 +56,11 @@ import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.compose_todo.ui.theme.ComposetodoTheme
 
 class MainActivity : ComponentActivity() {
@@ -75,14 +80,46 @@ class MainActivity : ComponentActivity() {
                         MyUI(notes = notes,
                             searchNote = {},
                             floatingActionButtonLogic = {
-                                navController.navigate("notePage")
+                                navController.navigate("notePage/new")
+                            },
+                            transitionToCertainNotePage = { noteId ->
+                                navController.navigate("notePage/$noteId")
                             })
                     }
-                    composable("notePage") {
-                        NoteUI(backToMainPage = { noteContent->
-                            notes.add(Notes(content = noteContent))
-                            navController.popBackStack() },
+                    composable(
+                        route = "notePage/new",
+                        arguments = listOf()
+                    ) {
+                        NoteUI(backToMainPage = { noteContent ->
+                            if (noteContent.isNotBlank()) {
+                                val newId = notes.maxOfOrNull { it.id }?.plus(1) ?: 1
+                                notes.add(Notes(id = newId, content = noteContent))
+                            }
+                            navController.popBackStack()
+                        },
                             deleteNote = {})
+                    }
+                    composable(
+                        route = "notePage/{noteId}",
+                        arguments = listOf(
+                            navArgument("noteId") { type = NavType.IntType }
+                        )
+                    ) { backStackEntry ->
+                        val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
+                        val existingNote = notes.find { it.id == noteId }
+                        NoteUI(
+                            backToMainPage = { noteContent ->
+                                notes.replaceAll { note ->
+                                    if (note.id == noteId) note.copy(content = noteContent) else note
+                                }
+                                navController.popBackStack()
+                            },
+                            deleteNote = {
+                                notes.removeAll { it.id == noteId}
+                                navController.popBackStack()
+                            },
+                            content = existingNote?.content ?: ""
+                        )
                     }
                 }
             }
@@ -90,12 +127,14 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    //логику перехода на выбранную note, search delete
+    // search и check box
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MyUI(notes:List<Notes>,
+    fun MyUI(
+        notes: List<Notes>,
         searchNote: () -> Unit,
-        floatingActionButtonLogic: () -> Unit
+        floatingActionButtonLogic: () -> Unit,
+        transitionToCertainNotePage: (Int) -> Unit
     ) {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
         Scaffold(
@@ -131,14 +170,17 @@ class MainActivity : ComponentActivity() {
                 }
             }
         ) { innerPadding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(15.dp)
             ) {
-                notes.forEach { note ->
-                    NoteCard(note)
+                items(notes) { note ->
+                    NoteCard(
+                        note = note,
+                        transitionToCertainNotePage = transitionToCertainNotePage
+                    )
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }
@@ -146,7 +188,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NoteCard(note: Notes) {
+    fun NoteCard(note: Notes, transitionToCertainNotePage: (Int) -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -154,7 +196,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Card(
                 modifier = Modifier
-                    .clickable {},
+                    .clickable { transitionToCertainNotePage(note.id) },
                 shape = MaterialTheme.shapes.large
             ) {
                 Box(
@@ -179,9 +221,10 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun NoteUI(
         backToMainPage: (String) -> Unit,
-        deleteNote: () -> Unit
+        deleteNote: () -> Unit,
+        content: String = ""
     ) {
-        var noteText by remember { mutableStateOf("") }
+        var noteText by remember { mutableStateOf(content) }
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
         Scaffold(
             modifier = Modifier,
@@ -224,6 +267,7 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
+
 
     @Preview(showBackground = true)
     @Composable
