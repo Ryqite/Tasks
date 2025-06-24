@@ -5,6 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.Transition
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -72,23 +77,22 @@ class MainActivity : ComponentActivity() {
                 val notes = remember { mutableStateListOf<Notes>() }
                 val navController = rememberNavController()
                 NavHost(
-                    navController = navController,
-                    startDestination = "main"
-                )
-                {
+                    navController = navController, startDestination = "main"
+                ) {
                     composable("main") {
-                        MyUI(notes = notes,
-                            searchNote = {},
-                            floatingActionButtonLogic = {
-                                navController.navigate("notePage/new")
-                            },
-                            transitionToCertainNotePage = { noteId ->
-                                navController.navigate("notePage/$noteId")
-                            })
+                        MyUI(notes = notes, floatingActionButtonLogic = {
+                            navController.navigate("notePage/new")
+                        }, transitionToCertainNotePage = { noteId ->
+                            navController.navigate("notePage/$noteId")
+                        }, onCheckedChange = { noteId, isChecked ->
+                            notes.replaceAll { currentNote ->
+                                if (currentNote.id == noteId) currentNote.copy(isDone = isChecked)
+                                else currentNote
+                            }
+                        })
                     }
                     composable(
-                        route = "notePage/new",
-                        arguments = listOf()
+                        route = "notePage/new", arguments = listOf()
                     ) {
                         NoteUI(backToMainPage = { noteContent ->
                             if (noteContent.isNotBlank()) {
@@ -96,29 +100,26 @@ class MainActivity : ComponentActivity() {
                                 notes.add(Notes(id = newId, content = noteContent))
                             }
                             navController.popBackStack()
-                        },
-                            deleteNote = {})
+                        }, deleteNote = {
+                            navController.popBackStack()
+                        })
                     }
                     composable(
-                        route = "notePage/{noteId}",
-                        arguments = listOf(
-                            navArgument("noteId") { type = NavType.IntType }
-                        )
+                        route = "notePage/{noteId}", arguments = listOf(navArgument("noteId") {
+                            type = NavType.IntType
+                        })
                     ) { backStackEntry ->
                         val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
                         val existingNote = notes.find { it.id == noteId }
-                        NoteUI(
-                            backToMainPage = { noteContent ->
-                                notes.replaceAll { note ->
-                                    if (note.id == noteId) note.copy(content = noteContent) else note
-                                }
-                                navController.popBackStack()
-                            },
-                            deleteNote = {
-                                notes.removeAll { it.id == noteId}
-                                navController.popBackStack()
-                            },
-                            content = existingNote?.content ?: ""
+                        NoteUI(backToMainPage = { noteContent ->
+                            notes.replaceAll { note ->
+                                if (note.id == noteId) note.copy(content = noteContent) else note
+                            }
+                            navController.popBackStack()
+                        }, deleteNote = {
+                            notes.removeAll { it.id == noteId }
+                            navController.popBackStack()
+                        }, content = existingNote?.content ?: ""
                         )
                     }
                 }
@@ -127,40 +128,74 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    // search и check box
+    //  check box
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MyUI(
         notes: List<Notes>,
-        searchNote: () -> Unit,
         floatingActionButtonLogic: () -> Unit,
-        transitionToCertainNotePage: (Int) -> Unit
+        transitionToCertainNotePage: (Int) -> Unit,
+        onCheckedChange: (Int, Boolean) -> Unit
     ) {
-        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-        Scaffold(
-            modifier = Modifier,
-            topBar = {
-                CenterAlignedTopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Black, titleContentColor = Color.Yellow
-                    ),
-                    title = { Text("ЗАМЕТКИ") },
-                    navigationIcon = {
-                        IconButton(onClick = { searchNote() }) {
-                            Icon(
-                                imageVector = Icons.Filled.Search,
-                                contentDescription = "Search note",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    scrollBehavior = scrollBehavior
+        var searchQuery by remember { mutableStateOf("") }
+        var isSearching by remember { mutableStateOf(false) }
+        val filteredNotes = remember(notes, searchQuery) {
+            if (searchQuery.isEmpty()) notes else notes.filter {
+                it.content.contains(
+                    searchQuery, ignoreCase = true
                 )
-            },
-            floatingActionButton = {
-                FloatingActionButton(onClick = {
-                    floatingActionButtonLogic()
-                }, modifier = Modifier.size(50.dp)) {
+            }
+        }
+        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+        Scaffold(modifier = Modifier, topBar = {
+            if (isSearching) {
+                TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Black
+                ), title = {
+                    TextField(value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        placeholder = { Text("Поиск...", color = Color.White) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White)
+                    )
+                }, navigationIcon = {
+                    IconButton(onClick = {
+                        isSearching = false
+                        searchQuery = ""
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                }, scrollBehavior = scrollBehavior
+                )
+            } else {
+                CenterAlignedTopAppBar(colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Black, titleContentColor = Color.Yellow
+                ), title = { Text("ЗАМЕТКИ") }, navigationIcon = {
+                    IconButton(onClick = { isSearching = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "Search note",
+                            tint = Color.White
+                        )
+                    }
+                }, scrollBehavior = scrollBehavior
+                )
+            }
+        }, floatingActionButton = {
+            if (!isSearching) {
+                FloatingActionButton(
+                    onClick = { floatingActionButtonLogic() }, modifier = Modifier.size(50.dp)
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Add,
                         contentDescription = "Floating Button",
@@ -169,16 +204,17 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-        ) { innerPadding ->
+        }) { innerPadding ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(15.dp)
             ) {
-                items(notes) { note ->
+                items(filteredNotes) { note ->
                     NoteCard(
                         note = note,
+                        onCheckedChange = onCheckedChange,
                         transitionToCertainNotePage = transitionToCertainNotePage
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -188,15 +224,18 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NoteCard(note: Notes, transitionToCertainNotePage: (Int) -> Unit) {
+    fun NoteCard(
+        note: Notes,
+        onCheckedChange: (Int, Boolean) -> Unit,
+        transitionToCertainNotePage: (Int) -> Unit
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
             Card(
-                modifier = Modifier
-                    .clickable { transitionToCertainNotePage(note.id) },
+                modifier = Modifier.clickable { transitionToCertainNotePage(note.id) },
                 shape = MaterialTheme.shapes.large
             ) {
                 Box(
@@ -205,59 +244,49 @@ class MainActivity : ComponentActivity() {
                         .padding(horizontal = 8.dp)
                 ) {
                     Text(
-                        text = note.content,
-                        modifier = Modifier
-                            .align(CenterStart)
+                        text = note.content, modifier = Modifier.align(CenterStart)
                     )
                 }
             }
-            Checkbox(
-                checked = note.isDone,
-                onCheckedChange = { note.isDone = it })
+            Checkbox(checked = note.isDone, onCheckedChange = { newValue ->
+                onCheckedChange(note.id, newValue)
+            })
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun NoteUI(
-        backToMainPage: (String) -> Unit,
-        deleteNote: () -> Unit,
-        content: String = ""
+        backToMainPage: (String) -> Unit, deleteNote: () -> Unit, content: String = ""
     ) {
         var noteText by remember { mutableStateOf(content) }
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
         Scaffold(
             modifier = Modifier,
             topBar = {
-                CenterAlignedTopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Black
-                    ),
-                    title = { Text("") },
-                    navigationIcon = {
-                        IconButton(onClick = { backToMainPage(noteText) }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back to main page",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { deleteNote() }) {
-                            Icon(
-                                imageVector = Icons.Filled.Delete,
-                                contentDescription = "Delete",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    scrollBehavior = scrollBehavior
+                CenterAlignedTopAppBar(colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Black
+                ), title = { Text("") }, navigationIcon = {
+                    IconButton(onClick = { backToMainPage(noteText) }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back to main page",
+                            tint = Color.White
+                        )
+                    }
+                }, actions = {
+                    IconButton(onClick = { deleteNote() }) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Delete",
+                            tint = Color.White
+                        )
+                    }
+                }, scrollBehavior = scrollBehavior
                 )
             },
         ) { innerPadding ->
-            TextField(
-                value = noteText,
+            TextField(value = noteText,
                 onValueChange = { noteText = it },
                 placeholder = { Text("Введите текст") },
                 modifier = Modifier
