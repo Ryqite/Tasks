@@ -19,7 +19,7 @@ class UserProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.buttonBack.setOnClickListener {
+        binding.buttonBackUserProfile.setOnClickListener {
             backToMainActivity()
         }
     }

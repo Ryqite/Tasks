@@ -1,72 +1,133 @@
 package com.example.calculator
 
+import java.util.*
+import kotlin.math.pow
+
 class Calculation {
     /**
-     * @param input its expression from the EditText
-     * @return the result of expression [input]
+     * Вычисляет результат выражения
+     * @param input выражение из EditText (например, "2+3*4")
+     * @return результат вычисления выражения
+     * @throws IllegalArgumentException если выражение содержит недопустимые символы
      */
     fun count(input: String): Double {
-        /**
-         * [replace] in [expr] deletes spaces
-         * [numbers] and [operators] are lists for storage numbers and operators of expression
-         * [currentNum] keeps current number as string
-         */
         if (input.isEmpty()) return 0.0
-        val expr = input.replace(" ", "")
-        val numbers = mutableListOf<Double>()
-        val operators = mutableListOf<Char>()
-        var currentNum = ""
         /**
-         * this for cycle is used to fill lists. it sums chars until finds operator,
-         * then adds both number and operator into lists
+         *  массив символов [tokens] выражения после удаления пробелов
+         * очередь [outputQueue] для хранения чисел и операторов в постфиксной нотации
+         * стек [operatorStack] для временного хранения операторов
          */
-        for (char in expr) {
-            if (char in "+-*/") {
-                numbers.add(currentNum.toDouble())
-                operators.add(char)
-                currentNum = ""
-            } else {
-                currentNum += char
-            }
-        }
-        numbers.add(currentNum.toDouble())
+        val tokens = input.replace(" ", "").toCharArray()
+        val outputQueue = LinkedList<String>()
+        val operatorStack = Stack<Char>()
+
         /**
-         * this while cycle goes through operators list and finds operators '*' and '/',
-         * after that it does mathematical method with nearest numbers of certain operator,
-         * saves the result in first number and then deletes both operator and second number
+         * Цикл преобразует инфиксное выражение в постфиксное
+         * используя алгоритм сортировочной станции
          */
         var i = 0
-        while (i < operators.size) {
-            when (operators[i]) {
-                '*' -> {
-                    numbers[i] = numbers[i] * numbers[i + 1]
-                    numbers.removeAt(i + 1)
-                    operators.removeAt(i)
+        while (i < tokens.size) {
+            when {
+                /**
+                 * Собирает последовательность цифр и точки в число
+                 * и добавляет в выходную очередь
+                 */
+                tokens[i].isDigit() || tokens[i] == '.' -> {
+                    val numStr = StringBuilder()
+                    while (i < tokens.size && (tokens[i].isDigit() || tokens[i] == '.')) {
+                        numStr.append(tokens[i++])
+                    }
+                    outputQueue.add(numStr.toString())
+                    continue
                 }
-
-                '/' -> {
-                    numbers[i] = numbers[i] / numbers[i + 1]
-                    numbers.removeAt(i + 1)
-                    operators.removeAt(i)
+                /**
+                 * Переносит операторы из стека в выходную очередь
+                 * пока приоритет текущего оператора не станет выше
+                 * чем у оператора на вершине стека
+                 */
+                tokens[i] in "+-*/^" -> {
+                    while (!operatorStack.isEmpty() && operatorStack.peek() != '(' &&
+                        getPrecedence(operatorStack.peek()) >= getPrecedence(tokens[i])
+                    ) {
+                        outputQueue.add(operatorStack.pop().toString())
+                    }
+                    operatorStack.push(tokens[i])
                 }
-
-                else -> i++
-            }
-        }
-        /**
-         * this while cycle works the same as last one except thing,
-         * that it works with operators '+' and '-' and doesn't deletes
-         * operators and number, but just steps to next ones
-         */
-        var result = numbers[0]
-        i = 0
-        while (i < operators.size) {
-            when (operators[i]) {
-                '+' -> result += numbers[i + 1]
-                '-' -> result -= numbers[i + 1]
+                /**
+                 * Помещает скобку в стек операторов
+                 */
+                tokens[i] == '(' -> {
+                    operatorStack.push(tokens[i])
+                }
+                /**
+                 * Переносит операторы из стека в выходную очередь
+                 * до встречи соответствующей открывающей скобки
+                 */
+                tokens[i] == ')' -> {
+                    while (operatorStack.peek() != '(') {
+                        outputQueue.add(operatorStack.pop().toString())
+                    }
+                    operatorStack.pop()
+                }
             }
             i++
         }
-        return result
+        /**
+         * Перенос оставшихся операторов из стека в выходную очередь
+         */
+        while (!operatorStack.isEmpty()) {
+            outputQueue.add(operatorStack.pop().toString())
+        }
+        return evaluatePostfix(outputQueue)
+    }
+
+    /**
+     * Определяет приоритет операций
+     * @param op символ оператора
+     */
+    private fun getPrecedence(op: Char): Int {
+        return when (op) {
+            '+', '-' -> 1
+            '*', '/' -> 2
+            '^' -> 3
+            else -> 0
+        }
+    }
+
+    /**
+     * Вычисляет значение выражения в постфиксной нотации
+     * @param queue очередь с выражением в постфиксной нотации
+     */
+    private fun evaluatePostfix(queue: LinkedList<String>): Double {
+        val stack = Stack<Double>()
+        /**
+         * - Числа помещаются в стек
+         * - Операторы извлекают два числа из стека
+         *   применяют операцию и помещают результат обратно
+         */
+        for (token in queue) {
+            when {
+                token.toDoubleOrNull() != null -> stack.push(token.toDouble())
+                token in "+-*/^" -> {
+                    val b = stack.pop()
+                    val a = stack.pop()
+                    try {
+                        stack.push(
+                            when (token) {
+                                "+" -> a + b
+                                "-" -> a - b
+                                "*" -> a * b
+                                "/" -> a / b
+                                "^" -> a.pow(b)
+                                else -> throw IllegalArgumentException("Некорректный символ")
+                            }
+                        )
+                    } catch (error: IllegalArgumentException) {
+                        println("Некорректный символ: ${error.message}")
+                    }
+                }
+            }
+        }
+        return stack.pop()
     }
 }
