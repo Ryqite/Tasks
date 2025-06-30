@@ -59,75 +59,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Week5Theme {
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = "ProductsScreen"
-                ) {
-                    composable("ProductsScreen") {
-                        ProductsScreen(products,
-                            profileScreen = {
-                                navController.navigate("ProfileScreen")
-                            },
-                            detailScreen = { productId ->
-                                navController.navigate("DetailScreen/$productId")
-                            },
-                            navigateToProductPage = {
-                                navController.navigate("ProductsScreen")
-                            },
-                            navigateToBascketPage = {
-                                navController.navigate("BasketScreen")
-                            })
-                    }
-                    composable(
-                        route = "DetailScreen/{productId}",
-                        arguments = listOf(
-                            navArgument("productId") {
-                                type = NavType.IntType
-                            })
-                    )
-                    { backStackEntry ->
-                        val productId = backStackEntry.arguments?.getInt("productId") ?: 0
-                        val certainProduct = products.find { it.id == productId }
-                        DetailScreen(certainProduct,
-                            addToBascket = {
-                                if (certainProduct != null) {
-                                    productsForBuy.add(certainProduct)
-                                }
-                            },
-                            backIcon = {
-                                navController.popBackStack()
-                            },
-                            navigateToProductPage = {
-                                navController.navigate("ProductsScreen")
-                            },
-                            navigateToBascketPage = {
-                                navController.navigate("BasketScreen")
-                            })
-                    }
-                    composable("BasketScreen") {
-                        BasketScreen(productsForBuy,
-                            deleteFromBasket = { productId ->
-                                productsForBuy.removeAll { it.id == productId }
-                            },
-                            backIcon = {
-                                navController.popBackStack()
-                            },
-                            navigateToProductPage = {
-                                navController.navigate("ProductsScreen")
-                            },
-                            navigateToBascketPage = {
-                                navController.navigate("BasketScreen")
-                            })
-                    }
-                    composable("ProfileScreen") {
-                        ProfileScreen(
-                            backIcon = {
-                                navController.popBackStack()
-                            }
-                        )
-                    }
-                }
+
             }
 
         }
