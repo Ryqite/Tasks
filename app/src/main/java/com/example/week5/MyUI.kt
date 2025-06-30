@@ -74,6 +74,292 @@ import com.example.week5.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductsScreen(){
+fun ProductsScreen(
+    products: List<Product>,
+    detailScreen: (Int) -> Unit,
+    profileScreen: () -> Unit,
+    navigateToProductPage: () -> Unit,
+    navigateToBascketPage: () -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Продукты") },
+                actions = {
+                    IconButton(onClick = profileScreen) {
+                        Icon(Icons.Filled.AccountCircle, contentDescription = "ПрофильКнопка")
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            SimpleBottomBar(
+                navigateToProductPage = navigateToProductPage,
+                navigateToBascketPage = navigateToBascketPage
+            )
+        }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(products) { product ->
+                SimpleProductCard(
+                    product = product,
+                    onClick = { detailScreen(product.id) }
+                )
+            }
+        }
+    }
+}
 
+@Composable
+fun SimpleProductCard(
+    product: Product,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            AsyncImage(
+                model = product.photoUri,
+                contentDescription = product.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = product.title,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = product.content,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailScreen(
+    product: Product?,
+    addToBascket: () -> Unit,
+    backIcon: () -> Unit,
+    navigateToProductPage: () -> Unit,
+    navigateToBascketPage: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Детали") },
+                navigationIcon = {
+                    IconButton(onClick = backIcon) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзДеталей")
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            SimpleBottomBar(
+                navigateToProductPage = navigateToProductPage,
+                navigateToBascketPage = navigateToBascketPage
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+        ) {
+            AsyncImage(
+                model = product?.photoUri,
+                contentDescription = product?.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(240.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = product?.title ?: "",
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = product?.content ?: "",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = addToBascket,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Добавить в корзину")
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BasketScreen(
+    productsForBuy: List<Product>,
+    deleteFromBasket: (Int) -> Unit,
+    backIcon: () -> Unit,
+    navigateToProductPage: () -> Unit,
+    navigateToBascketPage: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Корзина") },
+                navigationIcon = {
+                    IconButton(onClick = backIcon) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзКорзины")
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            SimpleBottomBar(
+                navigateToProductPage = navigateToProductPage,
+                navigateToBascketPage = navigateToBascketPage
+            )
+        }
+    ) { innerPadding ->
+        if (productsForBuy.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Корзина пуста")
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                items(productsForBuy) { product ->
+                    SimpleBasketItem(
+                        product = product,
+                        onDelete = { deleteFromBasket(product.id) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SimpleBasketItem(
+    product: Product,
+    onDelete: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            model = product.photoUri,
+            contentDescription = product.title,
+            modifier = Modifier.size(64.dp),
+            contentScale = ContentScale.Crop
+        )
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
+        ) {
+            Text(product.title)
+            Text(
+                text = product.content.take(30) + if (product.content.length > 30) "..." else "",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        IconButton(onClick = onDelete) {
+            Icon(Icons.Filled.Delete, contentDescription = "УдалитьКнопка")
+        }
+    }
+    HorizontalDivider()
+}
+
+@Composable
+fun SimpleBottomBar(
+    navigateToProductPage: () -> Unit,
+    navigateToBascketPage: () -> Unit
+) {
+    BottomAppBar {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            IconButton(onClick = navigateToProductPage) {
+                Icon(Icons.Filled.Home, contentDescription = "ПродуктыКнопка")
+            }
+            IconButton(onClick = navigateToBascketPage) {
+                Icon(Icons.Filled.ShoppingCart, contentDescription = "КорзинаКнопка")
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProfileScreen(backIcon: () -> Unit) {
+    Scaffold(topBar = {
+        TopAppBar(title = { Text("") },
+            navigationIcon = {
+                IconButton(onClick = backIcon) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзПрофиля")
+                }
+            })
+    }) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier.size(200.dp),
+                    painter = painterResource(id = R.drawable.upside_down_gray_cat),
+                    contentDescription = "Аватар",
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Ryqite",
+                    textAlign = TextAlign.Center,
+                    fontSize = 30.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Гарбарук Даниил Александрович",
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp
+            )
+        }
+    }
 }
