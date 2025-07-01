@@ -1,8 +1,4 @@
-package com.example.compose_todo
-
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+package com.example.compose_todo.UIcomponents
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,12 +10,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -37,10 +29,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.compose_todo.Notes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,82 +125,5 @@ fun MainScreen(
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
-    }
-}
-@Composable
-fun NoteCard(
-    note: Notes,
-    onCheckedChange: (Int, Boolean) -> Unit,
-    transitionToCertainNotePage: (Int) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-    ) {
-        Card(
-            modifier = Modifier
-                .clickable { transitionToCertainNotePage(note.id) },
-            colors = CardDefaults.cardColors (
-                containerColor = if(note.isDone) Color.DarkGray else Color.Gray),
-            shape = MaterialTheme.shapes.large,
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(0.9f)
-                    .padding(horizontal = 8.dp)
-            ) {
-                Text(
-                    text = note.content, modifier = Modifier.align(CenterStart),
-                    color = if (note.isDone) Color.Gray else Color.White
-                )
-            }
-        }
-        Checkbox(checked = note.isDone, onCheckedChange = { newValue ->
-            onCheckedChange(note.id, newValue)
-        })
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun NoteUI(
-    backToMainPage: (String) -> Unit, deleteNote: () -> Unit, content: String = ""
-) {
-    var noteText by remember { mutableStateOf(content) }
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    Scaffold(
-        modifier = Modifier,
-        topBar = {
-            CenterAlignedTopAppBar(colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Black
-            ), title = { Text("") }, navigationIcon = {
-                IconButton(onClick = { backToMainPage(noteText) }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back to main page",
-                        tint = Color.White
-                    )
-                }
-            }, actions = {
-                IconButton(onClick = { deleteNote() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        contentDescription = "Delete",
-                        tint = Color.White
-                    )
-                }
-            }, scrollBehavior = scrollBehavior
-            )
-        },
-    ) { innerPadding ->
-        TextField(value = noteText,
-            onValueChange = { noteText = it },
-            placeholder = { Text("Введите текст") },
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .padding(15.dp)
-        )
     }
 }
