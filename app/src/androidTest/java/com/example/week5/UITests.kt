@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.week5.Data.Product
+import com.example.week5.UIcomponents.*
 import com.example.week5.ui.theme.Week5Theme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -63,7 +64,7 @@ class UITests {
                     profileScreen = {},
                     detailScreen = {},
                     navigateToProductPage = {},
-                    navigateToBascketPage = {}
+                    navigateToBasketPage = {}
                 )
             }
         }
@@ -82,7 +83,7 @@ class UITests {
                     product = product,
                     addToBascket = {},
                     backIcon = {},
-                    navigateToBascketPage = {},
+                    navigateToBasketPage = {},
                     navigateToProductPage = {})
             }
         }
@@ -104,7 +105,7 @@ class UITests {
                     deleteFromBasket = { deletedId = it },
                     backIcon = {},
                     navigateToProductPage = {},
-                    navigateToBascketPage = {})
+                    navigateToBasketPage = {})
             }
         }
         rule.onNodeWithText("Корзина").assertIsDisplayed()
@@ -128,7 +129,7 @@ class UITests {
                             profileScreen = { controller.navigate("ProfileScreen") },
                             detailScreen = { controller.navigate("DetailScreen/$it") },
                             navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBascketPage = { controller.navigate("BasketScreen") }
+                            navigateToBasketPage = { controller.navigate("BasketScreen") }
                         )
                     }
                     composable(
@@ -144,7 +145,7 @@ class UITests {
                             addToBascket = { product?.let { basket.add(it) } },
                             backIcon = { controller.popBackStack() },
                             navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBascketPage = { controller.navigate("BasketScreen") }
+                            navigateToBasketPage = { controller.navigate("BasketScreen") }
                         )
                     }
                     composable("BasketScreen") {
@@ -153,7 +154,7 @@ class UITests {
                             deleteFromBasket = { id -> basket.removeAll { it.id == id } },
                             backIcon = { controller.popBackStack() },
                             navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBascketPage = { controller.navigate("BasketScreen") }
+                            navigateToBasketPage = { controller.navigate("BasketScreen") }
                         )
                     }
                     composable("ProfileScreen") {
