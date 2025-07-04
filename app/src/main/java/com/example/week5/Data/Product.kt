@@ -1,11 +1,23 @@
-package com.example.week5
+package com.example.week5.Data
 
+/**
+ * Класс данных, представляющий товар/продукт в приложении
+ *
+ * @property id Уникальный идентификатор продукта
+ * @property title Название продукта
+ * @property photoUri Изображение продукта
+ * @property content Описание продукта
+ */
 data class Product(
     val id: Int = 0,
     val title: String = "",
     val photoUri: String = "",
     val content: String = ""
 )
+
+/**
+ * тестовый список [Product] для тестов и проверки UI
+ */
 var testProducts = listOf(
     Product(
         id = 1,

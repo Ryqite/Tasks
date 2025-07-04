@@ -13,6 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.example.week5.Data.Product
+import com.example.week5.Data.testProducts
+import com.example.week5.UIcomponents.*
 import com.example.week5.ui.theme.Week5Theme
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             navigateToProductPage = {
                                 navController.navigate("ProductsScreen")
                             },
-                            navigateToBascketPage = {
+                            navigateToBasketPage = {
                                 navController.navigate("BasketScreen")
                             })
                     }
@@ -71,7 +74,7 @@ class MainActivity : ComponentActivity() {
                             navigateToProductPage = {
                                 navController.navigate("ProductsScreen")
                             },
-                            navigateToBascketPage = {
+                            navigateToBasketPage = {
                                 navController.navigate("BasketScreen")
                             })
                     }
@@ -86,7 +89,7 @@ class MainActivity : ComponentActivity() {
                             navigateToProductPage = {
                                 navController.navigate("ProductsScreen")
                             },
-                            navigateToBascketPage = {
+                            navigateToBasketPage = {
                                 navController.navigate("BasketScreen")
                             })
                     }

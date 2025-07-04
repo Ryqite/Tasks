@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.week5.Data.Product
 import com.example.week5.ui.theme.Week5Theme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
