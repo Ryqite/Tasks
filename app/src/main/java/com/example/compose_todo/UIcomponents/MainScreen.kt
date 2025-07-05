@@ -34,6 +34,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.Database.Notes
 
+/**
+ * Главный экран приложения, отображающий список всех заметок
+ *
+ * @param notes список заметок для этображения
+ * @param floatingActionButtonLogic лямбда-функция для перехода на
+ * экран [NoteUI] с целью создания новой заметки
+ * @param transitionToCertainNotePage лямбда-функция для перехода в [NoteUI]
+ * с целью редактирования заметки, id которой принимается в качестве параметра
+ * @param onCheckedChange лямбда-функция для изменения текущего статуса чекбокса,
+ * принимающая id заметки, чекбокс которой надо изменить, и новое значение чекбокса
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
