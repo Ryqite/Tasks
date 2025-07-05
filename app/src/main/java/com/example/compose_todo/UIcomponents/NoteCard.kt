@@ -19,6 +19,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.Database.Notes
 
+/**
+ * Карточка для отображения заметок в списке на экране [MainScreen]
+ *
+ * @param note текущая заметка, для которой будет создаваться внешний вид
+ * @param onCheckedChange обработчик изменения значения чекбокса,
+ * принимающий id заметки, чекбокс которой надо изменить, и новое значение чекбокса
+ * @param transitionToCertainNotePage обработчик нажатия на заметку, принимающий
+ * id заметки в качестве параметра
+ */
 @Composable
 fun NoteCard(
     note: Notes,
