@@ -92,7 +92,7 @@ fun MainScreen(
                 }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = "BackIcon",
                         tint = Color.White
                     )
                 }
