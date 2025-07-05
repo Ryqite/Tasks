@@ -4,6 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Класс данных, представляющий заметки в приложении
+ *
+ * @property id Уникальный идентификатор продукта
+ * @property content Содержимое заметки
+ * @property isDone Состояние чекбокса (включен/выключен)
+ */
 @Entity(tableName = "Notes")
 data class Notes(
     @PrimaryKey(autoGenerate = true)
