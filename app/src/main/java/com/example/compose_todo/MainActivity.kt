@@ -2,12 +2,14 @@ package com.example.compose_todo
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -50,6 +52,9 @@ class MainActivity : ComponentActivity() {
                 val notes by viewModel.getAllNotes().collectAsState(initial = emptyList())
                 val navController = rememberNavController()
                 val coroutineScope = rememberCoroutineScope()
+                SideEffect {
+                    Log.d("Theme","Success theme change")
+                }
                 NavHost(
                     navController = navController, startDestination = "main"
                 ) {
