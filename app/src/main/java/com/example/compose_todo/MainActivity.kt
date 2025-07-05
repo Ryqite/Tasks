@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.compose_todo.Database.Notes
 import com.example.compose_todo.UIcomponents.MainScreen
 import com.example.compose_todo.UIcomponents.NoteUI
 import com.example.compose_todo.ui.theme.ComposetodoTheme

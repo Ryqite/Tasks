@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.compose_todo.Notes
+import com.example.compose_todo.Database.Notes
 
 @Composable
 fun NoteCard(
