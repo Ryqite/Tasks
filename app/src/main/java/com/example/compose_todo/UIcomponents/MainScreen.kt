@@ -1,4 +1,5 @@
 package com.example.compose_todo.UIcomponents
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +46,7 @@ import com.example.compose_todo.Database.Notes
  * с целью редактирования заметки, id которой принимается в качестве параметра
  * @param onCheckedChange лямбда-функция для изменения текущего статуса чекбокса,
  * принимающая id заметки, чекбокс которой надо изменить, и новое значение чекбокса
+ * @param changeTheme лямбда-функция для изменения текущей темы на противоположную
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +54,8 @@ fun MainScreen(
     notes: List<Notes>,
     floatingActionButtonLogic: () -> Unit,
     transitionToCertainNotePage: (Int) -> Unit,
-    onCheckedChange: (Int, Boolean) -> Unit
+    onCheckedChange: (Int, Boolean) -> Unit,
+    changeTheme:()->Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -68,7 +72,8 @@ fun MainScreen(
             TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black
             ), title = {
-                TextField(value = searchQuery,
+                TextField(
+                    value = searchQuery,
                     onValueChange = { searchQuery = it },
                     placeholder = { Text("Поиск...", color = Color.White) },
                     modifier = Modifier.fillMaxWidth(),
@@ -91,7 +96,8 @@ fun MainScreen(
                         tint = Color.White
                     )
                 }
-            }, scrollBehavior = scrollBehavior
+            },
+                scrollBehavior = scrollBehavior
             )
         } else {
             CenterAlignedTopAppBar(colors = TopAppBarDefaults.topAppBarColors(
@@ -104,7 +110,17 @@ fun MainScreen(
                         tint = Color.White
                     )
                 }
-            }, scrollBehavior = scrollBehavior
+            },
+                actions = {
+                    IconButton(onClick = changeTheme) {
+                        Icon(
+                            Icons.Filled.Info,
+                            contentDescription = "themeIcon",
+                            tint = Color.White
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     }, floatingActionButton = {

@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
     kapt("androidx.room:room-compiler:2.7.2")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
