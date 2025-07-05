@@ -1,6 +1,8 @@
 package com.example.compose_todo
 
+import android.app.Application
 import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.compose_todo.Database.Notes
@@ -22,8 +24,8 @@ import kotlinx.coroutines.launch
  *  передавая ей заметку в качестве параметра
  *  функция [getAllNotes] вызывает функцию [getAllNotes] в [NotesDao]
  */
-class NotesViewModel(context: Context):ViewModel() {
-    private val notesDao = NotesDatabase.getDatabase(context).getNotesDao()
+class NotesViewModel(application: Application): AndroidViewModel(application) {
+    private val notesDao = NotesDatabase.getDatabase(application).getNotesDao()
 
     fun insertNote(note: Notes) = viewModelScope.launch {
         notesDao.insertNewNote(note)

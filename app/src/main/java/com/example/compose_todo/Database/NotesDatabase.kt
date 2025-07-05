@@ -5,6 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+/**
+ * Room база данных для заметок
+ *
+ * функция [getNotesDao] возвращает сущность [NotesDao] для работы с базой данных
+ * функция [getDatabase] возвращает сущность базы данных типа [NotesDatabase]
+ */
 @Database(entities = [Notes::class], version = 1)
 abstract class NotesDatabase: RoomDatabase() {
     abstract fun getNotesDao(): NotesDao
