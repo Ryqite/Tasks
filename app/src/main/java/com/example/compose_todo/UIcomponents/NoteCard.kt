@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.Database.Notes
 
@@ -52,12 +53,14 @@ fun NoteCard(
                     .padding(horizontal = 8.dp)
             ) {
                 Text(
-                    text = note.content, modifier = Modifier.align(CenterStart),
+                    text = note.content, modifier = Modifier.align(CenterStart)
+                        .testTag("NoteCard"),
                     color = if (note.isDone) Color.Gray else Color.White
                 )
             }
         }
-        Checkbox(checked = note.isDone, onCheckedChange = { newValue ->
+        Checkbox(modifier = Modifier.testTag("Checkbox"),
+            checked = note.isDone, onCheckedChange = { newValue ->
             onCheckedChange(note.id, newValue)
         })
     }
