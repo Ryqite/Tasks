@@ -1,5 +1,6 @@
 package com.example.compose_todo.UIcomponents
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.Database.Notes
 
@@ -152,6 +154,9 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(15.dp)
+                .testTag("LazyColumn")
+                .background(MaterialTheme.colorScheme.background)
+
         ) {
             items(filteredNotes) { note ->
                 NoteCard(
