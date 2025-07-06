@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.Database.Notes
 
@@ -55,7 +56,7 @@ fun MainScreen(
     floatingActionButtonLogic: () -> Unit,
     transitionToCertainNotePage: (Int) -> Unit,
     onCheckedChange: (Int, Boolean) -> Unit,
-    changeTheme:()->Unit
+    changeTheme: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -75,8 +76,13 @@ fun MainScreen(
                 TextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    placeholder = { Text("Поиск...", color = Color.White) },
-                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = {
+                        Text(
+                            text = "Поиск...", color = Color.White
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                        .testTag("Search"),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -102,7 +108,11 @@ fun MainScreen(
         } else {
             CenterAlignedTopAppBar(colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black, titleContentColor = Color.Yellow
-            ), title = { Text("ЗАМЕТКИ") }, navigationIcon = {
+            ), title = {
+                Text(
+                    modifier = Modifier.testTag("Notes"), text = "ЗАМЕТКИ"
+                )
+            }, navigationIcon = {
                 IconButton(onClick = { isSearching = true }) {
                     Icon(
                         imageVector = Icons.Filled.Search,
