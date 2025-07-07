@@ -32,9 +32,14 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = "ProductsScreen"
+                    startDestination = Screen.ProductsScreen
                 ) {
-                    composable<Screen.ProductsScreen> {
+                    composable<Screen.ProductsScreen>(
+                        deepLinks = listOf(
+                            navDeepLink { uriPattern = "https://mainscreen" },
+                            navDeepLink { uriPattern = "https://www.example.com" }
+                        )
+                    ) {
                         ProductsScreen(products,
                             profileScreen = {
                                 navController.navigate(Screen.ProfileScreen)

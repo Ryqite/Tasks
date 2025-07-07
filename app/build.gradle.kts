@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin") version "2.9.0"
+    id("kotlinx-serialization")
+    id("androidx.navigation.safeargs.kotlin") version "2.9.1"
 }
 
 android {
@@ -51,6 +52,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+
     testOptions {
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
@@ -62,6 +64,7 @@ android {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     androidTestImplementation("androidx.test.services:test-services:1.5.0")
     androidTestImplementation("androidx.test:core:1.5.0")
     debugImplementation(libs.androidx.core)
