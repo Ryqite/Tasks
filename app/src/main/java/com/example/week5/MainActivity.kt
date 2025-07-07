@@ -13,7 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import androidx.navigation.toRoute
 import com.example.week5.Data.Product
+import com.example.week5.Data.Screen
 import com.example.week5.Data.testProducts
 import com.example.week5.UIcomponents.*
 import com.example.week5.ui.theme.Week5Theme
@@ -32,36 +34,25 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = "ProductsScreen"
                 ) {
-                    composable("ProductsScreen") {
+                    composable<Screen.ProductsScreen> {
                         ProductsScreen(products,
                             profileScreen = {
-                                navController.navigate("ProfileScreen")
+                                navController.navigate(Screen.ProfileScreen)
                             },
                             detailScreen = { productId ->
-                                navController.navigate("DetailScreen/$productId")
+                                navController.navigate(Screen.DetailScreen(id = productId))
                             },
                             navigateToProductPage = {
-                                navController.navigate("ProductsScreen")
+                                navController.navigate(Screen.ProductsScreen)
                             },
                             navigateToBasketPage = {
-                                navController.navigate("BasketScreen")
+                                navController.navigate(Screen.BasketScreen)
                             })
                     }
-                    composable(
-                        route = "DetailScreen/{productId}",
-                        arguments = listOf(
-                            navArgument("productId") {
-                                type = NavType.IntType
-                                defaultValue = 0
-                                nullable = false
-                            }),
-                        deepLinks = listOf(
-                            navDeepLink { uriPattern = "https://example.com/DetailScreen/{productId}" }
-                        )
-                    )
+                    composable<Screen.DetailScreen>
                     { backStackEntry ->
-                        val productId = backStackEntry.arguments?.getInt("productId") ?: 0
-                        val certainProduct = products.find { it.id == productId }
+                        val product:Screen.DetailScreen = backStackEntry.toRoute()
+                        val certainProduct = products.find { it.id == product.id }
                         DetailScreen(certainProduct,
                             addToBascket = {
                                 if (certainProduct != null) {
@@ -72,13 +63,13 @@ class MainActivity : ComponentActivity() {
                                 navController.popBackStack()
                             },
                             navigateToProductPage = {
-                                navController.navigate("ProductsScreen")
+                                navController.navigate(Screen.ProductsScreen)
                             },
                             navigateToBasketPage = {
-                                navController.navigate("BasketScreen")
+                                navController.navigate(Screen.BasketScreen)
                             })
                     }
-                    composable("BasketScreen") {
+                    composable<Screen.BasketScreen> {
                         BasketScreen(productsForBuy,
                             deleteFromBasket = { productId ->
                                 productsForBuy.removeAll { it.id == productId }
@@ -87,13 +78,13 @@ class MainActivity : ComponentActivity() {
                                 navController.popBackStack()
                             },
                             navigateToProductPage = {
-                                navController.navigate("ProductsScreen")
+                                navController.navigate(Screen.ProductsScreen)
                             },
                             navigateToBasketPage = {
-                                navController.navigate("BasketScreen")
+                                navController.navigate(Screen.ProfileScreen)
                             })
                     }
-                    composable("ProfileScreen") {
+                    composable<Screen.ProfileScreen> {
                         ProfileScreen(
                             backIcon = {
                                 navController.popBackStack()

@@ -22,8 +22,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class UITests {
+    @RunWith(AndroidJUnit4::class)
+class UITest {
     @get:Rule
     val rule = createComposeRule()
     private val sampleProducts = mutableListOf(

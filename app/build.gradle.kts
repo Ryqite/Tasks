@@ -51,9 +51,20 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+    testOptions {
+        animationsDisabled = true
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+
+        emulatorSnapshots {
+            maxSnapshotsForTestFailures = 0
+        }
+    }
 }
 
 dependencies {
+    androidTestImplementation("androidx.test.services:test-services:1.5.0")
+    androidTestImplementation("androidx.test:core:1.5.0")
+    debugImplementation(libs.androidx.core)
     implementation(libs.androidx.navigation.safe.args.gradle.plugin)
     implementation(libs.coil.compose)
     implementation(libs.androidx.core.ktx)

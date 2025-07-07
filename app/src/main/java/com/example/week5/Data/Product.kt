@@ -1,5 +1,7 @@
 package com.example.week5.Data
 
+import kotlinx.serialization.Serializable
+
 /**
  * Класс данных, представляющий товар/продукт в приложении
  *
