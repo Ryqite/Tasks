@@ -6,7 +6,7 @@ package com.example.week7.Util
  * Все константы объявлены в [companion object] для
  * глобального доступа без создания экземпляра класса.
  *
- * @property [API_KEY] API-ключ для доступа к NewsAPI
+ * @property [API_KEY] API-ключ, берется из BuildConfig
  * @property [BASE_URL] Базовый URL для доступа к NewsAPI
  */
 class Constants {
