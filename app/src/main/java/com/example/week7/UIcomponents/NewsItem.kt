@@ -36,20 +36,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.week7.Data.News
-
+/**
+ * Карточка для отображения новостей в списке на экране [MainScreen]
+ *
+ * @param news Текущая новость, для которой будет создаваться внешний вид
+ * @param onNewsItemClick  обработчик нажатия на заметку, принимающий
+ * [title] заметки в качестве параметра
+ */
 @Composable
-fun NewsItem(news: News, navigateToDetailScreen: ()->Unit) {
+fun NewsItem(news: News, onNewsItemClick: (String)->Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable(onClick = { navigateToDetailScreen() }),
+            .testTag("Card")
+            .clickable(onClick = { onNewsItemClick(news.title) }),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -65,11 +73,6 @@ fun NewsItem(news: News, navigateToDetailScreen: ()->Unit) {
 
             Column(modifier = Modifier.padding(start = 8.dp)) {
                 Text(
-                    text = news.source,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.Black
-                )
-                Text(
                     text = news.title,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     maxLines = 3,
@@ -82,6 +85,12 @@ fun NewsItem(news: News, navigateToDetailScreen: ()->Unit) {
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = news.source,
+                    style = MaterialTheme.typography.labelSmall,
                     color = Color.Black
                 )
             }

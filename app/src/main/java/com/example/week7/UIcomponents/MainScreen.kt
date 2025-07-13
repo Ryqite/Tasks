@@ -33,33 +33,20 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.week7.Data.News
 import com.example.week7.NewsViewModel
-
+/**
+ * Главный экран приложения, отображающий список всех новостей
+ *
+ * @param news список новостей для этображения
+ * @param navigateToDetailScreen лямбда-функция для перехода в [DetailScreen]
+ * с целью просмотра деталей конкретной новости,
+ * id которой принимается в качестве параметра
+ */
 @Composable
 fun MainScreen(
     news: List<News>,
-    navigateToDetailScreen: (Int)->Unit
+    navigateToDetailScreen: (String)->Unit
 ) {
-    Scaffold(
-//        bottomBar = {
-//            BottomAppBar(
-//                modifier = Modifier
-//                    .background(Color.Black),
-//                containerColor = Color.Black,
-//                contentColor = Color.White
-//            ) {
-//                Row {
-//                    IconButton(onClick = {}) {
-//                        Icon(Icons.Default.Home, contentDescription = "Главная",
-//                            tint = Color.White)
-//                    }
-//                    IconButton(onClick = {}) {
-//                        Icon(Icons.Default.Favorite, contentDescription = "Закладки",
-//                            tint = Color.White)
-//                    }
-//                }
-//            }
-//        }
-    ) { padding ->
+    Scaffold{ padding ->
         LazyColumn(
             modifier = Modifier
                 .padding(padding)
@@ -68,7 +55,8 @@ fun MainScreen(
             items(news) { item ->
                 NewsItem(
                     news = item,
-                    navigateToDetailScreen = { navigateToDetailScreen(item.id) })
+                    onNewsItemClick = {itemId->
+                        navigateToDetailScreen(itemId) })
             }
         }
     }

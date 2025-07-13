@@ -1,8 +1,12 @@
 package com.example.week7.Data
-
+/**
+ * Класс представляющий ответ из сетевого запроса
+ * @property articles Список новостных статей [Article]
+ * @property status Статус ответа API
+ * @property totalResults Количество доступных результатов по запросу
+ */
 data class NewsResponse(
-    val nextPage: String,
-    val results: List<Result>,
+    val articles: List<Article>,
     val status: String,
     val totalResults: Int
 )

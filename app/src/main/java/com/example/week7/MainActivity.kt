@@ -42,18 +42,16 @@ class MainActivity : ComponentActivity() {
                             news = news,
                             navigateToDetailScreen = { itemId ->
                                 navController
-                                    .navigate(NavigationScreens.DetailScreen(id = itemId))
+                                    .navigate(NavigationScreens.DetailScreen(title = itemId))
                             }
                         )
                     }
                     composable<NavigationScreens.DetailScreen> {backStackEntry->
                         val itemId: NavigationScreens.DetailScreen = backStackEntry.toRoute()
-                        val certainNews = news.find { it.id == itemId.id }
+                        val certainNews = news.find { it.title == itemId.title }
                         DetailScreen(
                             certainNews = certainNews,
-                            navigateToMainScreen = { navController
-                                    .navigate(NavigationScreens.MainScreen)
-                            }
+                            navigateToMainScreen = { navController.popBackStack() }
                         )
                     }
                 }

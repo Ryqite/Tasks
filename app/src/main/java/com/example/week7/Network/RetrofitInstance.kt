@@ -6,6 +6,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Класс для работы с Retrofit.
+ * Содержит настройки и экземпляр Retrofit и API-клиента
+ */
 class RetrofitInstance {
     companion object{
         private val retrofit by lazy {

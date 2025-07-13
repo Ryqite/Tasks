@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -18,6 +20,12 @@ import coil.compose.AsyncImage
 import com.example.week7.Data.News
 import com.example.week7.NewsViewModel
 
+/**
+ * Экран деталей приложения,отображающий данные выбранной новости
+ *
+ * @param certainNews Экземпляр выбранной новости
+ * @param navigateToMainScreen лямбда-функция для возврата на экран [MainScreen]
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
@@ -27,10 +35,11 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { certainNews?.source?.let { Text(it) } },
+                title = { Text("")},
                 navigationIcon = {
                     IconButton(onClick = navigateToMainScreen ) {
-                        Icon(Icons.AutoMirrored.Default.ArrowBack, contentDescription = "Назад")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = "BackButton")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -40,24 +49,6 @@ fun DetailScreen(
                 )
             )
         },
-//        bottomBar = {
-//            Button(
-//                onClick = { TODO()},
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(20.dp)
-//                    .height(60.dp),
-//                colors = ButtonDefaults.buttonColors(
-//                    containerColor = Color.Gray
-//                )
-//            ) {
-//                Text(
-//                    text = "В закладки",
-//                    fontSize = 24.sp,
-//                    color = Color.White
-//                )
-//            }
-//        }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -69,6 +60,7 @@ fun DetailScreen(
                 contentDescription = "PictureDetailScreen",
                 modifier = Modifier
                     .fillMaxWidth()
+                    .testTag("DetailAvatar")
                     .height(250.dp),
                 contentScale = ContentScale.Crop
             )
@@ -84,6 +76,7 @@ fun DetailScreen(
                         style = MaterialTheme.typography.headlineMedium,
                         color = Color.Black,
                         modifier = Modifier.padding(bottom = 8.dp)
+                            .testTag("Title")
                     )
                 }
 
@@ -91,7 +84,16 @@ fun DetailScreen(
                     Text(
                         text = it,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Black
+                        color = Color.Black,
+                        modifier = Modifier.testTag("Description")
+                    )
+                }
+                certainNews?.source?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = Color.Black,
+                        modifier = Modifier.testTag("source")
                     )
                 }
             }

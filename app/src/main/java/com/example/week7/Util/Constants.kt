@@ -1,8 +1,17 @@
 package com.example.week7.Util
 
+/**
+ * Класс содержащий все константы
+ *
+ * Все константы объявлены в [companion object] для
+ * глобального доступа без создания экземпляра класса.
+ *
+ * @property [API_KEY] API-ключ для доступа к NewsAPI
+ * @property [BASE_URL] Базовый URL для доступа к NewsAPI
+ */
 class Constants {
     companion object{
-        const val API_KEY = "pub_8eb5135b97534ea8ab979c2f2cd6a53b"
-        const val BASE_URL = "https://newsdata.io"
+        const val API_KEY = "7a984841150b48ddb54733f641fc6bc0"
+        const val BASE_URL = "https://newsapi.org/"
     }
 }
