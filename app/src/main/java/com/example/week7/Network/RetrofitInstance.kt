@@ -14,6 +14,7 @@ class RetrofitInstance {
     companion object{
         private val retrofit by lazy {
             val client = OkHttpClient.Builder()
+                .addInterceptor(RetryInterceptor(maxRetries = 3))
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 }).build()

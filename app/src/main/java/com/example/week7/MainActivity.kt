@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
                     composable<NavigationScreens.MainScreen> {
                         MainScreen(
                             news = news,
+                            viewModel = viewModel,
                             navigateToDetailScreen = { itemId ->
                                 navController
                                     .navigate(NavigationScreens.DetailScreen(title = itemId))
