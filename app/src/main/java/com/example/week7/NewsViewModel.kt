@@ -1,6 +1,7 @@
 package com.example.week7
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,14 +36,34 @@ import java.io.IOException
 class NewsViewModel(application: Application) : AndroidViewModel(application) {
     private val _latestNews = MutableStateFlow<List<News>>(emptyList())
     val latestNews: StateFlow<List<News>> = _latestNews.asStateFlow()
-
     init {
         getLatestNews()
     }
 
     fun getLatestNews() = viewModelScope.launch {
-        val result = RetrofitInstance.api.getLatestNews()
-        _latestNews.value = result.articles.map { it.toNews() }
+        try {
+//            throw Exception("Сообщение об ошибке")
+            val result = RetrofitInstance.api.getLatestNews()
+            _latestNews.value = result.articles.map { it.toNews() }
+
+        } catch (e: Exception) {
+            handleError(e)
+        }
+    }
+
+    private fun handleError(e: Exception) {
+        when (e) {
+            is IOException -> Log.e("ErrorHandler","Ошибка сети: ${e.message}")
+            is HttpException -> when (e.response.code) {
+                401 -> Log.e("ErrorHandler","Требуется авторизация")
+                403 -> Log.e("ErrorHandler","Доступ запрещен")
+                404 -> Log.e("ErrorHandler","Новости не найдены")
+                in 500..599 -> Log.e("ErrorHandler","Ошибка сервера")
+                else -> Log.e("ErrorHandler","HTTP ошибка: ${e.response.code}")
+            }
+
+            else -> Log.e("ErrorHandler","Неизвестная ошибка")
+        }
     }
 
 }
