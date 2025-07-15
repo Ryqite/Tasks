@@ -31,33 +31,20 @@ import com.example.week7.NewsViewModel
 @Composable
 fun MainScreen(
     news: List<News>,
-    viewModel: NewsViewModel,
-    navigateToDetailScreen: (String)->Unit
+    navigateToDetailScreen: (String) -> Unit
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val errorMessage by viewModel.errorMessage.collectAsState()
-    if (!errorMessage.isNullOrEmpty()) {
-        LaunchedEffect(errorMessage) {
-            errorMessage?.let { message ->
-                snackbarHostState.showSnackbar(
-                    message = message
-                )
-                viewModel.clearError()
-            }
-        }
-        Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { padding ->
-            LazyColumn(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-            ) {
-                items(news) { item ->
-                    NewsItem(
-                        news = item,
-                        onNewsItemClick = { itemId ->
-                            navigateToDetailScreen(itemId)
-                        })
-                }
+    Scaffold { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
+            items(news) { item ->
+                NewsItem(
+                    news = item,
+                    onNewsItemClick = { itemId ->
+                        navigateToDetailScreen(itemId)
+                    })
             }
         }
     }

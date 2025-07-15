@@ -35,36 +35,14 @@ import java.io.IOException
 class NewsViewModel(application: Application) : AndroidViewModel(application) {
     private val _latestNews = MutableStateFlow<List<News>>(emptyList())
     val latestNews: StateFlow<List<News>> = _latestNews.asStateFlow()
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
     init {
         getLatestNews()
     }
 
     fun getLatestNews() = viewModelScope.launch {
-        try {
-            val result = RetrofitInstance.api.getLatestNews()
-            _latestNews.value = result.articles.map { it.toNews() }
-            _errorMessage.value = null
+        val result = RetrofitInstance.api.getLatestNews()
+        _latestNews.value = result.articles.map { it.toNews() }
+    }
 
-        }catch (e: Exception) {
-            handleError(e)        }
-    }
-    private fun handleError(e: Exception) {
-        _errorMessage.value = when (e) {
-            is IOException -> "Ошибка сети: ${e.message}"
-            is HttpException -> when (e.response.code) {
-                401 -> "Требуется авторизация"
-                403 -> "Доступ запрещен"
-                404 -> "Новости не найдены"
-                in 500..599 -> "Ошибка сервера"
-                else -> "HTTP ошибка: ${e.response.code}"
-            }
-            else -> "Неизвестная ошибка"
-        }
-    }
-    fun clearError() {
-        _errorMessage.value = null
-    }
 }
