@@ -1,6 +1,6 @@
-package com.example.week7.Data.Network
+package com.example.week7.Data.DataStore.Remote
 
-import com.example.week7.Domain.NewsResponse
+import com.example.week7.Data.DTO.NewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.example.week7.Domain.Constants.Companion.API_KEY

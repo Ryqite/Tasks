@@ -1,6 +1,6 @@
-package com.example.week7.Data.Network.Mappers
+package com.example.week7.Data.Mappers
 
-import com.example.week7.Domain.Article
+import com.example.week7.Data.DTO.Article
 import com.example.week7.Domain.News
 
 /**

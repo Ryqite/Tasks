@@ -6,8 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
 import com.example.week7.Domain.News
-import com.example.week7.Data.Network.Mappers.toNews
-import com.example.week7.Data.Network.RetrofitInstance
+import com.example.week7.Data.Mappers.toNews
+import com.example.week7.Data.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

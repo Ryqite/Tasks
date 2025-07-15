@@ -1,4 +1,4 @@
-package com.example.week7.Data.Network
+package com.example.week7.Data
 
 import okhttp3.Interceptor
 import okhttp3.Response
