@@ -46,7 +46,9 @@ class UITest {
     fun testProfileScreen() {
         rule.setContent {
             Week5Theme {
-                ProfileScreen(backIcon = {})
+                ProfileScreen(backIcon = {},
+                    navigateToBasketPage = {},
+                    navigateToProductPage = {})
             }
         }
         rule.onNodeWithText("Ryqite").assertIsDisplayed()
@@ -161,7 +163,9 @@ class UITest {
                     }
                     composable("ProfileScreen") {
                         ProfileScreen(
-                            backIcon = { controller.popBackStack() }
+                            backIcon = { controller.popBackStack() },
+                            navigateToBasketPage = {},
+                            navigateToProductPage = {}
                         )
                     }
 

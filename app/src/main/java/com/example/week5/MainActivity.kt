@@ -1,6 +1,7 @@
 package com.example.week5
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
@@ -36,6 +38,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val context = LocalContext.current
             var currentLanguage by remember { mutableStateOf(Locale.getDefault().language) }
+            val currentNavigationState = remember { mutableStateOf<Screen>(Screen.ProductsScreen) }
+            var currentProductId by remember{ mutableStateOf(0)}
             Week5Theme {
                 val navController = rememberNavController()
                 NavHost(
@@ -50,13 +54,19 @@ class MainActivity : ComponentActivity() {
                     ) {
                         ProductsScreen(products,
                             profileScreen = {
+                                currentNavigationState.value = Screen.ProfileScreen
                                 navController.navigate(Screen.ProfileScreen)
                             },
                             detailScreen = { productId ->
+                                currentNavigationState.value = Screen.DetailScreen(id = productId)
+                                currentProductId = productId
                                 navController.navigate(Screen.DetailScreen(id = productId))
                             },
                             navigateToProductPage = {
-                                navController.navigate(Screen.ProductsScreen)
+                                currentNavigationState.value = Screen.ProductsScreen
+                                navController.navigate(Screen.ProductsScreen) {
+                                    launchSingleTop = true
+                                }
                             },
                             navigateToBasketPage = {
                                 navController.navigate(Screen.BasketScreen)
@@ -77,9 +87,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             backIcon = {
+                                currentNavigationState.value = Screen.ProductsScreen
                                 navController.popBackStack()
                             },
                             navigateToProductPage = {
+                                currentNavigationState.value = Screen.ProductsScreen
                                 navController.navigate(Screen.ProductsScreen)
                             },
                             navigateToBasketPage = {
@@ -87,6 +99,7 @@ class MainActivity : ComponentActivity() {
                             })
                     }
                     composable<Screen.BasketScreen> {
+
                         BasketScreen(productsForBuy,
                             deleteFromBasket = { productId ->
                                 productsForBuy.removeAll { it.id == productId }
@@ -95,24 +108,49 @@ class MainActivity : ComponentActivity() {
                                 navController.popBackStack()
                             },
                             navigateToProductPage = {
-                                navController.navigate(Screen.ProductsScreen)
+                                when (currentNavigationState.value) {
+                                    Screen.ProfileScreen -> {
+                                        navController.navigate(Screen.ProductsScreen)
+                                        navController.navigate(Screen.ProfileScreen)
+                                    }
+
+                                    Screen.ProductsScreen ->
+                                        navController.navigate(Screen.ProductsScreen)
+
+                                    is Screen.DetailScreen -> {
+                                        navController.navigate(Screen.ProductsScreen)
+                                        navController.navigate(Screen.DetailScreen(currentProductId))
+                                    }
+
+                                    Screen.BasketScreen->{}
+                                }
                             },
                             navigateToBasketPage = {
-                                navController.navigate(Screen.ProfileScreen)
+                                navController.navigate(Screen.ProfileScreen) {
+                                    launchSingleTop = true
+                                }
                             })
                     }
                     composable<Screen.ProfileScreen> {
                         ProfileScreen(
                             backIcon = {
+                                currentNavigationState.value = Screen.ProductsScreen
                                 navController.popBackStack()
+                            },
+                            navigateToBasketPage = {navController.navigate(Screen.BasketScreen)},
+                            navigateToProductPage = {
+                                currentNavigationState.value = Screen.ProductsScreen
+                                navController.navigate(Screen.ProductsScreen)
                             }
                         )
                     }
-                }
-            }
 
+                }
+
+            }
         }
     }
+
 }
 
 

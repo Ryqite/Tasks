@@ -7,12 +7,12 @@ import kotlinx.serialization.Serializable
  */
 sealed class Screen {
     @Serializable
-    object ProductsScreen
+    object ProductsScreen: Screen()
     @Serializable
-    object BasketScreen
+    object BasketScreen: Screen()
     @Serializable
-    object ProfileScreen
+    object ProfileScreen: Screen()
     @Serializable
-    data class DetailScreen(val id:Int)
+    data class DetailScreen(val id:Int): Screen()
 
 }

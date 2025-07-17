@@ -36,15 +36,29 @@ import com.example.week5.R
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(backIcon: () -> Unit) {
+fun ProfileScreen(
+    backIcon: () -> Unit,
+    navigateToProductPage: () -> Unit,
+    navigateToBasketPage: () -> Unit
+) {
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = stringResource(id = R.string.ProfileTitle)) },
             navigationIcon = {
                 IconButton(onClick = backIcon) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзПрофиля")
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "НазадИзПрофиля"
+                    )
                 }
             })
-    }) { innerPadding ->
+    },
+        bottomBar = {
+            BottomBar(
+                navigateToProductPage = navigateToProductPage,
+                navigateToBascketPage = navigateToBasketPage
+            )
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
