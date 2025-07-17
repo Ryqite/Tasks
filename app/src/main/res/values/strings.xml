@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">week5</string>
+    <string name="app_name" translatable="false">week5</string>
+    <string name="Products">Products</string>
+    <string name="Basket">Basket</string>
+    <string name="Details">Details</string>
+    <string name="AddButton">Add to basket</string>
+    <string name="EmptyBasket">Basket is empty</string>
+    <string name="ProfileTitle">Profile</string>
 </resources>

@@ -18,9 +18,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.week5.Data.Product
+import com.example.week5.R
 
 /**
  * Экран определенного продукта, id которого было переданно из [ProductsScreen]
@@ -47,7 +49,7 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Детали") },
+                title = { Text(text = stringResource(id = R.string.Details)) },
                 navigationIcon = {
                     IconButton(onClick = backIcon) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзДеталей")
@@ -90,7 +92,7 @@ fun DetailScreen(
                     onClick = addToBascket,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Добавить в корзину")
+                    Text(text = stringResource(id = R.string.AddButton))
                 }
             }
         }

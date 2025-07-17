@@ -1,0 +1,8 @@
+<resources>
+    <string name="Products">Продукты</string>
+    <string name="Basket">Корзина</string>
+    <string name="Details">Детали</string>
+    <string name="AddButton">Добавить в корзину</string>
+    <string name="EmptyBasket">Корзина пуста</string>
+    <string name="ProfileTitle">Профиль</string>
+</resources>

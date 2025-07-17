@@ -17,7 +17,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.example.week5.Data.Product
+import com.example.week5.R
 
 /**
  * Экран корзины отображающий список товаров на покупку
@@ -43,7 +45,7 @@ fun BasketScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Корзина") },
+                title = { Text(text = stringResource(id = R.string.Basket)) },
                 navigationIcon = {
                     IconButton(onClick = backIcon) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзКорзины")
@@ -66,7 +68,7 @@ fun BasketScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Корзина пуста")
+                Text(text = stringResource(id = R.string.EmptyBasket))
             }
         } else {
             LazyColumn(

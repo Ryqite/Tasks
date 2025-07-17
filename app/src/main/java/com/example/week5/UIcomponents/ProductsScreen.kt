@@ -14,8 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.week5.Data.Product
+import com.example.week5.R
 
 /**
  * Главный экран, отображающий список продуктов
@@ -41,7 +43,7 @@ fun ProductsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Продукты") },
+                title = { Text(text = stringResource(id = R.string.Products)) },
                 actions = {
                     IconButton(onClick = profileScreen) {
                         Icon(Icons.Filled.AccountCircle, contentDescription = "ПрофильКнопка")

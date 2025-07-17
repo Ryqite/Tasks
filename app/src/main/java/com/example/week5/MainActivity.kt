@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Screen.DetailScreen>
                     { backStackEntry ->
-                        val product:Screen.DetailScreen = backStackEntry.toRoute()
+                        val product: Screen.DetailScreen = backStackEntry.toRoute()
                         val certainProduct = products.find { it.id == product.id }
                         DetailScreen(certainProduct,
                             addToBascket = {
