@@ -64,7 +64,8 @@ class UITest {
                     profileScreen = {},
                     detailScreen = {},
                     navigateToProductPage = {},
-                    navigateToBasketPage = {}
+                    navigateToBasketPage = {},
+                    changeLanguage = {}
                 )
             }
         }
@@ -129,7 +130,8 @@ class UITest {
                             profileScreen = { controller.navigate("ProfileScreen") },
                             detailScreen = { controller.navigate("DetailScreen/$it") },
                             navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBasketPage = { controller.navigate("BasketScreen") }
+                            navigateToBasketPage = { controller.navigate("BasketScreen") },
+                            changeLanguage = {}
                         )
                     }
                     composable(

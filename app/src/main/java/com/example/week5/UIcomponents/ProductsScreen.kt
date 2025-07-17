@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,11 +40,18 @@ fun ProductsScreen(
     profileScreen: () -> Unit,
     navigateToProductPage: () -> Unit,
     navigateToBasketPage: () -> Unit,
+    changeLanguage: () -> Unit
 ) {
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.Products)) },
+                navigationIcon = {
+                    IconButton(onClick = changeLanguage) {
+                        Icon(Icons.Filled.Settings, contentDescription = "LanguageChange")
+                    }
+                },
                 actions = {
                     IconButton(onClick = profileScreen) {
                         Icon(Icons.Filled.AccountCircle, contentDescription = "ПрофильКнопка")

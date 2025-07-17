@@ -5,7 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,6 +24,7 @@ import com.example.week5.Data.Screen
 import com.example.week5.Data.testProducts
 import com.example.week5.UIcomponents.*
 import com.example.week5.ui.theme.Week5Theme
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +34,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = LocalContext.current
+            var currentLanguage by remember { mutableStateOf(Locale.getDefault().language) }
             Week5Theme {
                 val navController = rememberNavController()
                 NavHost(
@@ -52,6 +60,10 @@ class MainActivity : ComponentActivity() {
                             },
                             navigateToBasketPage = {
                                 navController.navigate(Screen.BasketScreen)
+                            },
+                            changeLanguage = {
+                                currentLanguage = if (currentLanguage == "en") "ru" else "en"
+                                setAppLocale(context, currentLanguage)
                             })
                     }
                     composable<Screen.DetailScreen>
