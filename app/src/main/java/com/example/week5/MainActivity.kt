@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             var currentLanguage by remember { mutableStateOf(Locale.getDefault().language) }
             val currentNavigationState = remember { mutableStateOf<Screen>(Screen.ProductsScreen) }
-            var currentProductId by remember{ mutableStateOf(0)}
+            var currentProductId by remember { mutableStateOf(0) }
             Week5Theme {
                 val navController = rememberNavController()
                 NavHost(
@@ -114,15 +114,20 @@ class MainActivity : ComponentActivity() {
                                         navController.navigate(Screen.ProfileScreen)
                                     }
 
-                                    Screen.ProductsScreen ->
+                                    Screen.ProductsScreen -> {
+                                        currentNavigationState.value = Screen.ProductsScreen
                                         navController.navigate(Screen.ProductsScreen)
+                                    }
 
-                                    is Screen.DetailScreen -> {
+                                    Screen.DetailScreen(id = currentProductId) -> {
                                         navController.navigate(Screen.ProductsScreen)
                                         navController.navigate(Screen.DetailScreen(currentProductId))
                                     }
 
-                                    Screen.BasketScreen->{}
+                                    else -> {
+                                        Log.e("NavigationError", "Wrong route")
+                                        Unit
+                                    }
                                 }
                             },
                             navigateToBasketPage = {
@@ -137,7 +142,7 @@ class MainActivity : ComponentActivity() {
                                 currentNavigationState.value = Screen.ProductsScreen
                                 navController.popBackStack()
                             },
-                            navigateToBasketPage = {navController.navigate(Screen.BasketScreen)},
+                            navigateToBasketPage = { navController.navigate(Screen.BasketScreen) },
                             navigateToProductPage = {
                                 currentNavigationState.value = Screen.ProductsScreen
                                 navController.navigate(Screen.ProductsScreen)
