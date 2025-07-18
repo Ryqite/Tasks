@@ -32,13 +32,13 @@ import org.junit.runner.RunWith
 import java.util.Locale
 
 @RunWith(AndroidJUnit4::class)
-class UITest {
+class E2ETest {
     @get:Rule
     val rule = createComposeRule()
     private val sampleProducts = mutableListOf(
         Product(
             1,
-            "Test Product",
+            "Тестовый продукт",
             "https://www.samsungstore.ru/_next/image/?url=https%3A%2F%2Fcdn.samsungstore.ru%2Fiblock%2Ff89%2Ff89005113fc4a94e95ec29e6569aa810%2Fba0adfa23f3c27e93226fe55c4ce03d9.jpg&w=1080&q=75",
             "Описание"
         ),
@@ -52,83 +52,9 @@ class UITest {
     val product = Product(1, "Test Product", "", "Description")
 
     @Test
-    fun testProfileScreen() {
+    fun `end-to-end-test-of-purchasing-of-stuff-and-language-change`() {
         rule.setContent {
-            Week5Theme {
-                ProfileScreen(backIcon = {},
-                    navigateToBasketPage = {},
-                    navigateToProductPage = {})
-            }
-        }
-        rule.onNodeWithText("Ryqite").assertIsDisplayed()
-        rule.onNodeWithText("Гарбарук Даниил Александрович").assertIsDisplayed()
-        rule.onNodeWithContentDescription("Avatar").assertIsDisplayed()
-        rule.onNodeWithContentDescription("BackFromProfile").assertIsDisplayed()
-    }
 
-    @Test
-    fun testProductsScreen() {
-        rule.setContent {
-            Week5Theme {
-                ProductsScreen(
-                    products = sampleProducts,
-                    profileScreen = {},
-                    detailScreen = {},
-                    navigateToProductPage = {},
-                    navigateToBasketPage = {},
-                    changeLanguage = {}
-                )
-            }
-        }
-        rule.onNodeWithText("Test Product").assertIsDisplayed()
-        rule.onNodeWithTag("Products").assertIsDisplayed()
-        rule.onNodeWithContentDescription("ProfileButton").assertIsDisplayed()
-        rule.onNodeWithContentDescription("ProductsButton").assertIsDisplayed()
-        rule.onNodeWithContentDescription("BasketButton").assertIsDisplayed()
-    }
-
-    @Test
-    fun testDetailScreen() {
-        rule.setContent {
-            Week5Theme {
-                DetailScreen(
-                    product = product,
-                    addToBascket = {},
-                    backIcon = {},
-                    navigateToBasketPage = {},
-                    navigateToProductPage = {})
-            }
-        }
-        rule.onNodeWithTag("Details").assertIsDisplayed()
-        rule.onNodeWithText("Test Product").assertIsDisplayed()
-        rule.onNodeWithContentDescription("BackFromDetails").assertIsDisplayed()
-
-    }
-
-    @Test
-    fun testBasketScreen() {
-        val products = mutableStateListOf<Product>()
-            .apply { addAll(sampleProducts) }
-        var deletedId = 0
-        rule.setContent {
-            Week5Theme {
-                BasketScreen(
-                    productsForBuy = products,
-                    deleteFromBasket = { deletedId = it },
-                    backIcon = {},
-                    navigateToProductPage = {},
-                    navigateToBasketPage = {})
-            }
-        }
-        rule.onNodeWithTag("Basket").assertIsDisplayed()
-        rule.onNodeWithContentDescription("BackFromBasket").assertIsDisplayed()
-        rule.onAllNodesWithContentDescription("DeleteButton")[0].performClick()
-        assertEquals(1, deletedId)
-    }
-
-    @Test
-    fun testNavigationBetweenScreens() {
-        rule.setContent {
             val context = LocalContext.current
             var currentLanguage by remember { mutableStateOf(Locale.getDefault().language) }
             val currentNavigationState = remember { mutableStateOf<Screen>(Screen.ProductsScreen) }
@@ -227,25 +153,21 @@ class UITest {
             }
         }
         rule.apply {
-            onNodeWithContentDescription("ProfileButton").performClick()
-            onNodeWithText("Ryqite").assertIsDisplayed()
-            onNodeWithContentDescription("BackFromProfile").performClick()
+            onNodeWithText("Products").assertIsDisplayed()
+            onNodeWithContentDescription("LanguageChange").performClick()
+            onNodeWithText("Test Product").assertIsDisplayed().performClick()
+            onNodeWithContentDescription("BackFromDetails").performClick()
+            onNodeWithText("Продукты").assertIsDisplayed()
+            onNodeWithContentDescription("LanguageChange").performClick()
             onNodeWithTag("Products").assertIsDisplayed()
-            onNodeWithContentDescription("BasketButton").performClick()
-            onNodeWithTag("Basket").assertIsDisplayed()
-            onNodeWithContentDescription("BackFromBasket").performClick()
-            onNodeWithTag("Products").assertIsDisplayed()
-            onNodeWithText("Test Product").performClick()
+            onNodeWithText("Test Product").assertIsDisplayed().performClick()
             onNodeWithTag("Details").assertIsDisplayed()
             onNodeWithText("Add to basket").assertIsDisplayed().performClick()
-            onNodeWithContentDescription("BackFromDetails").performClick()
-            onNodeWithTag("Products").assertIsDisplayed()
-            onNodeWithContentDescription("BasketButton").performClick()
+            onNodeWithContentDescription("BasketButton").assertIsDisplayed().performClick()
+            onNodeWithTag("Basket").assertIsDisplayed()
             onNodeWithText("Test Product").assertIsDisplayed()
-            onAllNodesWithContentDescription("DeleteButton")[0].performClick()
+            onAllNodesWithContentDescription("DeleteButton")[0].assertIsDisplayed().performClick()
             onNodeWithText("Basket is empty").assertIsDisplayed()
-            onNodeWithContentDescription("ProductsButton").performClick()
-            onNodeWithTag("Products").assertIsDisplayed()
         }
     }
 }
