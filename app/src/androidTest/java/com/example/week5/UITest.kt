@@ -1,11 +1,17 @@
 package com.example.week5
 
+import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavType
@@ -13,16 +19,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.week5.Data.Product
+import com.example.week5.Data.Screen
 import com.example.week5.UIcomponents.*
 import com.example.week5.ui.theme.Week5Theme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Locale
 
-    @RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class UITest {
     @get:Rule
     val rule = createComposeRule()
@@ -40,7 +49,7 @@ class UITest {
             "Описание 2"
         )
     )
-    val product = Product(1, "Тестовый продукт", "", "Описание")
+    val product = Product(1, "Test Product", "", "Description")
 
     @Test
     fun testProfileScreen() {
@@ -53,8 +62,8 @@ class UITest {
         }
         rule.onNodeWithText("Ryqite").assertIsDisplayed()
         rule.onNodeWithText("Гарбарук Даниил Александрович").assertIsDisplayed()
-        rule.onNodeWithContentDescription("Аватар").assertIsDisplayed()
-        rule.onNodeWithContentDescription("НазадИзПрофиля").assertIsDisplayed()
+        rule.onNodeWithContentDescription("Avatar").assertIsDisplayed()
+        rule.onNodeWithContentDescription("BackFromProfile").assertIsDisplayed()
     }
 
     @Test
@@ -71,11 +80,11 @@ class UITest {
                 )
             }
         }
-        rule.onNodeWithText("Тестовый продукт").assertIsDisplayed()
-        rule.onNodeWithText("Продукты").assertIsDisplayed()
-        rule.onNodeWithContentDescription("ПрофильКнопка").assertIsDisplayed()
-        rule.onNodeWithContentDescription("ПродуктыКнопка").assertIsDisplayed()
-        rule.onNodeWithContentDescription("КорзинаКнопка").assertIsDisplayed()
+        rule.onNodeWithText("Test Product").assertIsDisplayed()
+        rule.onNodeWithTag("Products").assertIsDisplayed()
+        rule.onNodeWithContentDescription("ProfileButton").assertIsDisplayed()
+        rule.onNodeWithContentDescription("ProductsButton").assertIsDisplayed()
+        rule.onNodeWithContentDescription("BasketButton").assertIsDisplayed()
     }
 
     @Test
@@ -90,9 +99,9 @@ class UITest {
                     navigateToProductPage = {})
             }
         }
-        rule.onNodeWithText("Детали").assertIsDisplayed()
-        rule.onNodeWithText("Тестовый продукт").assertIsDisplayed()
-        rule.onNodeWithContentDescription("НазадИзДеталей").assertIsDisplayed()
+        rule.onNodeWithTag("Details").assertIsDisplayed()
+        rule.onNodeWithText("Test Product").assertIsDisplayed()
+        rule.onNodeWithContentDescription("BackFromDetails").assertIsDisplayed()
 
     }
 
@@ -111,61 +120,106 @@ class UITest {
                     navigateToBasketPage = {})
             }
         }
-        rule.onNodeWithText("Корзина").assertIsDisplayed()
-        rule.onNodeWithContentDescription("НазадИзКорзины").assertIsDisplayed()
-        rule.onAllNodesWithContentDescription("УдалитьКнопка")[0].performClick()
+        rule.onNodeWithTag("Basket").assertIsDisplayed()
+        rule.onNodeWithContentDescription("BackFromBasket").assertIsDisplayed()
+        rule.onAllNodesWithContentDescription("DeleteButton")[0].performClick()
         assertEquals(1, deletedId)
     }
 
     @Test
     fun testNavigationBetweenScreens() {
         rule.setContent {
+            val context = LocalContext.current
+            var currentLanguage by remember { mutableStateOf(Locale.getDefault().language) }
+            val currentNavigationState = remember { mutableStateOf<Screen>(Screen.ProductsScreen) }
+            var currentProductId by remember { mutableStateOf(0) }
             Week5Theme {
                 val productsForNav =
                     remember { mutableStateListOf<Product>().apply { addAll(sampleProducts) } }
                 val basket = remember { mutableStateListOf<Product>() }
                 val controller = rememberNavController()
-                NavHost(navController = controller, startDestination = "ProductsScreen") {
-                    composable("ProductsScreen") {
+                NavHost(navController = controller, startDestination = Screen.ProductsScreen) {
+                    composable<Screen.ProductsScreen> {
                         ProductsScreen(
                             products = productsForNav,
-                            profileScreen = { controller.navigate("ProfileScreen") },
-                            detailScreen = { controller.navigate("DetailScreen/$it") },
-                            navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBasketPage = { controller.navigate("BasketScreen") },
-                            changeLanguage = {}
+                            profileScreen = {
+                                currentNavigationState.value = Screen.ProfileScreen
+                                controller.navigate(Screen.ProductsScreen)
+                            },
+                            detailScreen = { productId ->
+                                currentNavigationState.value = Screen.DetailScreen(id = productId)
+                                currentProductId = productId
+                                controller.navigate(Screen.DetailScreen(id = productId))
+                            },
+                            navigateToProductPage = {
+                                currentNavigationState.value = Screen.ProductsScreen
+                                controller.navigate(Screen.ProductsScreen) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            navigateToBasketPage = { controller.navigate(Screen.BasketScreen) },
+                            changeLanguage = {
+                                currentLanguage = if (currentLanguage == "en") "ru" else "en"
+                                setAppLocale(context, currentLanguage)
+                            }
                         )
                     }
-                    composable(
-                        "DetailScreen/{productId}",
-                        arguments = listOf(navArgument("productId") {
-                            type = NavType.IntType
-                        })
-                    ) { backStackEntry ->
-                        val productId = backStackEntry.arguments?.getInt("productId") ?: 0
-                        val product = productsForNav.find { it.id == productId }
+                    composable<Screen.DetailScreen> { backStackEntry ->
+                        val productId: Screen.DetailScreen = backStackEntry.toRoute()
+                        val product = sampleProducts.find { it.id == productId.id }
                         DetailScreen(
                             product = product,
                             addToBascket = { product?.let { basket.add(it) } },
                             backIcon = { controller.popBackStack() },
-                            navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBasketPage = { controller.navigate("BasketScreen") }
+                            navigateToProductPage = {
+                                currentNavigationState.value = Screen.ProductsScreen
+                                controller.navigate(Screen.ProductsScreen)
+                            },
+                            navigateToBasketPage = { controller.navigate(Screen.BasketScreen) }
                         )
                     }
-                    composable("BasketScreen") {
+                    composable<Screen.BasketScreen> {
                         BasketScreen(
                             productsForBuy = basket,
                             deleteFromBasket = { id -> basket.removeAll { it.id == id } },
                             backIcon = { controller.popBackStack() },
-                            navigateToProductPage = { controller.navigate("ProductsScreen") },
-                            navigateToBasketPage = { controller.navigate("BasketScreen") }
+                            navigateToProductPage = {
+                                when (currentNavigationState.value) {
+                                    Screen.ProfileScreen -> {
+                                        controller.navigate(Screen.ProductsScreen)
+                                        controller.navigate(Screen.ProfileScreen)
+                                    }
+
+                                    Screen.ProductsScreen -> {
+                                        currentNavigationState.value = Screen.ProductsScreen
+                                        controller.navigate(Screen.ProductsScreen)
+                                    }
+
+                                    Screen.DetailScreen(id = currentProductId) -> {
+                                        controller.navigate(Screen.ProductsScreen)
+                                        controller.navigate(Screen.DetailScreen(currentProductId))
+                                    }
+
+                                    else -> {
+                                        Log.e("NavigationError", "Wrong route")
+                                        Unit
+                                    }
+                                }
+                            },
+                            navigateToBasketPage = { controller.navigate(Screen.BasketScreen) }
                         )
                     }
-                    composable("ProfileScreen") {
+                    composable<Screen.ProfileScreen> {
                         ProfileScreen(
-                            backIcon = { controller.popBackStack() },
-                            navigateToBasketPage = {},
-                            navigateToProductPage = {}
+                            backIcon = {
+                                currentNavigationState.value = Screen.ProductsScreen
+                                controller.popBackStack()
+                            },
+                            navigateToBasketPage = { controller.navigate(Screen.BasketScreen) },
+                            navigateToProductPage = {
+                                currentNavigationState.value = Screen.ProductsScreen
+                                controller.navigate(Screen.ProductsScreen)
+                            }
                         )
                     }
 
@@ -173,26 +227,25 @@ class UITest {
             }
         }
         rule.apply {
-            onNodeWithContentDescription("ПрофильКнопка").performClick()
+            onNodeWithContentDescription("ProfileButton").performClick()
             onNodeWithText("Ryqite").assertIsDisplayed()
-            onNodeWithContentDescription("НазадИзПрофиля").performClick()
-            onNodeWithText("Продукты").assertIsDisplayed()
-            onNodeWithContentDescription("КорзинаКнопка").performClick()
-            onNodeWithText("Корзина").assertIsDisplayed()
-            onNodeWithContentDescription("НазадИзКорзины").performClick()
-            onNodeWithText("Продукты").assertIsDisplayed()
-            onNodeWithText("Тестовый продукт").performClick()
-            onNodeWithText("Детали").assertIsDisplayed()
-            onNodeWithText("Добавить в корзину").assertIsDisplayed()
-            onNodeWithText("Добавить в корзину").performClick()
-            onNodeWithContentDescription("НазадИзДеталей").performClick()
-            onNodeWithText("Продукты").assertIsDisplayed()
-            onNodeWithContentDescription("КорзинаКнопка").performClick()
-            onNodeWithText("Тестовый продукт").assertIsDisplayed()
-            onAllNodesWithContentDescription("УдалитьКнопка")[0].performClick()
-            onNodeWithText("Корзина пуста").assertIsDisplayed()
-            onNodeWithContentDescription("ПродуктыКнопка").performClick()
-            onNodeWithText("Продукты").assertIsDisplayed()
+            onNodeWithContentDescription("BackFromProfile").performClick()
+            onNodeWithTag("Products").assertIsDisplayed()
+            onNodeWithContentDescription("BasketButton").performClick()
+            onNodeWithTag("Basket").assertIsDisplayed()
+            onNodeWithContentDescription("BackFromBasket").performClick()
+            onNodeWithTag("Products").assertIsDisplayed()
+            onNodeWithText("Test Product").performClick()
+            onNodeWithTag("Details").assertIsDisplayed()
+            onNodeWithText("Добавить в корзину").assertIsDisplayed().performClick()
+            onNodeWithContentDescription("BackFromDetails").performClick()
+            onNodeWithTag("Products").assertIsDisplayed()
+            onNodeWithContentDescription("BasketButton").performClick()
+            onNodeWithText("Test Product").assertIsDisplayed()
+            onAllNodesWithContentDescription("DeleteButton")[0].performClick()
+            onNodeWithText("Basket is empty").assertIsDisplayed()
+            onNodeWithContentDescription("ProductsButton").performClick()
+            onNodeWithTag("Products").assertIsDisplayed()
         }
     }
 }

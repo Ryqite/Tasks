@@ -47,7 +47,7 @@ fun ProfileScreen(
                 IconButton(onClick = backIcon) {
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "НазадИзПрофиля"
+                        contentDescription = "BackFromProfile"
                     )
                 }
             })
@@ -72,7 +72,7 @@ fun ProfileScreen(
                 Image(
                     modifier = Modifier.size(200.dp),
                     painter = painterResource(id = R.drawable.upside_down_gray_cat),
-                    contentDescription = "Аватар",
+                    contentDescription = "Avatar",
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(16.dp))

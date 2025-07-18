@@ -17,6 +17,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.example.week5.Data.Product
 import com.example.week5.R
@@ -45,10 +46,11 @@ fun BasketScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(id = R.string.Basket)) },
+                title = { Text(text = stringResource(id = R.string.Basket),
+                    modifier = Modifier.testTag("Basket")) },
                 navigationIcon = {
                     IconButton(onClick = backIcon) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзКорзины")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "BackFromBasket")
                     }
                 }
             )

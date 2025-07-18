@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -49,10 +50,12 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(id = R.string.Details)) },
+                title = { Text(text = stringResource(id = R.string.Details), modifier =
+                Modifier.testTag("Details"))},
+
                 navigationIcon = {
                     IconButton(onClick = backIcon) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "НазадИзДеталей")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "BackFromDetails")
                     }
                 }
             )

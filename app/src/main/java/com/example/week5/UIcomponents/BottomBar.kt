@@ -31,10 +31,10 @@ fun BottomBar(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             IconButton(onClick = navigateToProductPage) {
-                Icon(Icons.Filled.Home, contentDescription = "ПродуктыКнопка")
+                Icon(Icons.Filled.Home, contentDescription = "ProductsButton")
             }
             IconButton(onClick = navigateToBascketPage) {
-                Icon(Icons.Filled.ShoppingCart, contentDescription = "КорзинаКнопка")
+                Icon(Icons.Filled.ShoppingCart, contentDescription = "BasketButton")
             }
         }
     }

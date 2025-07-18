@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.week5.Data.Product
@@ -46,7 +47,8 @@ fun ProductsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(id = R.string.Products)) },
+                title = { Text(text = stringResource(id = R.string.Products), modifier = Modifier
+                    .testTag("Products")) },
                 navigationIcon = {
                     IconButton(onClick = changeLanguage) {
                         Icon(Icons.Filled.Settings, contentDescription = "LanguageChange")
@@ -54,7 +56,7 @@ fun ProductsScreen(
                 },
                 actions = {
                     IconButton(onClick = profileScreen) {
-                        Icon(Icons.Filled.AccountCircle, contentDescription = "ПрофильКнопка")
+                        Icon(Icons.Filled.AccountCircle, contentDescription = "ProfileButton")
                     }
                 }
             )

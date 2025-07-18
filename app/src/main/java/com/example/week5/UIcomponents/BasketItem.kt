@@ -55,7 +55,7 @@ fun BasketItem(
             )
         }
         IconButton(onClick = onDelete) {
-            Icon(Icons.Filled.Delete, contentDescription = "УдалитьКнопка")
+            Icon(Icons.Filled.Delete, contentDescription = "DeleteButton")
         }
     }
     HorizontalDivider()
