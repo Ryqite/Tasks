@@ -1,27 +1,23 @@
-package com.example.week7
+package com.example.week7.Presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.week7.ui.theme.Week7Theme
-import com.example.week7.Navigation.NavigationScreens
-import com.example.week7.UIcomponents.DetailScreen
-import com.example.week7.UIcomponents.MainScreen
+import com.example.week7.Presentation.theme.Week7Theme
+import com.example.week7.Domain.NavigationScreens
+import com.example.week7.NewsViewModel
+import com.example.week7.Presentation.UIcomponents.DetailScreen
+import com.example.week7.Presentation.UIcomponents.MainScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +42,7 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    composable<NavigationScreens.DetailScreen> {backStackEntry->
+                    composable<NavigationScreens.DetailScreen> { backStackEntry->
                         val itemId: NavigationScreens.DetailScreen = backStackEntry.toRoute()
                         val certainNews = news.find { it.title == itemId.title }
                         DetailScreen(

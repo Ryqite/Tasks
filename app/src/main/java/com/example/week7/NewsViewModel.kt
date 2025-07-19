@@ -2,21 +2,16 @@ package com.example.week7
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
-import com.example.week7.Data.News
-import com.example.week7.Data.NewsResponse
-import com.example.week7.Mappers.toNews
-import com.example.week7.Network.RetrofitInstance
-import kotlinx.coroutines.delay
+import com.example.week7.Domain.News
+import com.example.week7.Data.Network.Mappers.toNews
+import com.example.week7.Data.Network.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Response
 import java.io.IOException
 
 /**

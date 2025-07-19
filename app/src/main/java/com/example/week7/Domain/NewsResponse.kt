@@ -1,4 +1,4 @@
-package com.example.week7.Data
+package com.example.week7.Domain
 /**
  * Класс представляющий ответ из сетевого запроса
  * @property articles Список новостных статей [Article]

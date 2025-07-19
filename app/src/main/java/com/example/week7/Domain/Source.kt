@@ -1,4 +1,4 @@
-package com.example.week7.Data
+package com.example.week7.Domain
 
 /**
  *  Класс представляющий источник публикации

@@ -1,6 +1,6 @@
-package com.example.week7.Network
+package com.example.week7.Data.Network
 
-import com.example.week7.Util.Constants.Companion.BASE_URL
+import com.example.week7.Domain.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

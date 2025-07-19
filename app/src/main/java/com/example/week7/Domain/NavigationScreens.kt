@@ -1,4 +1,4 @@
-package com.example.week7.Navigation
+package com.example.week7.Domain
 
 import kotlinx.serialization.Serializable
 

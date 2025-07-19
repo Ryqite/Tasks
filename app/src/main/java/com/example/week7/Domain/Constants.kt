@@ -1,4 +1,4 @@
-package com.example.week7.Util
+package com.example.week7.Domain
 
 /**
  * Класс содержащий все константы

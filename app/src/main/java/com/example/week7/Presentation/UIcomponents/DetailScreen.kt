@@ -1,24 +1,18 @@
-package com.example.week7.UIcomponents
+package com.example.week7.Presentation.UIcomponents
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.week7.Data.News
-import com.example.week7.NewsViewModel
+import com.example.week7.Domain.News
 
 /**
  * Экран деталей приложения,отображающий данные выбранной новости
