@@ -18,5 +18,7 @@ data class Notes(
     @ColumnInfo(name = "content")
     var content:String = "",
     @ColumnInfo(name = "isDone")
-    var isDone:Boolean = false
+    var isDone:Boolean = false,
+    @ColumnInfo(name = "temp")
+    var temp:String = ""
 )
