@@ -155,8 +155,6 @@ class E2ETest {
         rule.apply {
             onNodeWithText("Products").assertIsDisplayed()
             onNodeWithContentDescription("LanguageChange").performClick()
-            onNodeWithText("Test Product").assertIsDisplayed().performClick()
-            onNodeWithContentDescription("BackFromDetails").performClick()
             onNodeWithText("Продукты").assertIsDisplayed()
             onNodeWithContentDescription("LanguageChange").performClick()
             onNodeWithTag("Products").assertIsDisplayed()

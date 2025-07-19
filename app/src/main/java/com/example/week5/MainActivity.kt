@@ -13,12 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.example.week5.Data.Product
@@ -26,18 +23,25 @@ import com.example.week5.Data.Screen
 import com.example.week5.Data.testProducts
 import com.example.week5.UIcomponents.*
 import com.example.week5.ui.theme.Week5Theme
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    private lateinit var appSharedPreferences: AppSharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         val products = mutableStateListOf<Product>()
             .apply { addAll(testProducts) }
         val productsForBuy = mutableStateListOf<Product>()
         super.onCreate(savedInstanceState)
+        appSharedPreferences = AppSharedPreferences(this)
+        setAppLocale(this, appSharedPreferences.getLanguage())
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current
-            var currentLanguage by remember { mutableStateOf(Locale.getDefault().language) }
+            var currentLanguage by remember { mutableStateOf(appSharedPreferences.getLanguage()) }
+            val updatedContext = remember(currentLanguage) {
+                setAppLocale(context, currentLanguage).also {
+                    appSharedPreferences.saveLanguage(currentLanguage)
+                }
+            }
             val currentNavigationState = remember { mutableStateOf<Screen>(Screen.ProductsScreen) }
             var currentProductId by remember { mutableStateOf(0) }
             Week5Theme {
@@ -73,7 +77,6 @@ class MainActivity : ComponentActivity() {
                             },
                             changeLanguage = {
                                 currentLanguage = if (currentLanguage == "en") "ru" else "en"
-                                setAppLocale(context, currentLanguage)
                             })
                     }
                     composable<Screen.DetailScreen>

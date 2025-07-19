@@ -12,4 +12,13 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+.gradle/
+.idea/
+*.apk
+*.aab
+*.aar
+*.ap_
+*.vscode
+*.log
+*.tmp
+*.cache

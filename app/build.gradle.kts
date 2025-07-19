@@ -49,9 +49,6 @@ android {
             kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
         }
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
-    }
 
     testOptions {
         animationsDisabled = true
@@ -65,6 +62,7 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation(libs.androidx.appcompat)
     androidTestImplementation("androidx.test.services:test-services:1.5.0")
     androidTestImplementation("androidx.test:core:1.5.0")
     debugImplementation(libs.androidx.core)
