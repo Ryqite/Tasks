@@ -31,6 +31,8 @@ import androidx.navigation.navArgument
 import com.example.compose_todo.Database.Notes
 import com.example.compose_todo.LanguageChange.AppSharedPreferences
 import com.example.compose_todo.LanguageChange.setAppLocale
+import com.example.compose_todo.ThemeChange.AppDataStore
+import com.example.compose_todo.ThemeChange.dataStore
 import com.example.compose_todo.UIcomponents.MainScreen
 import com.example.compose_todo.UIcomponents.NoteUI
 import com.example.compose_todo.ui.theme.ComposetodoTheme
@@ -39,12 +41,12 @@ import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-    private val DARK_THEME = booleanPreferencesKey("dark_theme")
+    private lateinit var appDataStore: AppDataStore
     private lateinit var appSharedPreferences: AppSharedPreferences
     private val viewModel by viewModels<NotesViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appDataStore = AppDataStore(applicationContext.dataStore)
         appSharedPreferences = AppSharedPreferences(this)
         setAppLocale(this, appSharedPreferences.getLanguage())
         enableEdgeToEdge()
@@ -57,11 +59,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
             CompositionLocalProvider(LocalContext provides updatedContext) {
-            val darkThemeState = dataStore.data
-                .map { preferences ->
-                    preferences[DARK_THEME] ?: true }
-                .collectAsState(initial = true)
-            ComposetodoTheme(darkTheme = darkThemeState.value) {
+                val darkTheme by appDataStore.darkThemeFlow.collectAsState(initial = true)
+            ComposetodoTheme(darkTheme = darkTheme) {
                 val notes by viewModel.getAllNotes().collectAsState(initial = emptyList())
                 val navController = rememberNavController()
                 val coroutineScope = rememberCoroutineScope()
@@ -83,10 +82,7 @@ class MainActivity : ComponentActivity() {
                         },
                             changeTheme = {
                             coroutineScope.launch {
-                                dataStore.edit { settings->
-                                    val currentState = settings[DARK_THEME] ?: true
-                                    settings[DARK_THEME] = !currentState
-                                }
+                                appDataStore.changeDarkTheme()
                             }
                             },
                             changeLanguage = {
