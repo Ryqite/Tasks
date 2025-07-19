@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -35,9 +36,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.Database.Notes
+import com.example.compose_todo.R
 
 /**
  * Главный экран приложения, отображающий список всех заметок
@@ -58,7 +61,8 @@ fun MainScreen(
     floatingActionButtonLogic: () -> Unit,
     transitionToCertainNotePage: (Int) -> Unit,
     onCheckedChange: (Int, Boolean) -> Unit,
-    changeTheme: () -> Unit
+    changeTheme: () -> Unit,
+    changeLanguage: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -80,10 +84,11 @@ fun MainScreen(
                     onValueChange = { searchQuery = it },
                     placeholder = {
                         Text(
-                            text = "Поиск...", color = Color.White
+                            text = stringResource(R.string.Search___), color = Color.White
                         )
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .testTag("Search"),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
@@ -112,7 +117,7 @@ fun MainScreen(
                 containerColor = Color.Black, titleContentColor = Color.Yellow
             ), title = {
                 Text(
-                    modifier = Modifier.testTag("Notes"), text = "ЗАМЕТКИ"
+                    modifier = Modifier.testTag("Notes"), text = stringResource(R.string.Notes)
                 )
             }, navigationIcon = {
                 IconButton(onClick = { isSearching = true }) {
@@ -128,6 +133,13 @@ fun MainScreen(
                         Icon(
                             Icons.Filled.Info,
                             contentDescription = "themeIcon",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = changeLanguage) {
+                        Icon(
+                            Icons.Filled.Settings,
+                            contentDescription = "LanguageChange",
                             tint = Color.White
                         )
                     }

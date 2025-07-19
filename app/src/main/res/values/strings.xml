@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">compose-todo</string>
+    <string name="app_name" translatable="false">compose-todo</string>
     <string name="title_activity_note_page">NotePage</string>
+    <string name="Search...">Search...</string>
+    <string name="Notes">Notes</string>
+    <string name="EnterText">Enter text</string>
 </resources>

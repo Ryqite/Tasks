@@ -22,7 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.compose_todo.R
 
 /**
  * Экран добавления новой заметки и редактирования уже существующей
@@ -67,7 +69,7 @@ fun NoteUI(
     ) { innerPadding ->
         TextField(value = noteText,
             onValueChange = { noteText = it },
-            placeholder = { Text(text = "Введите текст",
+            placeholder = { Text(text = stringResource(R.string.EnterText),
                 modifier = Modifier.testTag("placeholderText")) },
             modifier = Modifier
                 .padding(innerPadding)
