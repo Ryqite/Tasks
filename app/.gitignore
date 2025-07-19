@@ -1,1 +1,13 @@
 /build
+.gradle/
+.idea/
+local.properties
+*.apk
+*.aab
+*.aar
+*.ap_
+*.vscode
+*.iml
+*.log
+*.tmp
+*.cache

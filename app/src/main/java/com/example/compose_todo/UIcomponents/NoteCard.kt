@@ -16,9 +16,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.example.compose_todo.Notes
+import com.example.compose_todo.Database.Notes
 
+/**
+ * Карточка для отображения заметок в списке на экране [MainScreen]
+ *
+ * @param note текущая заметка, для которой будет создаваться внешний вид
+ * @param onCheckedChange обработчик изменения значения чекбокса,
+ * принимающий id заметки, чекбокс которой надо изменить, и новое значение чекбокса
+ * @param transitionToCertainNotePage обработчик нажатия на заметку, принимающий
+ * id заметки в качестве параметра
+ */
 @Composable
 fun NoteCard(
     note: Notes,
@@ -43,12 +53,14 @@ fun NoteCard(
                     .padding(horizontal = 8.dp)
             ) {
                 Text(
-                    text = note.content, modifier = Modifier.align(CenterStart),
+                    text = note.content, modifier = Modifier.align(CenterStart)
+                        .testTag("NoteCard"),
                     color = if (note.isDone) Color.Gray else Color.White
                 )
             }
         }
-        Checkbox(checked = note.isDone, onCheckedChange = { newValue ->
+        Checkbox(modifier = Modifier.testTag("Checkbox"),
+            checked = note.isDone, onCheckedChange = { newValue ->
             onCheckedChange(note.id, newValue)
         })
     }

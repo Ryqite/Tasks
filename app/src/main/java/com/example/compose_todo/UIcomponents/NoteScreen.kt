@@ -21,9 +21,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.compose_todo.R
 
-
+/**
+ * Экран добавления новой заметки и редактирования уже существующей
+ *
+ * @param backToMainPage лямбда-функция для возврата на экран [MainScreen],
+ * принимающая содержание заметки в качестве параметра
+ * @param deleteNote лямбда-функция для удаления текущей
+ * заметки из списка на экране [MainScreen]
+ * @param content содержание текущей заметки
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteUI(
@@ -40,7 +51,7 @@ fun NoteUI(
                 IconButton(onClick = { backToMainPage(noteText) }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back to main page",
+                        contentDescription = "BackToMainPage",
                         tint = Color.White
                     )
                 }
@@ -58,11 +69,13 @@ fun NoteUI(
     ) { innerPadding ->
         TextField(value = noteText,
             onValueChange = { noteText = it },
-            placeholder = { Text("Введите текст") },
+            placeholder = { Text(text = stringResource(R.string.EnterText),
+                modifier = Modifier.testTag("placeholderText")) },
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
                 .padding(15.dp)
+                .testTag("EditField")
         )
     }
 }

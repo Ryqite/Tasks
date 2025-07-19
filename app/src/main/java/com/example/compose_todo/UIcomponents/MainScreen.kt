@@ -1,4 +1,6 @@
 package com.example.compose_todo.UIcomponents
+
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +12,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -31,16 +35,34 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.example.compose_todo.Notes
+import com.example.compose_todo.Database.Notes
+import com.example.compose_todo.R
 
+/**
+ * Главный экран приложения, отображающий список всех заметок
+ *
+ * @param notes список заметок для этображения
+ * @param floatingActionButtonLogic лямбда-функция для перехода на
+ * экран [NoteUI] с целью создания новой заметки
+ * @param transitionToCertainNotePage лямбда-функция для перехода в [NoteUI]
+ * с целью редактирования заметки, id которой принимается в качестве параметра
+ * @param onCheckedChange лямбда-функция для изменения текущего статуса чекбокса,
+ * принимающая id заметки, чекбокс которой надо изменить, и новое значение чекбокса
+ * @param changeTheme лямбда-функция для изменения текущей темы на противоположную
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     notes: List<Notes>,
     floatingActionButtonLogic: () -> Unit,
     transitionToCertainNotePage: (Int) -> Unit,
-    onCheckedChange: (Int, Boolean) -> Unit
+    onCheckedChange: (Int, Boolean) -> Unit,
+    changeTheme: () -> Unit,
+    changeLanguage: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -57,10 +79,17 @@ fun MainScreen(
             TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black
             ), title = {
-                TextField(value = searchQuery,
+                TextField(
+                    value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    placeholder = { Text("Поиск...", color = Color.White) },
-                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.Search___), color = Color.White
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("Search"),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -76,16 +105,21 @@ fun MainScreen(
                 }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = "BackIcon",
                         tint = Color.White
                     )
                 }
-            }, scrollBehavior = scrollBehavior
+            },
+                scrollBehavior = scrollBehavior
             )
         } else {
             CenterAlignedTopAppBar(colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black, titleContentColor = Color.Yellow
-            ), title = { Text("ЗАМЕТКИ") }, navigationIcon = {
+            ), title = {
+                Text(
+                    modifier = Modifier.testTag("Notes"), text = stringResource(R.string.Notes)
+                )
+            }, navigationIcon = {
                 IconButton(onClick = { isSearching = true }) {
                     Icon(
                         imageVector = Icons.Filled.Search,
@@ -93,7 +127,24 @@ fun MainScreen(
                         tint = Color.White
                     )
                 }
-            }, scrollBehavior = scrollBehavior
+            },
+                actions = {
+                    IconButton(onClick = changeTheme) {
+                        Icon(
+                            Icons.Filled.Info,
+                            contentDescription = "themeIcon",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = changeLanguage) {
+                        Icon(
+                            Icons.Filled.Settings,
+                            contentDescription = "LanguageChange",
+                            tint = Color.White
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     }, floatingActionButton = {
@@ -115,6 +166,9 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(15.dp)
+                .testTag("LazyColumn")
+                .background(MaterialTheme.colorScheme.background)
+
         ) {
             items(filteredNotes) { note ->
                 NoteCard(
