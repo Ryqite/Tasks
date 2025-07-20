@@ -1,6 +1,5 @@
-package com.example.week7.Data
+package com.example.week7.Data.DataSource.Remote
 
-import com.example.week7.Data.DataStore.Remote.NewsAPI
 import com.example.week7.Domain.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,6 +1,6 @@
 package com.example.week7.Data.Repository
 
-import com.example.week7.Data.DataStore.Remote.RemoteDataSource
+import com.example.week7.Data.DataSource.Remote.RemoteDataSource
 import com.example.week7.Data.Mappers.toNews
 import com.example.week7.Domain.News
 import com.example.week7.Domain.NewsRepository
