@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.week7.Domain.News
 import androidx.compose.ui.test.*
 import com.example.week7.Domain.NavigationScreens
+import com.example.week7.Presentation.NewsItem
 import com.example.week7.Presentation.UIcomponents.DetailScreen
 import com.example.week7.Presentation.UIcomponents.MainScreen
 import org.junit.Rule
@@ -18,7 +19,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class UITest {
     val news = listOf(
-        News("Котик",
+        NewsItem("Котик",
         "https://static.tildacdn.com/tild3639-3964-4634-b239-393833386638/54080808080.png",
         "https://terraria-calamity-mod.fandom.com/ru/wiki/Бездна#Советы",
         "Котик любит играть")

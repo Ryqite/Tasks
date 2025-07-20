@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.week7.Domain.News
+import com.example.week7.Presentation.NewsItem
 
 /**
  * Экран деталей приложения,отображающий данные выбранной новости
@@ -23,7 +24,7 @@ import com.example.week7.Domain.News
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    certainNews: News?,
+    certainNews: NewsItem?,
     navigateToMainScreen:()->Unit
 ) {
     Scaffold(

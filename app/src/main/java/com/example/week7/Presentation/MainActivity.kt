@@ -9,20 +9,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.week7.Data.DataStore.Remote.RemoteDataSourceImpl
+import com.example.week7.Data.Repository.NewsRepositoryImpl
+import com.example.week7.Data.RetrofitInstance
+import com.example.week7.Domain.GetLatestNewsUseCase
 import com.example.week7.Presentation.theme.Week7Theme
 import com.example.week7.Domain.NavigationScreens
-import com.example.week7.NewsViewModel
 import com.example.week7.Presentation.UIcomponents.DetailScreen
 import com.example.week7.Presentation.UIcomponents.MainScreen
 
 class MainActivity : ComponentActivity() {
+    private val retrofitInstance by lazy { RetrofitInstance.api }
+    private val remoteDataSource by lazy { RemoteDataSourceImpl(retrofitInstance) }
+    private val repository by lazy { NewsRepositoryImpl(remoteDataSource) }
+    private val getLatestNewsUseCase by lazy { GetLatestNewsUseCase(repository) }
+    private val viewModel: NewsViewModel by viewModels {
+        NewsViewModelFactory(getLatestNewsUseCase)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModel by viewModels<NewsViewModel>()
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

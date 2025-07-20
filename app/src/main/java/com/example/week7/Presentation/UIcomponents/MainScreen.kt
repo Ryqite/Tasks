@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.week7.Domain.News
+import com.example.week7.Presentation.NewsItem
 
 /**
  * Главный экран приложения, отображающий список всех новостей
@@ -19,7 +20,7 @@ import com.example.week7.Domain.News
  */
 @Composable
 fun MainScreen(
-    news: List<News>,
+    news: List<NewsItem>,
     navigateToDetailScreen: (String) -> Unit
 ) {
     Scaffold { padding ->
@@ -29,7 +30,7 @@ fun MainScreen(
                 .fillMaxSize()
         ) {
             items(news) { item ->
-                NewsItem(
+                NewsItemCard(
                     news = item,
                     onNewsItemClick = { itemId ->
                         navigateToDetailScreen(itemId)

@@ -24,6 +24,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.week7.Domain.News
+import com.example.week7.Presentation.NewsItem
+
 /**
  * Карточка для отображения новостей в списке на экране [MainScreen]
  *
@@ -32,7 +34,7 @@ import com.example.week7.Domain.News
  * [title] заметки в качестве параметра
  */
 @Composable
-fun NewsItem(news: News, onNewsItemClick: (String)->Unit) {
+fun NewsItemCard(news: NewsItem, onNewsItemClick: (String)->Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
