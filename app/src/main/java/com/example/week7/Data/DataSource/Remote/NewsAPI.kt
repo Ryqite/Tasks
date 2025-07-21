@@ -3,7 +3,7 @@ package com.example.week7.Data.DataSource.Remote
 import com.example.week7.Data.DTO.NewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
-import com.example.week7.Domain.Constants.Companion.API_KEY
+import com.example.week7.Data.Utils.Constants.Companion.API_KEY
 
 /**
  * Интерфейс для работы с News API

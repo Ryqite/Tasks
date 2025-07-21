@@ -1,6 +1,6 @@
 package com.example.week7.Data.DataSource.Remote
 
-import com.example.week7.Domain.Constants.Companion.BASE_URL
+import com.example.week7.Data.Utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

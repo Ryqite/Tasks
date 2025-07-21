@@ -6,9 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.week7.Domain.News
 import androidx.compose.ui.test.*
-import com.example.week7.Domain.NavigationScreens
+import com.example.week7.Presentation.Utils.NavigationScreens
 import com.example.week7.Presentation.NewsItem
 import com.example.week7.Presentation.UIcomponents.DetailScreen
 import com.example.week7.Presentation.UIcomponents.MainScreen

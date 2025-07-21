@@ -18,7 +18,7 @@ import com.example.week7.Data.Repository.NewsRepositoryImpl
 import com.example.week7.Data.DataSource.Remote.RetrofitInstance
 import com.example.week7.Domain.GetLatestNewsUseCase
 import com.example.week7.Presentation.theme.Week7Theme
-import com.example.week7.Domain.NavigationScreens
+import com.example.week7.Presentation.Utils.NavigationScreens
 import com.example.week7.Presentation.UIcomponents.DetailScreen
 import com.example.week7.Presentation.UIcomponents.MainScreen
 
