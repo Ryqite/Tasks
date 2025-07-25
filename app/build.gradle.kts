@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.week7"
+    namespace = "com.example.week9"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.week7"
+        applicationId = "com.example.week9"
         minSdk = 30
         targetSdk = 34
         versionCode = 1

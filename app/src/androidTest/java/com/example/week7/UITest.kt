@@ -1,4 +1,4 @@
-package com.example.week7
+package com.example.week9
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation.compose.NavHost
@@ -7,10 +7,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.compose.ui.test.*
-import com.example.week7.Presentation.Utils.NavigationScreens
-import com.example.week7.Presentation.NewsItem
-import com.example.week7.Presentation.UIcomponents.DetailScreen
-import com.example.week7.Presentation.UIcomponents.MainScreen
+import com.example.week9.Presentation.Utils.NavigationScreens
+import com.example.week9.Presentation.NewsItem
+import com.example.week9.Presentation.UIcomponents.DetailScreen
+import com.example.week9.Presentation.UIcomponents.MainScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
