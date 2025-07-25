@@ -1,5 +1,7 @@
 package com.example.week9.Data.Utils
 
+import com.example.week9.BuildConfig
+
 /**
  * Класс содержащий все константы
  *
@@ -11,7 +13,7 @@ package com.example.week9.Data.Utils
  */
 class Constants {
     companion object{
-        const val API_KEY = "7a984841150b48ddb54733f641fc6bc0"
+        const val API_KEY = BuildConfig.API_KEY
         const val BASE_URL = "https://newsapi.org/"
     }
 }
