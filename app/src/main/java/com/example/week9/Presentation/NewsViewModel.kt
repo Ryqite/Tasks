@@ -1,11 +1,10 @@
 package com.example.week9.Presentation
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.week9.Domain.GetLatestNewsUseCase
+import com.example.week9.Domain.GetLatestFilmsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,27 +16,27 @@ import java.io.IOException
  *
  * Наследуется от [AndroidViewModel] для доступа к контексту приложения.
  *
- * @param getLatestNews Use case для получения списка новостей
- * @property _latestNews Приватное изменяемое состояние списка новостей,
- * используется как источник данных для [latestNews]
- * @property latestNews Публичное неизменяемое состояние списка новостей,
+ * @param getLatestFilms Use case для получения списка новостей
+ * @property _latestfilms Приватное изменяемое состояние списка новостей,
+ * используется как источник данных для [latestfilms]
+ * @property latestfilms Публичное неизменяемое состояние списка новостей,
  * предоставляет подписку на обновления списка новостей.
- * функция [loadNewsItems] вызывает функцию [getLatestNews] в [GetLatestNewsUseCase],
- * где каждый [News] преобразуется в [NewsItem] и результат сохраняется в переменнную [_latestNews]
+ * функция [loadfilmsItems] вызывает функцию [getLatestFilms] в [GetLatestFilmsUseCase],
+ * где каждый [films] преобразуется в [FilmsItem] и результат сохраняется в переменнную [_latestfilms]
  */
-class NewsViewModel(
-    private val getLatestNews: GetLatestNewsUseCase
+class filmsViewModel(
+    private val getLatestFilms: GetLatestFilmsUseCase
 ) : ViewModel() {
-    private val _latestNews = MutableStateFlow<List<NewsItem>>(emptyList())
-    val latestNews: StateFlow<List<NewsItem>> = _latestNews
+    private val _latestfilms = MutableStateFlow<List<FilmsItem>>(emptyList())
+    val latestfilms: StateFlow<List<FilmsItem>> = _latestfilms
     init {
-        loadNewsItems()
+        loadfilmsItems()
     }
-    private fun loadNewsItems(){
+    private fun loadfilmsItems(){
         viewModelScope.launch {
             try {
 //            throw Exception("Сообщение об ошибке")
-            _latestNews.value = getLatestNews().map { it.toNewsItem() }
+            _latestfilms.value = getLatestFilms().map { it.toFilmsItem() }
             } catch (e: Exception) {
                 handleError(e)
             }
@@ -53,7 +52,7 @@ class NewsViewModel(
                 in 500..599 -> Log.e("ErrorHandler","Ошибка сервера")
                 else -> Log.e("ErrorHandler","HTTP ошибка: ${e.code()}")
             }
-            else -> Log.e("ErrorHandler","Неизвестная ошибка")
+            else -> Log.e("ErrorHandler","Неизвестная ошибка: ${e.message}")
         }
     }
 }

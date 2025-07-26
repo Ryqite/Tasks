@@ -14,9 +14,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.week9.Data.DataSource.Remote.RemoteDataSourceImpl
-import com.example.week9.Data.Repository.NewsRepositoryImpl
+import com.example.week9.Data.Repository.FilmsRepositoryImpl
 import com.example.week9.Data.DataSource.Remote.RetrofitInstance
-import com.example.week9.Domain.GetLatestNewsUseCase
+import com.example.week9.Domain.GetLatestFilmsUseCase
 import com.example.week9.Presentation.theme.week9Theme
 import com.example.week9.Presentation.Utils.NavigationScreens
 import com.example.week9.Presentation.UIcomponents.DetailScreen
@@ -25,17 +25,17 @@ import com.example.week9.Presentation.UIcomponents.MainScreen
 class MainActivity : ComponentActivity() {
     private val retrofitInstance by lazy { RetrofitInstance.api }
     private val remoteDataSource by lazy { RemoteDataSourceImpl(retrofitInstance) }
-    private val repository by lazy { NewsRepositoryImpl(remoteDataSource) }
-    private val getLatestNewsUseCase by lazy { GetLatestNewsUseCase(repository) }
-    private val viewModel: NewsViewModel by viewModels {
-        NewsViewModelFactory(getLatestNewsUseCase)
+    private val repository by lazy { FilmsRepositoryImpl(remoteDataSource) }
+    private val getLatestFilmsUseCase by lazy { GetLatestFilmsUseCase(repository) }
+    private val viewModel: filmsViewModel by viewModels {
+        filmsViewModelFactory(getLatestFilmsUseCase)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             week9Theme {
-                val news by viewModel.latestNews.collectAsState()
+                val films by viewModel.latestfilms.collectAsState()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -43,18 +43,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable<NavigationScreens.MainScreen> {
                         MainScreen(
-                            news = news,
+                            films = films,
                             navigateToDetailScreen = { itemId ->
                                 navController
-                                    .navigate(NavigationScreens.DetailScreen(title = itemId))
+                                    .navigate(NavigationScreens.DetailScreen(id = itemId))
                             }
                         )
                     }
                     composable<NavigationScreens.DetailScreen> { backStackEntry->
                         val itemId: NavigationScreens.DetailScreen = backStackEntry.toRoute()
-                        val certainNews = news.find { it.title == itemId.title }
+                        val certainFilms = films.find { it.kinopoiskId == itemId.id }
                         DetailScreen(
-                            certainNews = certainNews,
+                            certainFilms = certainFilms,
                             navigateToMainScreen = { navController.popBackStack() }
                         )
                     }

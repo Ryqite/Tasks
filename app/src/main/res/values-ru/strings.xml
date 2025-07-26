@@ -1,0 +1,7 @@
+<resources>
+    <string name="Rating">Рейтинг:</string>
+    <string name="KinopoiskID">ID фильма на кинопоиске: </string>
+    <string name="DetailScreen">Страница деталей о фильме</string>
+    <string name="MainScreen">Фильмы</string>
+    <string name="Search___">Поиск...</string>
+</resources>

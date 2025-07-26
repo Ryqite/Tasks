@@ -2,15 +2,15 @@ package com.example.week9.Presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.week9.Domain.GetLatestNewsUseCase
+import com.example.week9.Domain.GetLatestFilmsUseCase
 
-class NewsViewModelFactory(
-    private val getLatestNewsUseCase: GetLatestNewsUseCase
+class filmsViewModelFactory(
+    private val getLatestFilmsUseCase: GetLatestFilmsUseCase
 ):ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(NewsViewModel::class.java)){
-            return NewsViewModel(
-                getLatestNews = getLatestNewsUseCase
+        if(modelClass.isAssignableFrom(filmsViewModel::class.java)){
+            return filmsViewModel(
+                getLatestFilms = getLatestFilmsUseCase
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

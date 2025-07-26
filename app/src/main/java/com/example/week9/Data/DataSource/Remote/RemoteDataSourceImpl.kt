@@ -1,9 +1,9 @@
 package com.example.week9.Data.DataSource.Remote
 
-import com.example.week9.Data.DTO.NewsResponse
+import com.example.week9.Data.DTO.FilmResponse
 
-class RemoteDataSourceImpl(private val newsAPI: NewsAPI): RemoteDataSource {
-    override suspend fun getLatestNews(): NewsResponse {
-        return newsAPI.getLatestNews()
+class RemoteDataSourceImpl(private val filmsAPI: FilmsAPI): RemoteDataSource {
+    override suspend fun getLatestFilms(): FilmResponse {
+        return filmsAPI.getLatestFilms()
     }
 }

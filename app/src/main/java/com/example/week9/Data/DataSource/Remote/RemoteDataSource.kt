@@ -1,7 +1,7 @@
 package com.example.week9.Data.DataSource.Remote
 
-import com.example.week9.Data.DTO.NewsResponse
+import com.example.week9.Data.DTO.FilmResponse
 
 interface RemoteDataSource {
-   suspend fun getLatestNews(): NewsResponse
+   suspend fun getLatestFilms(): FilmResponse
 }

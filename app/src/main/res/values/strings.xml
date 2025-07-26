@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">week9</string>
+    <string name="app_name" translatable="false">week9</string>
+    <string name="Rating">Rating: </string>
+    <string name="KinopoiskID">Films ID on Kinopoisk: </string>
+    <string name="DetailScreen">Films detail page</string>
+    <string name="MainScreen">Films</string>
+    <string name="Search___">Search...</string>
 </resources>
