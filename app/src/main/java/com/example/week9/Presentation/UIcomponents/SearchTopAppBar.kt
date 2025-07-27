@@ -3,6 +3,7 @@ package com.example.week9.Presentation.UIcomponents
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,7 +21,8 @@ import androidx.compose.ui.graphics.Color
 fun SearchTopAppBar(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
-    onCloseSearch: () -> Unit
+    onCloseSearch: () -> Unit,
+    onCancelNewSearchFilms: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -43,6 +45,14 @@ fun SearchTopAppBar(
             IconButton(onClick = onCloseSearch) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Закрыть поиск"
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = onCancelNewSearchFilms) {
+                Icon(
+                    Icons.Default.Clear,
                     contentDescription = "Закрыть поиск"
                 )
             }

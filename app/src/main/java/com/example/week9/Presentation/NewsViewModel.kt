@@ -9,6 +9,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -27,6 +28,7 @@ import java.io.IOException
  * функция [loadfilmsItems] вызывает функцию [getLatestFilms] в [GetLatestFilmsUseCase],
  * где каждый [films] преобразуется в [FilmsItem] и результат сохраняется в переменнную [_latestfilms]
  */
+@OptIn(FlowPreview::class)
 class filmsViewModel(
     private val getLatestFilms: GetLatestFilmsUseCase
 ) : ViewModel() {
@@ -36,25 +38,44 @@ class filmsViewModel(
     private val _searchQuery = MutableStateFlow("f")
     val searchQuery: StateFlow<String> = _searchQuery
 
+    private val _cancelNeed = MutableStateFlow(false)
+    val cancelNeed: StateFlow<Boolean> = _cancelNeed
+
     init {
-        loadfilmsItems()
+        viewModelScope.launch {
+            _searchQuery
+                .debounce(2000)
+                .distinctUntilChanged()
+                .collect { query ->
+                    loadfilmsItems(query)
+                }
+        }
     }
 
-    @OptIn(FlowPreview::class)
-    private fun loadfilmsItems() {
+    private fun loadfilmsItems(query: String) {
         viewModelScope.launch {
             try {
 //            throw Exception("Сообщение об ошибке")
-               _latestfilms.value = getLatestFilms(_searchQuery.value).map { it.toFilmsItem() }
+                if (_cancelNeed.value)
+                {
+                    _latestfilms.value
+                    _cancelNeed.value = false
+                }
+                else _latestfilms.value = getLatestFilms(query).map { it.toFilmsItem() }
             } catch (e: Exception) {
                 handleError(e)
             }
         }
     }
+
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
-        loadfilmsItems()
     }
+
+    fun onCancelNewSearchFilms() {
+        _cancelNeed.value = true
+    }
+
     private fun handleError(e: Exception) {
         when (e) {
             is IOException -> Log.e("ErrorHandler", "Ошибка сети: ${e.message}")

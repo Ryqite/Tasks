@@ -51,7 +51,10 @@ class MainActivity : ComponentActivity() {
                             },
                             onSearchQueryChanged = {query->
                                 viewModel.onSearchQueryChanged(query)},
-                            searchQuery = searchQuery
+                            searchQuery = searchQuery,
+                            onCancelNewSearchFilms = {
+                                viewModel.onCancelNewSearchFilms()
+                            }
                         )
                     }
                     composable<NavigationScreens.DetailScreen> { backStackEntry->

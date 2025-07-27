@@ -41,7 +41,8 @@ fun MainScreen(
     films: List<FilmsItem>,
     navigateToDetailScreen: (Int) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
-    searchQuery: String
+    searchQuery: String,
+    onCancelNewSearchFilms: () -> Unit
 ) {
     var showSearchField by remember { mutableStateOf(false) }
     Scaffold(
@@ -50,7 +51,8 @@ fun MainScreen(
                 SearchTopAppBar(
                     searchQuery = searchQuery,
                     onSearchQueryChanged = onSearchQueryChanged,
-                    onCloseSearch = { showSearchField = false }
+                    onCloseSearch = { showSearchField = false },
+                    onCancelNewSearchFilms = onCancelNewSearchFilms
                 )
             } else {
                 DefaultTopAppBar(
