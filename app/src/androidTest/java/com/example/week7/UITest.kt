@@ -9,8 +9,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.compose.ui.test.*
 import com.example.week9.Presentation.Utils.NavigationScreens
 import com.example.week9.Presentation.FilmsItem
-import com.example.week9.Presentation.UIcomponents.DetailScreen
-import com.example.week9.Presentation.UIcomponents.MainScreen
+import com.example.week9.Presentation.Screens.DetailScreen
+import com.example.week9.Presentation.Screens.MainScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

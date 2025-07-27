@@ -1,5 +1,7 @@
 package com.example.week9.Domain
 
+import kotlinx.coroutines.flow.Flow
+
 interface FilmsRepository {
-   suspend fun getLatestFilms(): List<Films>
+   suspend fun getLatestFilms(keyword: String): List<Films>
 }

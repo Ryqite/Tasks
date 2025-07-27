@@ -19,8 +19,8 @@ import com.example.week9.Data.DataSource.Remote.RetrofitInstance
 import com.example.week9.Domain.GetLatestFilmsUseCase
 import com.example.week9.Presentation.theme.week9Theme
 import com.example.week9.Presentation.Utils.NavigationScreens
-import com.example.week9.Presentation.UIcomponents.DetailScreen
-import com.example.week9.Presentation.UIcomponents.MainScreen
+import com.example.week9.Presentation.Screens.DetailScreen
+import com.example.week9.Presentation.Screens.MainScreen
 
 class MainActivity : ComponentActivity() {
     private val retrofitInstance by lazy { RetrofitInstance.api }
@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             week9Theme {
                 val films by viewModel.latestfilms.collectAsState()
+                val searchQuery by viewModel.searchQuery.collectAsState()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -47,7 +48,10 @@ class MainActivity : ComponentActivity() {
                             navigateToDetailScreen = { itemId ->
                                 navController
                                     .navigate(NavigationScreens.DetailScreen(id = itemId))
-                            }
+                            },
+                            onSearchQueryChanged = {query->
+                                viewModel.onSearchQueryChanged(query)},
+                            searchQuery = searchQuery
                         )
                     }
                     composable<NavigationScreens.DetailScreen> { backStackEntry->
