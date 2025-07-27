@@ -51,6 +51,7 @@ class filmsViewModel(
             _searchQuery
                 .debounce(2000)
                 .retry(3) { e->
+                    Log.e("CollectorErrorRetry", e.message?:"неизвестная ошибка")
                     e is Exception
                 }
                 .catch {e->

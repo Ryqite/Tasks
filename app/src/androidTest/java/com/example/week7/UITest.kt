@@ -20,7 +20,7 @@ class UITest {
     val films = listOf(
         FilmsItem("Котик",
         "https://static.tildacdn.com/tild3639-3964-4634-b239-393833386638/54080808080.png",
-            "Офигенный фильми",
+            "Офигенный фильм",
         32582352,
         "9.9")
     )
