@@ -9,6 +9,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.retry
@@ -49,6 +50,12 @@ class filmsViewModel(
         searchJob = viewModelScope.launch {
             _searchQuery
                 .debounce(2000)
+                .retry(3) { e->
+                    e is Exception
+                }
+                .catch {e->
+                    Log.e("CollectorError", e.message?:"неизвестная ошибка")
+                }
                 .distinctUntilChanged()
                 .collect { query ->
                     if (query.isNotEmpty()) loadfilmsItems(query)
