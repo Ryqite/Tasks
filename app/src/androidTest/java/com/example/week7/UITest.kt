@@ -41,7 +41,10 @@ class UITest {
                         navigateToDetailScreen = { itemId ->
                             navController
                                 .navigate(NavigationScreens.DetailScreen(id = itemId))
-                        }
+                        },
+                        onCancelNewSearchFilms = {},
+                        onSearchQueryChanged = {},
+                        searchQuery = ""
                     )
                 }
                 composable<NavigationScreens.DetailScreen> { backStackEntry->

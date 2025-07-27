@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.week9.Domain.GetLatestFilmsUseCase
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -38,16 +39,19 @@ class filmsViewModel(
     private val _searchQuery = MutableStateFlow("f")
     val searchQuery: StateFlow<String> = _searchQuery
 
-    private val _cancelNeed = MutableStateFlow(false)
-    val cancelNeed: StateFlow<Boolean> = _cancelNeed
+    private var searchJob: Job? = null
 
     init {
-        viewModelScope.launch {
+        startSearchCollector()
+    }
+
+    private fun startSearchCollector() {
+        searchJob = viewModelScope.launch {
             _searchQuery
                 .debounce(2000)
                 .distinctUntilChanged()
                 .collect { query ->
-                    loadfilmsItems(query)
+                    if (query.isNotEmpty()) loadfilmsItems(query)
                 }
         }
     }
@@ -55,13 +59,7 @@ class filmsViewModel(
     private fun loadfilmsItems(query: String) {
         viewModelScope.launch {
             try {
-//            throw Exception("Сообщение об ошибке")
-                if (_cancelNeed.value)
-                {
-                    _latestfilms.value
-                    _cancelNeed.value = false
-                }
-                else _latestfilms.value = getLatestFilms(query).map { it.toFilmsItem() }
+                _latestfilms.value = getLatestFilms(query).map { it.toFilmsItem() }
             } catch (e: Exception) {
                 handleError(e)
             }
@@ -72,8 +70,10 @@ class filmsViewModel(
         _searchQuery.value = query
     }
 
-    fun onCancelNewSearchFilms() {
-        _cancelNeed.value = true
+    fun cancelSearch(){
+        searchJob?.cancel()
+        _searchQuery.value = ""
+        startSearchCollector()
     }
 
     private fun handleError(e: Exception) {

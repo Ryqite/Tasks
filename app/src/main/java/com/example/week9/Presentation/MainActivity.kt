@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                                 viewModel.onSearchQueryChanged(query)},
                             searchQuery = searchQuery,
                             onCancelNewSearchFilms = {
-                                viewModel.onCancelNewSearchFilms()
+                                viewModel.cancelSearch()
                             }
                         )
                     }
