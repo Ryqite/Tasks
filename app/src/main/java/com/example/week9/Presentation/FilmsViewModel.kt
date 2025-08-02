@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.week9.Domain.GetLatestFilmsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * ViewModel для работы с новостями.
@@ -31,7 +33,8 @@ import java.io.IOException
  * где каждый [films] преобразуется в [FilmsItem] и результат сохраняется в переменнную [_latestfilms]
  */
 @OptIn(FlowPreview::class)
-class filmsViewModel(
+@HiltViewModel
+class FilmsViewModel @Inject constructor(
     private val getLatestFilms: GetLatestFilmsUseCase
 ) : ViewModel() {
     private val _latestfilms = MutableStateFlow<List<FilmsItem>>(emptyList())

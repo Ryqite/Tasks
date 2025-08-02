@@ -8,8 +8,9 @@ import com.example.week9.Domain.FilmsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
-class FilmsRepositoryImpl(private val remoteDataSource: RemoteDataSource): FilmsRepository {
+class FilmsRepositoryImpl @Inject constructor(private val remoteDataSource: RemoteDataSource): FilmsRepository {
     override suspend fun getLatestFilms(keyword: String): List<Films> {
         val response = remoteDataSource.getLatestFilms(keyword)
         return response.films.map { it.toFilms() }

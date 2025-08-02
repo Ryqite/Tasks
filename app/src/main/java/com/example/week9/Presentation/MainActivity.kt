@@ -13,23 +13,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.week9.Data.DataSource.Remote.FilmsAPI
 import com.example.week9.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week9.Data.Repository.FilmsRepositoryImpl
-import com.example.week9.Data.DataSource.Remote.RetrofitInstance
 import com.example.week9.Domain.GetLatestFilmsUseCase
 import com.example.week9.Presentation.theme.week9Theme
 import com.example.week9.Presentation.Utils.NavigationScreens
 import com.example.week9.Presentation.Screens.DetailScreen
 import com.example.week9.Presentation.Screens.MainScreen
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val retrofitInstance by lazy { RetrofitInstance.api }
-    private val remoteDataSource by lazy { RemoteDataSourceImpl(retrofitInstance) }
-    private val repository by lazy { FilmsRepositoryImpl(remoteDataSource) }
-    private val getLatestFilmsUseCase by lazy { GetLatestFilmsUseCase(repository) }
-    private val viewModel: filmsViewModel by viewModels {
-        filmsViewModelFactory(getLatestFilmsUseCase)
-    }
+    @Inject
+    lateinit var retrofitInstance: FilmsAPI
+    @Inject
+    lateinit var remoteDataSource: RemoteDataSourceImpl
+    @Inject
+    lateinit var repository: FilmsRepositoryImpl
+    @Inject
+    lateinit var getLatestFilmsUseCase: GetLatestFilmsUseCase
+    private val viewModel: FilmsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.0.0"
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -47,6 +49,9 @@ android {
 }
 
 dependencies {
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    ksp("com.google.devtools.ksp:symbol-processing-api:2.1.10-1.0.31")
     implementation(libs.logging.interceptor)
     implementation(libs.converter.gson)
     implementation(libs.kotlinx.coroutines.core)
