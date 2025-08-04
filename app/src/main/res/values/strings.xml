@@ -5,4 +5,5 @@
     <string name="DetailScreen">Films detail page</string>
     <string name="MainScreen">Films</string>
     <string name="Search___">Search...</string>
+    <string name="ProfileTitle">Profile</string>
 </resources>

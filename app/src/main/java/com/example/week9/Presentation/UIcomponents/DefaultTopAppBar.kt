@@ -1,6 +1,7 @@
 package com.example.week9.Presentation.UIcomponents
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,17 +17,25 @@ import com.example.week9.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultTopAppBar(onSearchClicked: () -> Unit) {
+fun DefaultTopAppBar(
+    onSearchClicked: () -> Unit,
+    navigateToProfilePage: () -> Unit
+) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.MainScreen)) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.LightGray,
             titleContentColor = Color.Black,
-            actionIconContentColor = Color.White
+            actionIconContentColor = Color.Black
         ),
         navigationIcon = {
             IconButton(onClick = onSearchClicked) {
                 Icon(Icons.Default.Search, contentDescription = "SearchIcon")
+            }
+        },
+        actions = {
+            IconButton(onClick = navigateToProfilePage) {
+                Icon(Icons.Default.AccountCircle, contentDescription = "ProfileIcon")
             }
         }
     )

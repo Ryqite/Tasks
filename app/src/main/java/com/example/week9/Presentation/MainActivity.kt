@@ -16,11 +16,16 @@ import androidx.navigation.toRoute
 import com.example.week9.Data.DataSource.Remote.FilmsAPI
 import com.example.week9.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week9.Data.Repository.FilmsRepositoryImpl
-import com.example.week9.Domain.GetLatestFilmsUseCase
+import com.example.week9.Domain.Repository.ProfileParametersImpl
+import com.example.week9.Domain.UseCases.GetLatestFilmsUseCase
+import com.example.week9.Domain.UseCases.GetProfileDataUseCase
 import com.example.week9.Presentation.theme.week9Theme
 import com.example.week9.Presentation.Utils.NavigationScreens
 import com.example.week9.Presentation.Screens.DetailScreen
 import com.example.week9.Presentation.Screens.MainScreen
+import com.example.week9.Presentation.Screens.ProfileScreen
+import com.example.week9.Presentation.ViewModels.FilmsViewModel
+import com.example.week9.Presentation.ViewModels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -28,13 +33,22 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var retrofitInstance: FilmsAPI
+
     @Inject
     lateinit var remoteDataSource: RemoteDataSourceImpl
+
     @Inject
     lateinit var repository: FilmsRepositoryImpl
     @Inject
+    lateinit var profileRepository: ProfileParametersImpl
+
+    @Inject
+    lateinit var getProfileDataUseCase: GetProfileDataUseCase
+    @Inject
     lateinit var getLatestFilmsUseCase: GetLatestFilmsUseCase
+
     private val viewModel: FilmsViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,6 +56,7 @@ class MainActivity : ComponentActivity() {
             week9Theme {
                 val films by viewModel.latestfilms.collectAsState()
                 val searchQuery by viewModel.searchQuery.collectAsState()
+                val profileData by profileViewModel.profileData.collectAsState()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -54,21 +69,26 @@ class MainActivity : ComponentActivity() {
                                 navController
                                     .navigate(NavigationScreens.DetailScreen(id = itemId))
                             },
-                            onSearchQueryChanged = {query->
-                                viewModel.onSearchQueryChanged(query)},
+                            onSearchQueryChanged = { query ->
+                                viewModel.onSearchQueryChanged(query)
+                            },
                             searchQuery = searchQuery,
                             onCancelNewSearchFilms = {
                                 viewModel.cancelSearch()
-                            }
+                            },
+                            navigateToProfilePage = { navController.navigate(NavigationScreens.ProfileScreen) }
                         )
                     }
-                    composable<NavigationScreens.DetailScreen> { backStackEntry->
+                    composable<NavigationScreens.DetailScreen> { backStackEntry ->
                         val itemId: NavigationScreens.DetailScreen = backStackEntry.toRoute()
                         val certainFilms = films.find { it.kinopoiskId == itemId.id }
                         DetailScreen(
                             certainFilms = certainFilms,
                             navigateToMainScreen = { navController.popBackStack() }
                         )
+                    }
+                    composable<NavigationScreens.ProfileScreen> {
+                        ProfileScreen(data = profileData,backIcon = { navController.popBackStack() })
                     }
                 }
             }

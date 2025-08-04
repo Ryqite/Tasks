@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.week9.Presentation.FilmsItem
+import com.example.week9.Presentation.Data.FilmsItem
 import com.example.week9.R
 
 /**

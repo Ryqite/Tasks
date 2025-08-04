@@ -1,6 +1,7 @@
-package com.example.week9.Domain
+package com.example.week9.Domain.UseCases
 
-import kotlinx.coroutines.flow.Flow
+import com.example.week9.Domain.Data.Films
+import com.example.week9.Domain.FilmsRepository
 import javax.inject.Inject
 
 class GetLatestFilmsUseCase @Inject constructor(private val repository: FilmsRepository) {

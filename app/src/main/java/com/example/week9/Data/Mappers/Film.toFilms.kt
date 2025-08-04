@@ -1,7 +1,7 @@
 package com.example.week9.Data.Mappers
 
 import com.example.week9.Data.DTO.Film
-import com.example.week9.Domain.Films
+import com.example.week9.Domain.Data.Films
 
 /**
  * Функция для превращения объекта [Article] в объект [Films]

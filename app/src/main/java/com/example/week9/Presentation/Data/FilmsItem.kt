@@ -1,4 +1,4 @@
-package com.example.week9.Presentation
+package com.example.week9.Presentation.Data
 /**
  * Класс, представляющий новостную статью для отображения в UI
  * (аналог [films] в Domain слое)

@@ -1,10 +1,12 @@
-package com.example.week9.Presentation
+package com.example.week9.Presentation.ViewModels
 
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.week9.Domain.GetLatestFilmsUseCase
+import com.example.week9.Domain.UseCases.GetLatestFilmsUseCase
+import com.example.week9.Presentation.Data.FilmsItem
+import com.example.week9.Presentation.Mappers.toFilmsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
