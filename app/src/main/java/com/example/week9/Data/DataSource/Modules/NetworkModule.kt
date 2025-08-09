@@ -11,6 +11,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,10 +30,10 @@ abstract class DataSource {
     abstract fun bindRemoteDataSource(impl: RemoteDataSourceImpl): RemoteDataSource
 }
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 abstract class ProfileSource {
     @Binds
-    @Singleton
+    @ActivityRetainedScoped
     abstract fun bindProfileDataSource(impl: ProfileDataSourceImpl): ProfileDataSource
 }
 @Module

@@ -7,6 +7,7 @@ import com.example.week9.Presentation.Data.ProfileData
 import com.example.week9.Presentation.Mappers.toProfileData
 import com.example.week9.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
