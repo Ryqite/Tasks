@@ -5,11 +5,14 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,12 +32,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val products = mutableStateListOf<Product>()
             .apply { addAll(testProducts) }
-        val productsForBuy = mutableStateListOf<Product>()
+        val viewModel:BascetViewModel by viewModels()
         super.onCreate(savedInstanceState)
         appSharedPreferences = AppSharedPreferences(this)
         setAppLocale(this, appSharedPreferences.getLanguage())
         enableEdgeToEdge()
         setContent {
+            val productsForBuy by viewModel.products.collectAsState()
             val context = LocalContext.current
             var currentLanguage by remember { mutableStateOf(appSharedPreferences.getLanguage()) }
             val updatedContext = remember(currentLanguage) {
@@ -86,7 +90,7 @@ class MainActivity : ComponentActivity() {
                         DetailScreen(certainProduct,
                             addToBascket = {
                                 if (certainProduct != null) {
-                                    productsForBuy.add(certainProduct)
+                                    viewModel.addProduct(certainProduct)
                                 }
                             },
                             backIcon = {
@@ -105,7 +109,7 @@ class MainActivity : ComponentActivity() {
 
                         BasketScreen(productsForBuy,
                             deleteFromBasket = { productId ->
-                                productsForBuy.removeAll { it.id == productId }
+                                viewModel.removeFirstProductById(productId)
                             },
                             backIcon = {
                                 navController.popBackStack()
