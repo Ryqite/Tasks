@@ -44,7 +44,8 @@ class UITest {
                         },
                         onCancelNewSearchFilms = {},
                         onSearchQueryChanged = {},
-                        searchQuery = ""
+                        searchQuery = "",
+                        navigateToProfilePage = {}
                     )
                 }
                 composable<NavigationScreens.DetailScreen> { backStackEntry->

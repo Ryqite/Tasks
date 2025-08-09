@@ -14,9 +14,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.week9.Data.DataSource.Remote.FilmsAPI
+import com.example.week9.Data.DataSource.Remote.ProfileDataSourceImpl
 import com.example.week9.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week9.Data.Repository.FilmsRepositoryImpl
-import com.example.week9.Domain.Repository.ProfileParametersImpl
+import com.example.week9.Data.Repository.ProfileParametersImpl
 import com.example.week9.Domain.UseCases.GetLatestFilmsUseCase
 import com.example.week9.Domain.UseCases.GetProfileDataUseCase
 import com.example.week9.Presentation.theme.week9Theme
@@ -36,6 +37,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var remoteDataSource: RemoteDataSourceImpl
+    @Inject
+    lateinit var profileDataSource: ProfileDataSourceImpl
 
     @Inject
     lateinit var repository: FilmsRepositoryImpl

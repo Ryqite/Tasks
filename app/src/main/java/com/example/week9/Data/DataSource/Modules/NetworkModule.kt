@@ -1,5 +1,11 @@
-package com.example.week9.Data.DataSource.Remote
+package com.example.week9.Data.DataSource.Modules
 
+import com.example.week9.Data.DataSource.Remote.FilmsAPI
+import com.example.week9.Data.DataSource.Remote.ProfileDataSource
+import com.example.week9.Data.DataSource.Remote.ProfileDataSourceImpl
+import com.example.week9.Data.DataSource.Remote.RemoteDataSource
+import com.example.week9.Data.DataSource.Remote.RemoteDataSourceImpl
+import com.example.week9.Data.DataSource.Remote.RetryInterceptor
 import com.example.week9.Data.Utils.Constants.Companion.BASE_URL
 import dagger.Binds
 import dagger.Module
@@ -18,6 +24,13 @@ abstract class DataSource {
     @Binds
     @Singleton
     abstract fun bindRemoteDataSource(impl: RemoteDataSourceImpl): RemoteDataSource
+}
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class ProfileSource {
+    @Binds
+    @Singleton
+    abstract fun bindProfileDataSource(impl: ProfileDataSourceImpl): ProfileDataSource
 }
 @Module
 @InstallIn(SingletonComponent::class)
@@ -42,7 +55,7 @@ object NetworkModule {
     }
     @Provides
     @Singleton
-    fun provideFilmsAPI(retrofit: Retrofit): FilmsAPI{
+    fun provideFilmsAPI(retrofit: Retrofit): FilmsAPI {
         return retrofit.create(FilmsAPI::class.java)
     }
 }

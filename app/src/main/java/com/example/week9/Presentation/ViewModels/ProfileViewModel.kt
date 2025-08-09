@@ -6,10 +6,11 @@ import com.example.week9.Presentation.Data.FilmsItem
 import com.example.week9.Presentation.Data.ProfileData
 import com.example.week9.Presentation.Mappers.toProfileData
 import com.example.week9.R
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
-
+@HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getProfileDataUseCase: GetProfileDataUseCase
 ) : ViewModel() {
