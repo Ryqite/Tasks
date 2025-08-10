@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -73,14 +74,16 @@ fun ProfileScreen(
                 Text(
                     text = data.nickName,
                     textAlign = TextAlign.Center,
-                    fontSize = 30.sp
+                    fontSize = 30.sp,
+                    modifier = Modifier.testTag("Nickname")
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = data.fullName,
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                modifier = Modifier.testTag("FullName")
             )
         }
     }

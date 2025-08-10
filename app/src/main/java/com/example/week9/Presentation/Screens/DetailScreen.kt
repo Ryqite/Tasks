@@ -103,7 +103,7 @@ fun DetailScreen(
                                 text = it,
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = Color.Black,
-                                modifier = Modifier.testTag("RatingKinopoisk")
+                                modifier = Modifier.testTag("Description")
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
