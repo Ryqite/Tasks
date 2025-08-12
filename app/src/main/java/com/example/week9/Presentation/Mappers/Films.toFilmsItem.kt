@@ -1,6 +1,8 @@
-package com.example.week9.Presentation
+package com.example.week9.Presentation.Mappers
 
-import com.example.week9.Domain.Films
+import com.example.week9.Domain.Data.Films
+import com.example.week9.Presentation.Data.FilmsItem
+
 /**
  * Функция для превращения объекта [Films] в объект [FilmsItem]
  */

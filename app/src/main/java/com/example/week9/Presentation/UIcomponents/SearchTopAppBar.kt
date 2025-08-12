@@ -15,6 +15,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import com.example.week9.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +32,7 @@ fun SearchTopAppBar(
             TextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChanged,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("TextField"),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -37,7 +40,7 @@ fun SearchTopAppBar(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
-                placeholder = { Text("Поиск фильмов...") },
+                placeholder = { Text(text = stringResource(R.string.Search___)) },
                 singleLine = true
             )
         },
@@ -45,7 +48,7 @@ fun SearchTopAppBar(
             IconButton(onClick = onCloseSearch) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Закрыть поиск"
+                    contentDescription = "Arrow"
                 )
             }
         },
@@ -53,7 +56,7 @@ fun SearchTopAppBar(
             IconButton(onClick = onCancelNewSearchFilms) {
                 Icon(
                     Icons.Default.Clear,
-                    contentDescription = "Закрыть поиск"
+                    contentDescription = "Cross"
                 )
             }
         },

@@ -4,4 +4,5 @@
     <string name="DetailScreen">Страница деталей о фильме</string>
     <string name="MainScreen">Фильмы</string>
     <string name="Search___">Поиск...</string>
+    <string name="ProfileTitle">Профиль</string>
 </resources>

@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "2.0.0"
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("app.cash.paparazzi") version "1.3.1"
 }
 
 android {
@@ -25,6 +26,7 @@ android {
             load(rootProject.file("local.properties").inputStream())
         }
         buildConfigField("String", "API_KEY", localProperties.getProperty("API_KEY"))}
+
 
     buildTypes {
         release {
@@ -46,9 +48,26 @@ android {
         buildConfig = true
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
 }
 
 dependencies {
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    testImplementation("io.coil-kt:coil-compose:2.4.0")
+    testImplementation("io.coil-kt:coil-test:2.4.0")
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.ui)
+    testImplementation(libs.androidx.material3)
+    testImplementation("androidx.appcompat:appcompat:1.6.1")
+    testImplementation("com.google.android.material:material:1.12.0")
+    testImplementation("app.cash.paparazzi:paparazzi:1.3.1")
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("com.facebook.testing.screenshot:core:0.15.0")
     implementation("com.google.dagger:hilt-android:2.56.2")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
     ksp("com.google.devtools.ksp:symbol-processing-api:2.1.10-1.0.31")

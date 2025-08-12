@@ -1,4 +1,4 @@
-package com.example.week9.Domain
+package com.example.week9.Domain.Data
 
 /**
  * Класс, представляющий новостную статью

@@ -1,10 +1,20 @@
-package com.example.week9.Data.DataSource.Remote
+package com.example.week9.Data.DataSource.Modules
 
+import com.example.week9.Data.DataSource.Remote.FilmsAPI
+import com.example.week9.Data.DataSource.Remote.ProfileDataSource
+import com.example.week9.Data.DataSource.Remote.ProfileDataSourceImpl
+import com.example.week9.Data.DataSource.Remote.RemoteDataSource
+import com.example.week9.Data.DataSource.Remote.RemoteDataSourceImpl
+import com.example.week9.Data.DataSource.Remote.RetryInterceptor
 import com.example.week9.Data.Utils.Constants.Companion.BASE_URL
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,6 +28,13 @@ abstract class DataSource {
     @Binds
     @Singleton
     abstract fun bindRemoteDataSource(impl: RemoteDataSourceImpl): RemoteDataSource
+}
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+abstract class ProfileSource {
+    @Binds
+    @ActivityRetainedScoped
+    abstract fun bindProfileDataSource(impl: ProfileDataSourceImpl): ProfileDataSource
 }
 @Module
 @InstallIn(SingletonComponent::class)
@@ -42,7 +59,7 @@ object NetworkModule {
     }
     @Provides
     @Singleton
-    fun provideFilmsAPI(retrofit: Retrofit): FilmsAPI{
+    fun provideFilmsAPI(retrofit: Retrofit): FilmsAPI {
         return retrofit.create(FilmsAPI::class.java)
     }
 }
