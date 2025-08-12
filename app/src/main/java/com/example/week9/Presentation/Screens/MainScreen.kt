@@ -33,7 +33,8 @@ fun MainScreen(
     onSearchQueryChanged: (String) -> Unit,
     searchQuery: String,
     onCancelNewSearchFilms: () -> Unit,
-    navigateToProfilePage: ()-> Unit
+    navigateToProfilePage: ()-> Unit,
+
 ) {
     var showSearchField by remember { mutableStateOf(false) }
     Scaffold(
