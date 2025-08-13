@@ -34,7 +34,7 @@ import com.example.week12.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    certainBooks: BooksNetworkItem?,
+    certainBook: BooksNetworkItem?,
     navigateToMainScreen: () -> Unit
 ) {
     var backButtonEnabled by remember { mutableStateOf(true) }
@@ -75,7 +75,7 @@ fun DetailScreen(
             ) {
                 item {
                     AsyncImage(
-                        model = certainBooks?.image,
+                        model = certainBook?.image,
                         contentDescription = "PictureDetailScreen",
                         modifier = Modifier
                             .fillMaxWidth()
@@ -89,7 +89,7 @@ fun DetailScreen(
                             .padding(16.dp)
                             .fillMaxWidth()
                     ) {
-                        certainBooks?.title?.let {
+                        certainBook?.title?.let {
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.headlineMedium,
@@ -99,7 +99,7 @@ fun DetailScreen(
                                     .testTag("Title")
                             )
                         }
-                        certainBooks?.description?.let {
+                        certainBook?.description?.let {
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.bodyLarge,
@@ -113,7 +113,7 @@ fun DetailScreen(
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                 color = Color.Black
                             )
-                            certainBooks?.rating?.let {
+                            certainBook?.rating?.let {
                                 Text(
                                     text = it.toString(),
                                     style = MaterialTheme.typography.bodyLarge,
@@ -128,7 +128,7 @@ fun DetailScreen(
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                 color = Color.Black
                             )
-                            certainBooks?.publishedAt?.let {
+                            certainBook?.publishedAt?.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
@@ -179,7 +179,7 @@ fun DetailScreen(
                 item {
                     Row {
                         AsyncImage(
-                            model = certainBooks?.image,
+                            model = certainBook?.image,
                             contentDescription = "PictureDetailScreen",
                             modifier = Modifier
                                 .fillMaxWidth(0.5f)
@@ -193,7 +193,7 @@ fun DetailScreen(
                                 .padding(16.dp)
                                 .fillMaxWidth()
                         ) {
-                            certainBooks?.title?.let {
+                            certainBook?.title?.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.headlineMedium,
@@ -203,7 +203,7 @@ fun DetailScreen(
                                         .testTag("Title")
                                 )
                             }
-                            certainBooks?.description?.let {
+                            certainBook?.description?.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyLarge,
@@ -217,7 +217,7 @@ fun DetailScreen(
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                     color = Color.Black
                                 )
-                                certainBooks?.rating?.let {
+                                certainBook?.rating?.let {
                                     Text(
                                         text = it.toString(),
                                         style = MaterialTheme.typography.bodyLarge,
@@ -232,7 +232,7 @@ fun DetailScreen(
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                     color = Color.Black
                                 )
-                                certainBooks?.publishedAt?.let {
+                                certainBook?.publishedAt?.let {
                                     Text(
                                         text = it,
                                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),

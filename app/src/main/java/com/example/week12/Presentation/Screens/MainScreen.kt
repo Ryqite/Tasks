@@ -25,9 +25,8 @@ fun MainScreen(
     onSearchQueryChanged: (String) -> Unit,
     searchQuery: String,
     onCancelNewSearchBooks: () -> Unit,
-    navigateToProfilePage: ()-> Unit,
-
-    ) {
+    navigateToProfilePage: ()-> Unit
+) {
     var showSearchField by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
