@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">week12</string>
+    <string name="app_name" translatable="false">week12</string>
+    <string name="Rating">Rating: </string>
+    <string name="PublishedAt">Published at: </string>
+    <string name="DetailScreen">Books detail page</string>
+    <string name="MainScreen">Books</string>
+    <string name="Search___">Search...</string>
+    <string name="ProfileTitle">Profile</string>
 </resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="Rating">Рейтинг:</string>
+    <string name="PublishedAt">Опубликовано в: </string>
+    <string name="DetailScreen">Страница деталей о книге</string>
+    <string name="MainScreen">Книги</string>
+    <string name="Search___">Поиск...</string>
+    <string name="ProfileTitle">Профиль</string>
+</resources>
