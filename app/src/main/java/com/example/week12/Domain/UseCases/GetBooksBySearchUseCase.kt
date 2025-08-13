@@ -1,11 +1,11 @@
 package com.example.week12.Domain.UseCases
 
-import com.example.week12.Domain.BooksRepository
-import com.example.week12.Domain.Models.Books
+import com.example.week12.Domain.BooksNetworkRepository
+import com.example.week12.Domain.Models.BooksFromNetwork
 import javax.inject.Inject
 
-class GetBooksBySearchUseCase @Inject constructor( private val booksRepository: BooksRepository) {
-    suspend operator fun invoke(keyword: String): List<Books>{
-        return booksRepository.getBooksBySearch(keyword)
+class GetBooksBySearchUseCase @Inject constructor( private val booksNetworkRepository: BooksNetworkRepository) {
+    suspend operator fun invoke(keyword: String): List<BooksFromNetwork>{
+        return booksNetworkRepository.getBooksBySearch(keyword)
     }
 }

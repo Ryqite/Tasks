@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.week12.Domain.UseCases.GetBooksBySearchUseCase
-import com.example.week12.Presentation.Mappers.toBooksItem
-import com.example.week12.Presentation.Models.BooksItem
-import dagger.hilt.android.HiltAndroidApp
+import com.example.week12.Presentation.Mappers.toBooksNetworkItem
+import com.example.week12.Presentation.Models.BooksNetworkItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -24,8 +22,8 @@ import javax.inject.Inject
 class NetworkViewModel @Inject constructor(
     private val getBooksBySearchUseCase: GetBooksBySearchUseCase
 ) : ViewModel() {
-    private val _booksBySearch = MutableStateFlow<List<BooksItem>>(emptyList())
-    val booksBySearch: StateFlow<List<BooksItem>> = _booksBySearch
+    private val _booksBySearch = MutableStateFlow<List<BooksNetworkItem>>(emptyList())
+    val booksBySearch: StateFlow<List<BooksNetworkItem>> = _booksBySearch
 
     private val _searchQuery = MutableStateFlow("Romantic")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -57,7 +55,7 @@ class NetworkViewModel @Inject constructor(
     private fun loadBooksBySearch(query: String) {
         try {
             viewModelScope.launch {
-                _booksBySearch.value = getBooksBySearchUseCase(query).map { it.toBooksItem() }
+                _booksBySearch.value = getBooksBySearchUseCase(query).map { it.toBooksNetworkItem() }
             }
         } catch (e: Exception) {
             handleError(e)

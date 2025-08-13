@@ -1,6 +1,6 @@
 package com.example.week12.Data.DataSource.Remote
 
-import com.example.week12.Data.DTO.BooksResponse
+import com.example.week12.Data.Entity.DTO.BooksResponse
 import javax.inject.Inject
 
 class RemoteDataSourceImpl @Inject constructor(private val booksAPI: BooksAPI): RemoteDataSource {

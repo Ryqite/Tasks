@@ -4,9 +4,9 @@ import com.example.week12.Data.DataSource.Remote.BooksAPI
 import com.example.week12.Data.DataSource.Remote.RemoteDataSource
 import com.example.week12.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week12.Data.DataSource.Remote.RetryInterceptor
-import com.example.week12.Data.Repository.BooksRepositoryImpl
+import com.example.week12.Data.Repository.BooksNetworkRepositoryImpl
 import com.example.week12.Data.Utils.Constants.Companion.BASE_URL
-import com.example.week12.Domain.BooksRepository
+import com.example.week12.Domain.BooksNetworkRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -30,7 +30,7 @@ abstract class RemoteDataSource{
 abstract class BooksRepository{
     @Binds
     @Singleton
-    abstract fun bindBooksRepository(impl: BooksRepositoryImpl): BooksRepository
+    abstract fun bindBooksRepository(impl: BooksNetworkRepositoryImpl): BooksNetworkRepository
 }
 @Module
 @InstallIn(SingletonComponent::class)
