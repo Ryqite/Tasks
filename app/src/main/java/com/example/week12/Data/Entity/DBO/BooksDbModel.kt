@@ -15,7 +15,7 @@ data class BooksDbModel(
     @ColumnInfo(name = "imageLink")
     val image: String = "",
     @ColumnInfo(name = "rating")
-    val rating: Int = 0,
+    val rating: Double = 0.0,
     @ColumnInfo(name = "publishedDate")
     val publishedAt: String = "",
     @ColumnInfo(name = "Saved")

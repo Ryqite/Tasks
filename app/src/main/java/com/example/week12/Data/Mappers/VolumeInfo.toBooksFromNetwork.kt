@@ -7,6 +7,6 @@ fun VolumeInfo.toBooksFromNetwork(): BooksFromNetwork = BooksFromNetwork(
     title = title?:"",
     description = description?:"",
     image = imageLinks?.thumbnail?:"",
-    rating = ratingsCount?:0,
+    rating = ratingsCount?:0.0,
     publishedAt = publishedDate?:""
 )

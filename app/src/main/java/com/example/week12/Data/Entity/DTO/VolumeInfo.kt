@@ -19,7 +19,7 @@ data class VolumeInfo(
     val printType: String,
     val publishedDate: String?,
     val publisher: String,
-    val ratingsCount: Int?,
+    val ratingsCount: Double?,
     val readingModes: ReadingModes,
     val subtitle: String,
     val title: String?

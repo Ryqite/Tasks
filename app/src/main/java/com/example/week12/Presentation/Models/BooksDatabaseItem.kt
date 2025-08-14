@@ -5,7 +5,7 @@ data class BooksDatabaseItem(
     val title: String = "",
     val description: String = "",
     val image: String = "",
-    val rating: Int = 0,
+    val rating: Double = 0.0,
     val publishedAt: String = "",
     val isSaved: Boolean = false
 )

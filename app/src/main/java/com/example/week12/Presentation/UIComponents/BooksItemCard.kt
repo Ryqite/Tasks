@@ -41,7 +41,7 @@ fun BookItemCard(book: BooksNetworkItem, onFilmsItemClick: (String) -> Unit) {
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             AsyncImage(
-                model = book.image,
+                model = book.image.replace("http://", "https://"),
                 contentDescription = "ImageBooksItem",
                 modifier = Modifier
                     .size(160.dp, 90.dp)

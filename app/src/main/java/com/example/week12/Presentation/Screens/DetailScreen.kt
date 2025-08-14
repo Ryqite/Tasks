@@ -75,7 +75,7 @@ fun DetailScreen(
             ) {
                 item {
                     AsyncImage(
-                        model = certainBook?.image,
+                        model = certainBook?.image?.replace("http://", "https://"),
                         contentDescription = "PictureDetailScreen",
                         modifier = Modifier
                             .fillMaxWidth()
@@ -179,7 +179,7 @@ fun DetailScreen(
                 item {
                     Row {
                         AsyncImage(
-                            model = certainBook?.image,
+                            model = certainBook?.image?.replace("http://", "https://"),
                             contentDescription = "PictureDetailScreen",
                             modifier = Modifier
                                 .fillMaxWidth(0.5f)

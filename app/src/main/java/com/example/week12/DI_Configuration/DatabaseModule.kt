@@ -6,6 +6,8 @@ import com.example.week12.Data.DataSource.Local.BooksDao
 import com.example.week12.Data.DataSource.Local.BooksDatabase
 import com.example.week12.Data.DataSource.Local.LocalDataSource
 import com.example.week12.Data.DataSource.Local.LocalDataSourceImpl
+import com.example.week12.Data.Repository.BooksDatabaseRepositoryImpl
+import com.example.week12.Domain.BooksDatabaseRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,15 +25,23 @@ abstract class LocalDataSource{
 }
 @Module
 @InstallIn(SingletonComponent::class)
+abstract class DatabaseRepository{
+    @Binds
+    @Singleton
+    abstract fun bindDatabaseRepository(impl: BooksDatabaseRepositoryImpl): BooksDatabaseRepository
+}
+@Module
+@InstallIn(SingletonComponent::class)
 object DatabaseModule{
     @Provides
     @Singleton
-    fun provideBooksDatabase(application: BooksApplication): BooksDatabase{
+    fun provideBooksDatabase(@ApplicationContext context: Context): BooksDatabase{
         return Room.databaseBuilder(
-            application,
-            BooksDatabase::class.java,
-            "BooksDatabase"
-        ).build()
+                context,
+                BooksDatabase::class.java,
+                "BooksDatabase"
+            )
+            .build()
     }
     @Provides
     @Singleton
