@@ -1,0 +1,1 @@
+Что вам следует сделать для запуска проекта: 1. скопировать проект; 2. зайти в local.properties.example и скопировать строчку API_KEY в local.properties; 3. поменять значение API_KEY в local.properties на ваш API ключ
