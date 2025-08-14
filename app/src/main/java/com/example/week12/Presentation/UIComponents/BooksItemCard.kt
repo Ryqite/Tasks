@@ -26,11 +26,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Presentation.Models.BooksNetworkItem
 import com.example.week12.R
 
 @Composable
-fun BookItemCard(book: BooksNetworkItem, onFilmsItemClick: (String) -> Unit) {
+fun BookItemCard(
+    book: BooksNetworkItem,
+    onFilmsItemClick: (String) -> Unit,
+    theme: AppTheme
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,26 +54,35 @@ fun BookItemCard(book: BooksNetworkItem, onFilmsItemClick: (String) -> Unit) {
                     .clip(RoundedCornerShape(4.dp)),
                 contentScale = ContentScale.Crop
             )
-
             Column(modifier = Modifier.padding(start = 8.dp)) {
                 Text(
                     text = book.title,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    color = Color.LightGray
+                    color = when (theme) {
+                        AppTheme.DARK -> Color.LightGray
+                        AppTheme.LIGHT -> Color.DarkGray
+                    }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.Rating),
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = Color.LightGray
+                        color = when (theme) {
+                            AppTheme.DARK -> Color.LightGray
+                            AppTheme.LIGHT -> Color.DarkGray
+                        }
                     )
                     Text(
                         text = book.rating.toString(),
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.LightGray
+                        color = when (theme) {
+                            AppTheme.DARK -> Color.LightGray
+                            AppTheme.LIGHT -> Color.DarkGray
+                        }
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -76,12 +90,18 @@ fun BookItemCard(book: BooksNetworkItem, onFilmsItemClick: (String) -> Unit) {
                     Text(
                         text = stringResource(R.string.PublishedAt),
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = Color.LightGray
+                        color = when (theme) {
+                            AppTheme.DARK -> Color.LightGray
+                            AppTheme.LIGHT -> Color.DarkGray
+                        }
                     )
                     Text(
                         text = book.publishedAt,
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color.LightGray
+                        color = when (theme) {
+                            AppTheme.DARK -> Color.LightGray
+                            AppTheme.LIGHT -> Color.DarkGray
+                        }
                     )
                 }
             }

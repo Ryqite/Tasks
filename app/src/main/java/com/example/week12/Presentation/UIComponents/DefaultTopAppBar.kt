@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,15 +23,25 @@ import com.example.week12.R
 fun DefaultTopAppBar(
     onSearchClicked: () -> Unit,
     navigateToProfilePage: () -> Unit,
-    changeTheme: () -> Unit
+    changeTheme: () -> Unit,
+    theme: AppTheme
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.MainScreen),
             modifier = Modifier.testTag("Films")) },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Black,
-            titleContentColor = Color.White,
-            actionIconContentColor = Color.White
+            containerColor = when (theme) {
+                AppTheme.DARK -> Color.Black
+                AppTheme.LIGHT -> Color.LightGray
+            },
+            titleContentColor = when (theme) {
+                AppTheme.DARK -> Color.White
+                AppTheme.LIGHT -> Color.DarkGray
+            },
+            actionIconContentColor = when (theme) {
+                AppTheme.DARK -> Color.White
+                AppTheme.LIGHT -> Color.DarkGray
+            }
         ),
         navigationIcon = {
             IconButton(onClick = onSearchClicked) {
@@ -42,11 +53,7 @@ fun DefaultTopAppBar(
                 Icon(Icons.Default.AccountCircle, contentDescription = "ProfileIcon")
             }
             IconButton(onClick = changeTheme) {
-                Icon(
-                    Icons.Filled.Info,
-                    contentDescription = "themeIcon",
-                    tint = Color.White
-                )
+                Icon(Icons.Filled.Info, contentDescription = "themeIcon")
             }
         }
     )

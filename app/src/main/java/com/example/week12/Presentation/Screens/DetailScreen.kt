@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Presentation.Models.BooksNetworkItem
 import com.example.week12.R
 
@@ -36,7 +37,8 @@ import com.example.week12.R
 @Composable
 fun DetailScreen(
     certainBook: BooksNetworkItem?,
-    navigateToMainScreen: () -> Unit
+    navigateToMainScreen: () -> Unit,
+    theme: AppTheme
 ) {
     var backButtonEnabled by remember { mutableStateOf(true) }
     val configuration = LocalConfiguration.current
@@ -62,9 +64,18 @@ fun DetailScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Black,
-                        titleContentColor = Color.White,
-                        actionIconContentColor = Color.White
+                        containerColor =  when (theme) {
+                            AppTheme.DARK -> Color.Black
+                            AppTheme.LIGHT -> Color.LightGray
+                        },
+                        titleContentColor = when (theme) {
+                            AppTheme.DARK -> Color.White
+                            AppTheme.LIGHT -> Color.DarkGray
+                        },
+                        actionIconContentColor = when (theme) {
+                            AppTheme.DARK -> Color.Black
+                            AppTheme.LIGHT -> Color.DarkGray
+                        }
                     )
                 )
             },
@@ -87,7 +98,10 @@ fun DetailScreen(
 
                     Column(
                         modifier = Modifier
-                            .background(Color.DarkGray)
+                            .background(when (theme) {
+                                AppTheme.DARK -> Color.DarkGray
+                                AppTheme.LIGHT -> Color.LightGray
+                            })
                             .padding(16.dp)
                             .fillMaxWidth()
                     ) {
@@ -95,7 +109,10 @@ fun DetailScreen(
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.headlineMedium,
-                                color = Color.LightGray,
+                                color = when (theme) {
+                                    AppTheme.DARK -> Color.LightGray
+                                    AppTheme.LIGHT -> Color.DarkGray
+                                },
                                 modifier = Modifier
                                     .padding(bottom = 8.dp)
                                     .testTag("Title")
@@ -105,7 +122,10 @@ fun DetailScreen(
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Color.LightGray,
+                                color = when (theme) {
+                                    AppTheme.DARK -> Color.LightGray
+                                    AppTheme.LIGHT -> Color.DarkGray
+                                },
                                 modifier = Modifier.testTag("Description")
                             )
                         }
@@ -113,13 +133,19 @@ fun DetailScreen(
                             Text(
                                 text = stringResource(R.string.Rating),
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = Color.LightGray
+                                color = when (theme) {
+                                    AppTheme.DARK -> Color.LightGray
+                                    AppTheme.LIGHT -> Color.DarkGray
+                                }
                             )
                             certainBook?.rating?.let {
                                 Text(
                                     text = it.toString(),
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = Color.LightGray,
+                                    color = when (theme) {
+                                        AppTheme.DARK -> Color.LightGray
+                                        AppTheme.LIGHT -> Color.DarkGray
+                                    },
                                     modifier = Modifier.testTag("Rating")
                                 )
                             }
@@ -128,13 +154,19 @@ fun DetailScreen(
                             Text(
                                 text = stringResource(R.string.PublishedAt),
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = Color.LightGray
+                                color = when (theme) {
+                                    AppTheme.DARK -> Color.LightGray
+                                    AppTheme.LIGHT -> Color.DarkGray
+                                }
                             )
                             certainBook?.publishedAt?.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.LightGray,
+                                    color = when (theme) {
+                                        AppTheme.DARK -> Color.LightGray
+                                        AppTheme.LIGHT -> Color.DarkGray
+                                    },
                                     modifier = Modifier.testTag("PublishedAt")
                                 )
                             }
@@ -193,13 +225,20 @@ fun DetailScreen(
                         Column(
                             modifier = Modifier
                                 .padding(16.dp)
+                                .background(when (theme) {
+                                    AppTheme.DARK -> Color.DarkGray
+                                    AppTheme.LIGHT -> Color.LightGray
+                                })
                                 .fillMaxWidth()
                         ) {
                             certainBook?.title?.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.headlineMedium,
-                                    color = Color.Black,
+                                    color = when (theme) {
+                                        AppTheme.DARK -> Color.LightGray
+                                        AppTheme.LIGHT -> Color.DarkGray
+                                    },
                                     modifier = Modifier
                                         .padding(bottom = 8.dp)
                                         .testTag("Title")
@@ -209,7 +248,10 @@ fun DetailScreen(
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = Color.Black,
+                                    color = when (theme) {
+                                        AppTheme.DARK -> Color.LightGray
+                                        AppTheme.LIGHT -> Color.DarkGray
+                                    },
                                     modifier = Modifier.testTag("Description")
                                 )
                             }
@@ -217,13 +259,19 @@ fun DetailScreen(
                                 Text(
                                     text = stringResource(R.string.Rating),
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.Black
+                                    color = when (theme) {
+                                        AppTheme.DARK -> Color.LightGray
+                                        AppTheme.LIGHT -> Color.DarkGray
+                                    }
                                 )
                                 certainBook?.rating?.let {
                                     Text(
                                         text = it.toString(),
                                         style = MaterialTheme.typography.bodyLarge,
-                                        color = Color.Black,
+                                        color = when (theme) {
+                                            AppTheme.DARK -> Color.LightGray
+                                            AppTheme.LIGHT -> Color.DarkGray
+                                        },
                                         modifier = Modifier.testTag("Rating")
                                     )
                                 }
@@ -232,13 +280,19 @@ fun DetailScreen(
                                 Text(
                                     text = stringResource(R.string.PublishedAt),
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.Black
+                                    color = when (theme) {
+                                        AppTheme.DARK -> Color.LightGray
+                                        AppTheme.LIGHT -> Color.DarkGray
+                                    }
                                 )
                                 certainBook?.publishedAt?.let {
                                     Text(
                                         text = it,
                                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                                        color = Color.Black,
+                                        color = when (theme) {
+                                            AppTheme.DARK -> Color.LightGray
+                                            AppTheme.LIGHT -> Color.DarkGray
+                                        },
                                         modifier = Modifier.testTag("PublishedAt")
                                     )
                                 }

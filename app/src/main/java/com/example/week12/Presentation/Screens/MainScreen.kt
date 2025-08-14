@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Presentation.Models.BooksNetworkItem
 import com.example.week12.Presentation.UIComponents.DefaultTopAppBar
 import com.example.week12.Presentation.UIComponents.BookItemCard
@@ -26,7 +27,8 @@ fun MainScreen(
     searchQuery: String,
     onCancelNewSearchBooks: () -> Unit,
     navigateToProfilePage: ()-> Unit,
-    changeTheme: () -> Unit
+    changeTheme: () -> Unit,
+    theme: AppTheme
 ) {
     var showSearchField by remember { mutableStateOf(false) }
     Scaffold(
@@ -36,13 +38,15 @@ fun MainScreen(
                     searchQuery = searchQuery,
                     onSearchQueryChanged = onSearchQueryChanged,
                     onCloseSearch = { showSearchField = false },
-                    onCancelNewSearchFilms = onCancelNewSearchBooks
+                    onCancelNewSearchFilms = onCancelNewSearchBooks,
+                    theme = theme
                 )
             } else {
                 DefaultTopAppBar(
                     onSearchClicked = { showSearchField = true },
                     navigateToProfilePage = navigateToProfilePage,
-                    changeTheme = changeTheme
+                    changeTheme = changeTheme,
+                    theme = theme
                 )
             }
         },
@@ -57,7 +61,8 @@ fun MainScreen(
                         book = item,
                         onFilmsItemClick = { itemId ->
                             navigateToDetailScreen(itemId)
-                        })
+                        },
+                        theme = theme)
                 }
             }
         })

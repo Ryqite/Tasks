@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,7 +26,8 @@ fun SearchTopAppBar(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     onCloseSearch: () -> Unit,
-    onCancelNewSearchFilms: () -> Unit
+    onCancelNewSearchFilms: () -> Unit,
+    theme: AppTheme
 ) {
     TopAppBar(
         title = {
@@ -61,7 +63,10 @@ fun SearchTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Black
+            containerColor = when (theme) {
+                AppTheme.DARK -> Color.Black
+                AppTheme.LIGHT -> Color.LightGray
+            }
         )
     )
 }

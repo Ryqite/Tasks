@@ -119,7 +119,8 @@ class MainActivity : ComponentActivity() {
                             },
                             changeTheme = {
                                 settingsViewModel.changeAppTheme()
-                            }
+                            },
+                            theme = themeState
                         )
                     }
                     composable<NavigationScreens.DetailScreen> {navBackStackEntry ->
@@ -129,7 +130,8 @@ class MainActivity : ComponentActivity() {
                             certainBook = certainBook,
                             navigateToMainScreen = {
                                 navController.popBackStack()
-                            }
+                            },
+                            theme = themeState
                         )
                     }
                     composable<NavigationScreens.ProfileScreen> {
