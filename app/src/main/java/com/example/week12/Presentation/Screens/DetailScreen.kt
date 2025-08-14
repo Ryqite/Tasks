@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -198,9 +199,18 @@ fun DetailScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Black,
-                        titleContentColor = Color.White,
-                        actionIconContentColor = Color.White
+                        containerColor =  when (theme) {
+                            AppTheme.DARK -> Color.Black
+                            AppTheme.LIGHT -> Color.LightGray
+                        },
+                        titleContentColor = when (theme) {
+                            AppTheme.DARK -> Color.White
+                            AppTheme.LIGHT -> Color.DarkGray
+                        },
+                        actionIconContentColor = when (theme) {
+                            AppTheme.DARK -> Color.Black
+                            AppTheme.LIGHT -> Color.DarkGray
+                        }
                     )
                 )
             },

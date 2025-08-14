@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,7 +25,8 @@ fun DefaultTopAppBar(
     onSearchClicked: () -> Unit,
     navigateToProfilePage: () -> Unit,
     changeTheme: () -> Unit,
-    theme: AppTheme
+    theme: AppTheme,
+    changeLanguage: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.MainScreen),
@@ -54,6 +56,9 @@ fun DefaultTopAppBar(
             }
             IconButton(onClick = changeTheme) {
                 Icon(Icons.Filled.Info, contentDescription = "themeIcon")
+            }
+            IconButton(onClick = changeLanguage) {
+                Icon(Icons.Filled.Settings, contentDescription = "languageIcon")
             }
         }
     )

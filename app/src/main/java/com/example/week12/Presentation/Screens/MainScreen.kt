@@ -28,7 +28,8 @@ fun MainScreen(
     onCancelNewSearchBooks: () -> Unit,
     navigateToProfilePage: ()-> Unit,
     changeTheme: () -> Unit,
-    theme: AppTheme
+    theme: AppTheme,
+    changeLanguage: () -> Unit
 ) {
     var showSearchField by remember { mutableStateOf(false) }
     Scaffold(
@@ -46,7 +47,8 @@ fun MainScreen(
                     onSearchClicked = { showSearchField = true },
                     navigateToProfilePage = navigateToProfilePage,
                     changeTheme = changeTheme,
-                    theme = theme
+                    theme = theme,
+                    changeLanguage = changeLanguage
                 )
             }
         },

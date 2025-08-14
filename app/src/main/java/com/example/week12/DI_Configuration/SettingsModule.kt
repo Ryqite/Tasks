@@ -5,10 +5,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.week12.Data.DataSource.Local.AppDataStore
+import com.example.week12.Data.DataSource.Local.AppSharedPreferences
 import com.example.week12.Data.DataSource.Local.DataStoreSource
 import com.example.week12.Data.DataSource.Local.DataStoreSourceImpl
 import com.example.week12.Data.DataSource.Local.ProfileDataSource
 import com.example.week12.Data.DataSource.Local.ProfileDataSourceImpl
+import com.example.week12.Data.DataSource.Local.SharedPreferencesDataSource
+import com.example.week12.Data.DataSource.Local.SharedPreferencesDataSourceImpl
 import com.example.week12.Data.DataSource.Local.dataStore
 import com.example.week12.Data.Entity.Profile
 import com.example.week12.Data.Repository.ProfileRepositoryImpl
@@ -35,6 +38,13 @@ abstract class DataStoreSource {
 }
 @Module
 @InstallIn(SingletonComponent::class)
+abstract class SharedPreferencesDataSource {
+    @Binds
+    @Singleton
+    abstract fun bindSharedPreferencesDataSource(impl: SharedPreferencesDataSourceImpl): SharedPreferencesDataSource
+}
+@Module
+@InstallIn(SingletonComponent::class)
 abstract class SettingsRepositoryModule {
     @Binds
     @Singleton
@@ -52,5 +62,14 @@ object DataStoreModule {
     @Singleton
     fun provideAppDataStore(dataStore: DataStore<Preferences>): AppDataStore {
         return AppDataStore(dataStore)
+    }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+object SharedPreferencesModule {
+    @Provides
+    @Singleton
+    fun provideAppSharedPreferences(@ApplicationContext context: Context): AppSharedPreferences {
+        return AppSharedPreferences(context)
     }
 }

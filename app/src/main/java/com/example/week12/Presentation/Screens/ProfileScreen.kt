@@ -1,6 +1,7 @@
 package com.example.week12.Presentation.Screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -62,6 +63,7 @@ fun ProfileScreen(
         ) {
             Row(
                 Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -70,7 +72,6 @@ fun ProfileScreen(
                     contentDescription = "Avatar",
                     contentScale = ContentScale.Crop
                 )
-                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = data.nickName,
                     textAlign = TextAlign.Center,

@@ -4,8 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,6 +19,7 @@ import com.example.week12.Data.DataSource.Local.BooksDao
 import com.example.week12.Data.DataSource.Local.DataStoreSourceImpl
 import com.example.week12.Data.DataSource.Local.LocalDataSourceImpl
 import com.example.week12.Data.DataSource.Local.ProfileDataSourceImpl
+import com.example.week12.Data.DataSource.Local.SharedPreferencesDataSourceImpl
 import com.example.week12.Data.DataSource.Remote.BooksAPI
 import com.example.week12.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week12.Data.Repository.BooksDatabaseRepositoryImpl
@@ -25,8 +31,11 @@ import com.example.week12.Domain.UseCases.ChangeDarkThemeUseCase
 import com.example.week12.Domain.UseCases.DeleteBookUseCase
 import com.example.week12.Domain.UseCases.GetAllBooksUseCase
 import com.example.week12.Domain.UseCases.GetBooksBySearchUseCase
+import com.example.week12.Domain.UseCases.GetLanguageUseCase
 import com.example.week12.Domain.UseCases.GetProfileDataUseCase
 import com.example.week12.Domain.UseCases.InsertNewBookUseCase
+import com.example.week12.Domain.UseCases.SaveLanguageUseCase
+import com.example.week12.Domain.UseCases.SetAppLocaleUseCase
 import com.example.week12.Domain.UseCases.UpdateBookUseCase
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
@@ -42,10 +51,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var booksAPI: BooksAPI
-    @Inject
-    lateinit var booksDao: BooksDao
 
     @Inject
     lateinit var remoteDataSourceImpl: RemoteDataSourceImpl
@@ -55,6 +60,8 @@ class MainActivity : ComponentActivity() {
     lateinit var profileDataSource: ProfileDataSourceImpl
     @Inject
     lateinit var dataStoreSource: DataStoreSourceImpl
+    @Inject
+    lateinit var sharedPreferencesDataSourceImpl: SharedPreferencesDataSourceImpl
 
     @Inject
     lateinit var booksNetworkRepositoryImpl: BooksNetworkRepositoryImpl
@@ -79,6 +86,12 @@ class MainActivity : ComponentActivity() {
     lateinit var getProfileDataUseCase: GetProfileDataUseCase
     @Inject
     lateinit var changeDarkThemeUseCase: ChangeDarkThemeUseCase
+    @Inject
+    lateinit var getLanguageUseCase: GetLanguageUseCase
+    @Inject
+    lateinit var saveLanguageUseCase: SaveLanguageUseCase
+    @Inject
+    lateinit var setAppLocaleUseCase: SetAppLocaleUseCase
 
     private val networkViewModel: NetworkViewModel by viewModels()
     private val databaseViewModel: DatabaseViewModel by viewModels()
@@ -87,55 +100,73 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        settingsViewModel.setAppLocale(this,settingsViewModel.getLanguage())
         setContent {
-            val themeState by settingsViewModel.themeState.collectAsState(initial = AppTheme.DARK)
-            Week12Theme(darkTheme = when(themeState){
-                    AppTheme.DARK -> true
-                    AppTheme.LIGHT -> false
-            }) {
-                val books by networkViewModel.booksBySearch.collectAsState()
-                val searchQuery by networkViewModel.searchQuery.collectAsState()
-                val savedBooks by databaseViewModel.booksFromDb.collectAsState()
-                val profileData by profileViewModel.profileData.collectAsState()
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = NavigationScreens.MainScreen
-                ){
-                    composable<NavigationScreens.MainScreen> {
-                        MainScreen(
-                            books = books,
-                            navigateToDetailScreen = {itemId->
-                                navController.navigate(NavigationScreens.DetailScreen(id = itemId))
-                            },
-                            onSearchQueryChanged = {query->
-                                networkViewModel.onSearchQueryChanged(query)},
-                            searchQuery = searchQuery,
-                            onCancelNewSearchBooks = {
-                                networkViewModel.cancelCollector()
-                            },
-                            navigateToProfilePage = {
-                                navController.navigate(NavigationScreens.ProfileScreen)
-                            },
-                            changeTheme = {
-                                settingsViewModel.changeAppTheme()
-                            },
-                            theme = themeState
-                        )
+            val context = LocalContext.current
+            var currentLanguage by remember { mutableStateOf(settingsViewModel.getLanguage()) }
+            val updatedContext = remember(currentLanguage) {
+                settingsViewModel.setAppLocale(context, currentLanguage).also {
+                    settingsViewModel.saveLanguage(currentLanguage)
+                }
+            }
+            CompositionLocalProvider(LocalContext provides updatedContext) {
+                val themeState by settingsViewModel.themeState.collectAsState(initial = AppTheme.DARK)
+                Week12Theme(
+                    darkTheme = when (themeState) {
+                        AppTheme.DARK -> true
+                        AppTheme.LIGHT -> false
                     }
-                    composable<NavigationScreens.DetailScreen> {navBackStackEntry ->
-                        val bookId: NavigationScreens.DetailScreen = navBackStackEntry.toRoute()
-                        val certainBook = books.find { it.title == bookId.id }
-                        DetailScreen(
-                            certainBook = certainBook,
-                            navigateToMainScreen = {
-                                navController.popBackStack()
-                            },
-                            theme = themeState
-                        )
-                    }
-                    composable<NavigationScreens.ProfileScreen> {
-                        ProfileScreen(data = profileData,backIcon = { navController.popBackStack() })
+                ) {
+                    val books by networkViewModel.booksBySearch.collectAsState()
+                    val searchQuery by networkViewModel.searchQuery.collectAsState()
+                    val savedBooks by databaseViewModel.booksFromDb.collectAsState()
+                    val profileData by profileViewModel.profileData.collectAsState()
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = NavigationScreens.MainScreen
+                    ) {
+                        composable<NavigationScreens.MainScreen> {
+                            MainScreen(
+                                books = books,
+                                navigateToDetailScreen = { itemId ->
+                                    navController.navigate(NavigationScreens.DetailScreen(id = itemId))
+                                },
+                                onSearchQueryChanged = { query ->
+                                    networkViewModel.onSearchQueryChanged(query)
+                                },
+                                searchQuery = searchQuery,
+                                onCancelNewSearchBooks = {
+                                    networkViewModel.cancelCollector()
+                                },
+                                navigateToProfilePage = {
+                                    navController.navigate(NavigationScreens.ProfileScreen)
+                                },
+                                changeTheme = {
+                                    settingsViewModel.changeAppTheme()
+                                },
+                                theme = themeState,
+                                changeLanguage = {
+                                    currentLanguage = if(currentLanguage == "en") "ru" else "en"
+                                }
+                            )
+                        }
+                        composable<NavigationScreens.DetailScreen> { navBackStackEntry ->
+                            val bookId: NavigationScreens.DetailScreen = navBackStackEntry.toRoute()
+                            val certainBook = books.find { it.title == bookId.id }
+                            DetailScreen(
+                                certainBook = certainBook,
+                                navigateToMainScreen = {
+                                    navController.popBackStack()
+                                },
+                                theme = themeState
+                            )
+                        }
+                        composable<NavigationScreens.ProfileScreen> {
+                            ProfileScreen(
+                                data = profileData,
+                                backIcon = { navController.popBackStack() })
+                        }
                     }
                 }
             }
