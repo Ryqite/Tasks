@@ -2,6 +2,7 @@ package com.example.week12.Presentation.UIComponents
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,15 +21,16 @@ import com.example.week12.R
 @Composable
 fun DefaultTopAppBar(
     onSearchClicked: () -> Unit,
-    navigateToProfilePage: () -> Unit
+    navigateToProfilePage: () -> Unit,
+    changeTheme: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.MainScreen),
             modifier = Modifier.testTag("Films")) },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.LightGray,
-            titleContentColor = Color.Black,
-            actionIconContentColor = Color.Black
+            containerColor = Color.Black,
+            titleContentColor = Color.White,
+            actionIconContentColor = Color.White
         ),
         navigationIcon = {
             IconButton(onClick = onSearchClicked) {
@@ -38,6 +40,13 @@ fun DefaultTopAppBar(
         actions = {
             IconButton(onClick = navigateToProfilePage) {
                 Icon(Icons.Default.AccountCircle, contentDescription = "ProfileIcon")
+            }
+            IconButton(onClick = changeTheme) {
+                Icon(
+                    Icons.Filled.Info,
+                    contentDescription = "themeIcon",
+                    tint = Color.White
+                )
             }
         }
     )

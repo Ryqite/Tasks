@@ -2,6 +2,7 @@ package com.example.week12.Presentation.Screens
 
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -61,8 +62,8 @@ fun DetailScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.LightGray,
-                        titleContentColor = Color.Black,
+                        containerColor = Color.Black,
+                        titleContentColor = Color.White,
                         actionIconContentColor = Color.White
                     )
                 )
@@ -86,6 +87,7 @@ fun DetailScreen(
 
                     Column(
                         modifier = Modifier
+                            .background(Color.DarkGray)
                             .padding(16.dp)
                             .fillMaxWidth()
                     ) {
@@ -93,7 +95,7 @@ fun DetailScreen(
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.headlineMedium,
-                                color = Color.Black,
+                                color = Color.LightGray,
                                 modifier = Modifier
                                     .padding(bottom = 8.dp)
                                     .testTag("Title")
@@ -103,7 +105,7 @@ fun DetailScreen(
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Color.Black,
+                                color = Color.LightGray,
                                 modifier = Modifier.testTag("Description")
                             )
                         }
@@ -111,13 +113,13 @@ fun DetailScreen(
                             Text(
                                 text = stringResource(R.string.Rating),
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = Color.Black
+                                color = Color.LightGray
                             )
                             certainBook?.rating?.let {
                                 Text(
                                     text = it.toString(),
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = Color.Black,
+                                    color = Color.LightGray,
                                     modifier = Modifier.testTag("Rating")
                                 )
                             }
@@ -126,13 +128,13 @@ fun DetailScreen(
                             Text(
                                 text = stringResource(R.string.PublishedAt),
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = Color.Black
+                                color = Color.LightGray
                             )
                             certainBook?.publishedAt?.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.Black,
+                                    color = Color.LightGray,
                                     modifier = Modifier.testTag("PublishedAt")
                                 )
                             }
@@ -164,8 +166,8 @@ fun DetailScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.LightGray,
-                        titleContentColor = Color.Black,
+                        containerColor = Color.Black,
+                        titleContentColor = Color.White,
                         actionIconContentColor = Color.White
                     )
                 )

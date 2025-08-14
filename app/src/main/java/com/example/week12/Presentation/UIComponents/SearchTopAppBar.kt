@@ -61,7 +61,7 @@ fun SearchTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.LightGray
+            containerColor = Color.Black
         )
     )
 }

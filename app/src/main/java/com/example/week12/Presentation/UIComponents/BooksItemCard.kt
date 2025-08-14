@@ -1,5 +1,6 @@
 package com.example.week12.Presentation.UIComponents
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -55,19 +56,19 @@ fun BookItemCard(book: BooksNetworkItem, onFilmsItemClick: (String) -> Unit) {
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    color = Color.Black
+                    color = Color.LightGray
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.Rating),
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = Color.Black
+                        color = Color.LightGray
                     )
                     Text(
                         text = book.rating.toString(),
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Black
+                        color = Color.LightGray
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -75,12 +76,12 @@ fun BookItemCard(book: BooksNetworkItem, onFilmsItemClick: (String) -> Unit) {
                     Text(
                         text = stringResource(R.string.PublishedAt),
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = Color.Black
+                        color = Color.LightGray
                     )
                     Text(
                         text = book.publishedAt,
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color.Black
+                        color = Color.LightGray
                     )
                 }
             }
