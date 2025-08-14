@@ -5,13 +5,13 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TestNavigationBetweenScreens">
+      <SelectionState runConfigName="UITest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="testNavigationBetweenScreens()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testNavigationBetweenScreens() (1)">
+      <SelectionState runConfigName="E2ETest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

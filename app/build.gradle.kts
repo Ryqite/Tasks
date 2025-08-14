@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin") version "2.9.0"
+    id("kotlinx-serialization")
+    id("androidx.navigation.safeargs.kotlin") version "2.9.1"
 }
 
 android {
@@ -48,12 +49,23 @@ android {
             kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
         }
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+
+    testOptions {
+        animationsDisabled = true
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+
+        emulatorSnapshots {
+            maxSnapshotsForTestFailures = 0
+        }
     }
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation(libs.androidx.appcompat)
+    androidTestImplementation("androidx.test.services:test-services:1.5.0")
+    androidTestImplementation("androidx.test:core:1.5.0")
+    debugImplementation(libs.androidx.core)
     implementation(libs.androidx.navigation.safe.args.gradle.plugin)
     implementation(libs.coil.compose)
     implementation(libs.androidx.core.ktx)
