@@ -12,20 +12,25 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.week12.Data.DataSource.Local.BooksDao
 import com.example.week12.Data.DataSource.Local.LocalDataSourceImpl
+import com.example.week12.Data.DataSource.Local.ProfileDataSourceImpl
 import com.example.week12.Data.DataSource.Remote.BooksAPI
 import com.example.week12.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week12.Data.Repository.BooksDatabaseRepositoryImpl
 import com.example.week12.Data.Repository.BooksNetworkRepositoryImpl
+import com.example.week12.Data.Repository.ProfileRepositoryImpl
 import com.example.week12.Domain.UseCases.DeleteBookUseCase
 import com.example.week12.Domain.UseCases.GetAllBooksUseCase
 import com.example.week12.Domain.UseCases.GetBooksBySearchUseCase
+import com.example.week12.Domain.UseCases.GetProfileDataUseCase
 import com.example.week12.Domain.UseCases.InsertNewBookUseCase
 import com.example.week12.Domain.UseCases.UpdateBookUseCase
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
+import com.example.week12.Presentation.Screens.ProfileScreen
 import com.example.week12.Presentation.Utils.NavigationScreens
 import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 import com.example.week12.Presentation.ViewModels.NetworkViewModel
+import com.example.week12.Presentation.ViewModels.ProfileViewModel
 import com.example.week12.Presentation.theme.Week12Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,11 +46,15 @@ class MainActivity : ComponentActivity() {
     lateinit var remoteDataSourceImpl: RemoteDataSourceImpl
     @Inject
     lateinit var localDataSourceImpl: LocalDataSourceImpl
+    @Inject
+    lateinit var profileDataSource: ProfileDataSourceImpl
 
     @Inject
     lateinit var booksNetworkRepositoryImpl: BooksNetworkRepositoryImpl
     @Inject
     lateinit var booksDatabaseRepositoryImpl: BooksDatabaseRepositoryImpl
+    @Inject
+    lateinit var profileRepository: ProfileRepositoryImpl
 
     @Inject
     lateinit var getBooksBySearchUseCase: GetBooksBySearchUseCase
@@ -57,9 +66,12 @@ class MainActivity : ComponentActivity() {
     lateinit var deleteBookUseCase: DeleteBookUseCase
     @Inject
     lateinit var getAllBooksUseCase: GetAllBooksUseCase
+    @Inject
+    lateinit var getProfileDataUseCase: GetProfileDataUseCase
 
     private val networkViewModel: NetworkViewModel by viewModels()
     private val databaseViewModel: DatabaseViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +80,7 @@ class MainActivity : ComponentActivity() {
                 val books by networkViewModel.booksBySearch.collectAsState()
                 val searchQuery by networkViewModel.searchQuery.collectAsState()
                 val savedBooks by databaseViewModel.booksFromDb.collectAsState()
+                val profileData by profileViewModel.profileData.collectAsState()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -85,7 +98,9 @@ class MainActivity : ComponentActivity() {
                             onCancelNewSearchBooks = {
                                 networkViewModel.cancelCollector()
                             },
-                            navigateToProfilePage = {}
+                            navigateToProfilePage = {
+                                navController.navigate(NavigationScreens.ProfileScreen)
+                            }
                         )
                     }
                     composable<NavigationScreens.DetailScreen> {navBackStackEntry ->
@@ -97,6 +112,9 @@ class MainActivity : ComponentActivity() {
                                 navController.popBackStack()
                             }
                         )
+                    }
+                    composable<NavigationScreens.ProfileScreen> {
+                        ProfileScreen(data = profileData,backIcon = { navController.popBackStack() })
                     }
                 }
             }

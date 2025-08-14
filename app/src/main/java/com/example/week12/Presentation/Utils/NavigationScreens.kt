@@ -6,5 +6,7 @@ sealed class NavigationScreens {
     @Serializable
     object MainScreen
     @Serializable
+    object ProfileScreen
+    @Serializable
     data class DetailScreen(val id:String)
 }
