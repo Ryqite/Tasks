@@ -1,7 +1,7 @@
-package com.example.week7.Data
-
+package com.example.week7.Presentation
 /**
  * Класс, представляющий новостную статью для отображения в UI
+ * (аналог [News] в Domain слое)
  *
  * Все поля имеют значения по умолчанию (пустые строки),
  * поэтому экземпляр может быть создан без параметров.
@@ -11,7 +11,7 @@ package com.example.week7.Data
  *  @property source Источник новости (название издания/сайта).
  *  @property description Краткое описание новости.
  */
-data class News(
+data class NewsItem(
     val title: String = "",
     val imageURL: String = "",
     val source: String = "",

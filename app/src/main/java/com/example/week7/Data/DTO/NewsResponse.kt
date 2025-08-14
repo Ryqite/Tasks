@@ -1,4 +1,5 @@
-package com.example.week7.Data
+package com.example.week7.Data.DTO
+
 /**
  * Класс представляющий ответ из сетевого запроса
  * @property articles Список новостных статей [Article]

@@ -1,28 +1,28 @@
 package com.example.week7
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.week7.Data.News
 import androidx.compose.ui.test.*
-import com.example.week7.Navigation.NavigationScreens
-import com.example.week7.UIcomponents.DetailScreen
-import com.example.week7.UIcomponents.MainScreen
-import com.example.week7.ui.theme.Week7Theme
+import com.example.week7.Presentation.Utils.NavigationScreens
+import com.example.week7.Presentation.NewsItem
+import com.example.week7.Presentation.UIcomponents.DetailScreen
+import com.example.week7.Presentation.UIcomponents.MainScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class UITest {
-    val news = listOf(News("Котик",
+    val news = listOf(
+        NewsItem("Котик",
         "https://static.tildacdn.com/tild3639-3964-4634-b239-393833386638/54080808080.png",
         "https://terraria-calamity-mod.fandom.com/ru/wiki/Бездна#Советы",
-        "Котик любит играть"))
+        "Котик любит играть")
+    )
     @get:Rule
     val rule = createComposeRule()
 

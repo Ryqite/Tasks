@@ -1,4 +1,4 @@
-package com.example.week7.Data
+package com.example.week7.Data.DTO
 
 /**
  * Класс, представляющий новостную статью.

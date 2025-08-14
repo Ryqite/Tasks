@@ -1,24 +1,14 @@
-package com.example.week7.UIcomponents
+package com.example.week7.Presentation.UIcomponents
 
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.week7.Data.News
-import com.example.week7.NewsViewModel
+import com.example.week7.Domain.News
+import com.example.week7.Presentation.NewsItem
 
 /**
  * Главный экран приложения, отображающий список всех новостей
@@ -30,7 +20,7 @@ import com.example.week7.NewsViewModel
  */
 @Composable
 fun MainScreen(
-    news: List<News>,
+    news: List<NewsItem>,
     navigateToDetailScreen: (String) -> Unit
 ) {
     Scaffold { padding ->
@@ -40,7 +30,7 @@ fun MainScreen(
                 .fillMaxSize()
         ) {
             items(news) { item ->
-                NewsItem(
+                NewsItemCard(
                     news = item,
                     onNewsItemClick = { itemId ->
                         navigateToDetailScreen(itemId)

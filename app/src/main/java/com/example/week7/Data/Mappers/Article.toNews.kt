@@ -1,7 +1,7 @@
-package com.example.week7.Mappers
+package com.example.week7.Data.Mappers
 
-import com.example.week7.Data.Article
-import com.example.week7.Data.News
+import com.example.week7.Data.DTO.Article
+import com.example.week7.Domain.News
 
 /**
  * Функция для превращения объекта [Article] в объект [News]
