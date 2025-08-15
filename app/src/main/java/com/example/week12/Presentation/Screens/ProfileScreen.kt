@@ -20,6 +20,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -43,10 +47,18 @@ fun ProfileScreen(
     data: ProfileData,
     backIcon: () -> Unit
 ) {
+    var backButtonEnabled by remember { mutableStateOf(true) }
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = stringResource(id = R.string.ProfileTitle)) },
             navigationIcon = {
-                IconButton(onClick = backIcon) {
+                IconButton(onClick = {
+                    if (backButtonEnabled) {
+                        backButtonEnabled = false
+                        backIcon()
+                    }
+                },
+                    enabled = backButtonEnabled
+                ) {
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "BackFromProfile"

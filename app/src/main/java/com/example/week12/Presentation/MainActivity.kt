@@ -40,6 +40,7 @@ import com.example.week12.Domain.UseCases.UpdateBookUseCase
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
 import com.example.week12.Presentation.Screens.ProfileScreen
+import com.example.week12.Presentation.Screens.SavedScreen
 import com.example.week12.Presentation.Utils.NavigationScreens
 import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 import com.example.week12.Presentation.ViewModels.NetworkViewModel
@@ -148,6 +149,12 @@ class MainActivity : ComponentActivity() {
                                 theme = themeState,
                                 changeLanguage = {
                                     currentLanguage = if(currentLanguage == "en") "ru" else "en"
+                                },
+                                navigateToSavedScreen = {
+                                    navController.navigate(NavigationScreens.SavedScreen)
+                                },
+                                navigateToMainScreen = {
+                                    navController.navigate(NavigationScreens.MainScreen)
                                 }
                             )
                         }
@@ -166,6 +173,31 @@ class MainActivity : ComponentActivity() {
                             ProfileScreen(
                                 data = profileData,
                                 backIcon = { navController.popBackStack() })
+                        }
+                        composable<NavigationScreens.SavedScreen> {
+                            SavedScreen(
+                                savedBooks = savedBooks,
+                                navigateToDetailScreen = { itemId ->
+                                    navController.navigate(NavigationScreens.DetailScreen(id = itemId))
+                                },
+                                navigateToProfilePage = {
+                                    navController.navigate(NavigationScreens.ProfileScreen)
+                                },
+                                changeTheme = {
+                                    settingsViewModel.changeAppTheme()
+                                },
+                                theme = themeState,
+                                changeLanguage = {
+                                    currentLanguage = if(currentLanguage == "en") "ru" else "en"
+                                },
+                                back = { navController.popBackStack() },
+                                navigateToMainScreen = {
+                                    navController.navigate(NavigationScreens.MainScreen)
+                                },
+                                navigateToSavedScreen = {
+                                    navController.navigate(NavigationScreens.SavedScreen)
+                                }
+                            )
                         }
                     }
                 }

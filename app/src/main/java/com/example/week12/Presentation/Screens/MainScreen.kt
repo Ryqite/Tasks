@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Presentation.Models.BooksNetworkItem
+import com.example.week12.Presentation.UIComponents.AppBottomAppBar
 import com.example.week12.Presentation.UIComponents.DefaultTopAppBar
 import com.example.week12.Presentation.UIComponents.BookItemCard
 import com.example.week12.Presentation.UIComponents.SearchTopAppBar
@@ -27,6 +28,8 @@ fun MainScreen(
     searchQuery: String,
     onCancelNewSearchBooks: () -> Unit,
     navigateToProfilePage: ()-> Unit,
+    navigateToMainScreen:()->Unit,
+    navigateToSavedScreen:()->Unit,
     changeTheme: () -> Unit,
     theme: AppTheme,
     changeLanguage: () -> Unit
@@ -51,6 +54,13 @@ fun MainScreen(
                     changeLanguage = changeLanguage
                 )
             }
+        },
+        bottomBar = {
+            AppBottomAppBar(
+                theme = theme,
+                navigateToMainScreen = navigateToMainScreen,
+                navigateToSavedScreen = navigateToSavedScreen
+            )
         },
         content = { padding ->
             LazyColumn(

@@ -4,6 +4,7 @@
     <string name="PublishedAt">Published at: </string>
     <string name="DetailScreen">Books detail page</string>
     <string name="MainScreen">Books</string>
+    <string name="SavedScreen">Favourite books</string>
     <string name="Search___">Search...</string>
     <string name="ProfileTitle">Profile</string>
     <string name="ChangeTheme">Change app theme</string>

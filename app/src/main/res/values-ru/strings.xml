@@ -4,6 +4,7 @@
     <string name="DetailScreen">Страница деталей о книге</string>
     <string name="MainScreen">Книги</string>
     <string name="Search___">Поиск...</string>
+    <string name="SavedScreen">Избранные книги</string>
     <string name="ProfileTitle">Профиль</string>
     <string name="ChangeTheme">Поменять тему приложения</string>
     <string name="ChangeLanguage">Поменять язык приложения</string>
