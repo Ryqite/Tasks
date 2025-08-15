@@ -6,4 +6,6 @@
     <string name="MainScreen">Books</string>
     <string name="Search___">Search...</string>
     <string name="ProfileTitle">Profile</string>
+    <string name="ChangeTheme">Change app theme</string>
+    <string name="ChangeLanguage">Change app language</string>
 </resources>

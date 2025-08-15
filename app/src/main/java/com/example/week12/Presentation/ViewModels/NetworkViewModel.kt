@@ -37,7 +37,7 @@ class NetworkViewModel @Inject constructor(
     private fun startSearchCollector(){
         searchJob = viewModelScope.launch {
             _searchQuery
-                .debounce(2000)
+                .debounce(800)
                 .distinctUntilChanged()
                 .collect{query->
                     if(query.isNotEmpty()) loadBooksBySearch(query)

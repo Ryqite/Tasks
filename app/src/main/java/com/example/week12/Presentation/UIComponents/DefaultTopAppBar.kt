@@ -54,12 +54,7 @@ fun DefaultTopAppBar(
             IconButton(onClick = navigateToProfilePage) {
                 Icon(Icons.Default.AccountCircle, contentDescription = "ProfileIcon")
             }
-            IconButton(onClick = changeTheme) {
-                Icon(Icons.Filled.Info, contentDescription = "themeIcon")
-            }
-            IconButton(onClick = changeLanguage) {
-                Icon(Icons.Filled.Settings, contentDescription = "languageIcon")
-            }
+            TopAppBarMenu(changeTheme,changeLanguage)
         }
     )
 }
