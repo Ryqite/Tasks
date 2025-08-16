@@ -7,6 +7,7 @@ fun BooksNetworkItem.toBooksDatabaseItem(): BooksDatabaseItem = BooksDatabaseIte
     id = 0,
     title = title,
     description = description,
+    image = image,
     rating = rating,
     publishedAt = publishedAt,
     isSaved = true
