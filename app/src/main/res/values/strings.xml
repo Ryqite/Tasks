@@ -9,4 +9,5 @@
     <string name="ProfileTitle">Profile</string>
     <string name="ChangeTheme">Change app theme</string>
     <string name="ChangeLanguage">Change app language</string>
+    <string name="Save">Save book</string>
 </resources>

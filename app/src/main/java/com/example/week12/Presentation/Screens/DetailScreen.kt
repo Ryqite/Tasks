@@ -25,7 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.week12.Domain.Models.AppTheme
+import com.example.week12.Presentation.Mappers.toBooksDatabaseItem
+import com.example.week12.Presentation.Models.BooksDatabaseItem
 import com.example.week12.Presentation.Models.BooksNetworkItem
+import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 import com.example.week12.R
 
 /**
@@ -37,11 +40,13 @@ import com.example.week12.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
+    viewModel: DatabaseViewModel,
     certainBook: BooksNetworkItem?,
     navigateToMainScreen: () -> Unit,
     theme: AppTheme
 ) {
     var backButtonEnabled by remember { mutableStateOf(true) }
+    var saveButtonEnabled by remember { mutableStateOf(true) }
     val configuration = LocalConfiguration.current
     if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) {
         Scaffold(
@@ -65,7 +70,7 @@ fun DetailScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor =  when (theme) {
+                        containerColor = when (theme) {
                             AppTheme.DARK -> Color.Black
                             AppTheme.LIGHT -> Color.LightGray
                         },
@@ -99,10 +104,12 @@ fun DetailScreen(
 
                     Column(
                         modifier = Modifier
-                            .background(when (theme) {
-                                AppTheme.DARK -> Color.DarkGray
-                                AppTheme.LIGHT -> Color.LightGray
-                            })
+                            .background(
+                                when (theme) {
+                                    AppTheme.DARK -> Color.DarkGray
+                                    AppTheme.LIGHT -> Color.LightGray
+                                }
+                            )
                             .padding(16.dp)
                             .fillMaxWidth()
                     ) {
@@ -172,12 +179,36 @@ fun DetailScreen(
                                 )
                             }
                         }
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Button(
+                                modifier = Modifier.wrapContentSize(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = when (saveButtonEnabled) {
+                                        true -> Color(0xFFCDDC39)
+                                        false -> Color.DarkGray
+                                    }
+                                ),
+                                onClick = {
+                                    if (saveButtonEnabled) {
+                                        saveButtonEnabled = false
+                                        certainBook?.let { book ->
+                                            val dbItem = book.toBooksDatabaseItem()
+                                            viewModel.insertNewBook(dbItem)
+                                        }
+                                    }
+                                },
+                                enabled = saveButtonEnabled
+                            ) { Text(stringResource(R.string.Save)) }
+                        }
                     }
                 }
             }
         }
-    }
-    else{
+    } else {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
@@ -199,7 +230,7 @@ fun DetailScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor =  when (theme) {
+                        containerColor = when (theme) {
                             AppTheme.DARK -> Color.Black
                             AppTheme.LIGHT -> Color.LightGray
                         },
@@ -235,10 +266,12 @@ fun DetailScreen(
                         Column(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .background(when (theme) {
-                                    AppTheme.DARK -> Color.DarkGray
-                                    AppTheme.LIGHT -> Color.LightGray
-                                })
+                                .background(
+                                    when (theme) {
+                                        AppTheme.DARK -> Color.DarkGray
+                                        AppTheme.LIGHT -> Color.LightGray
+                                    }
+                                )
                                 .fillMaxWidth()
                         ) {
                             certainBook?.title?.let {
@@ -307,6 +340,31 @@ fun DetailScreen(
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Row(modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center) {
+                            Button(
+                                modifier = Modifier.wrapContentSize(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = when (saveButtonEnabled) {
+                                        true -> Color(0xFFCDDC39)
+                                        false -> Color.DarkGray
+                                    }
+                                ),
+                                onClick = {
+                                    if (saveButtonEnabled) {
+                                        saveButtonEnabled = false
+                                        certainBook?.let { book ->
+                                            val dbItem = book.toBooksDatabaseItem()
+                                            viewModel.insertNewBook(dbItem)
+                                        }
+                                    }
+                                },
+                                enabled = saveButtonEnabled
+                            ) {
+                                Text(text = stringResource(R.string.Save))
+                            }
+                        }
                         }
                     }
                 }

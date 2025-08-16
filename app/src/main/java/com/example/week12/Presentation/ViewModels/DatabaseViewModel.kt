@@ -33,18 +33,21 @@ class DatabaseViewModel @Inject constructor(
     fun insertNewBook(book: BooksDatabaseItem) {
         viewModelScope.launch {
             insertNewBookUseCase(book.toBooksFromDatabase())
+            getAllBooksFromDb()
         }
     }
 
     fun updateBook(book: BooksDatabaseItem) {
         viewModelScope.launch {
             updateBookUseCase(book.toBooksFromDatabase())
+            getAllBooksFromDb()
         }
     }
 
     fun deleteBook(book: BooksDatabaseItem) {
         viewModelScope.launch {
             deleteBookUseCase(book.toBooksFromDatabase())
+            getAllBooksFromDb()
         }
     }
 

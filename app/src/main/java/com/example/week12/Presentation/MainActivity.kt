@@ -166,7 +166,8 @@ class MainActivity : ComponentActivity() {
                                 navigateToMainScreen = {
                                     navController.popBackStack()
                                 },
-                                theme = themeState
+                                theme = themeState,
+                                viewModel = databaseViewModel
                             )
                         }
                         composable<NavigationScreens.ProfileScreen> {

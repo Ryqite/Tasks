@@ -8,4 +8,5 @@
     <string name="ProfileTitle">Профиль</string>
     <string name="ChangeTheme">Поменять тему приложения</string>
     <string name="ChangeLanguage">Поменять язык приложения</string>
+    <string name="Save">Сохранить текст</string>
 </resources>
