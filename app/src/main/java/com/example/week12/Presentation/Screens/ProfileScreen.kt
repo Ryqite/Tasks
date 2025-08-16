@@ -11,11 +11,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -47,57 +57,98 @@ fun ProfileScreen(
     data: ProfileData,
     backIcon: () -> Unit
 ) {
-    var backButtonEnabled by remember { mutableStateOf(true) }
-    Scaffold(topBar = {
-        TopAppBar(title = { Text(text = stringResource(id = R.string.ProfileTitle)) },
-            navigationIcon = {
-                IconButton(onClick = {
-                    if (backButtonEnabled) {
-                        backButtonEnabled = false
-                        backIcon()
-                    }
-                },
-                    enabled = backButtonEnabled
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "BackFromProfile"
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.ProfileTitle),
+                        style = MaterialTheme.typography.headlineSmall
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = backIcon) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "BackFromProfile"
+                        )
+                    }
                 }
-            })
-    }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+            // Аватар с тенью и обводкой
+            Card(
+                shape = CircleShape,
+                modifier = Modifier
+                    .size(150.dp)
+                    .padding(16.dp)
             ) {
                 Image(
-                    modifier = Modifier.size(200.dp),
                     painter = painterResource(id = data.img),
                     contentDescription = "Avatar",
-                    contentScale = ContentScale.Crop
-                )
-                Text(
-                    text = data.nickName,
-                    textAlign = TextAlign.Center,
-                    fontSize = 30.sp,
-                    modifier = Modifier.testTag("Nickname")
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+
+            // Никнейм с акцентом
+            Text(
+                text = data.nickName,
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .testTag("Nickname")
+            )
+
+            // Полное имя
             Text(
                 text = data.fullName,
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp,
-                modifier = Modifier.testTag("FullName")
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                modifier = Modifier
+                    .padding(bottom = 24.dp)
+                    .testTag("FullName")
+            )
+
+            // Разделительная линия
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
             )
         }
+    }
+}
+
+
+@Composable
+private fun InfoRow(icon: ImageVector, text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
