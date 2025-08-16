@@ -119,7 +119,6 @@ fun SavedBookItemCard(
                 modifier = Modifier.padding(end = 8.dp)
             ) {
                 Icon(Icons.Default.Delete, contentDescription = "DeleteIcon")
-
             }
         }
     }

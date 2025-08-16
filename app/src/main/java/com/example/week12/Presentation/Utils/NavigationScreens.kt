@@ -11,4 +11,6 @@ sealed class NavigationScreens {
     object SavedScreen
     @Serializable
     data class DetailScreen(val id:String)
+    @Serializable
+    data class DetailSavedScreen(val id:String)
 }

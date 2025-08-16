@@ -37,6 +37,7 @@ import com.example.week12.Domain.UseCases.InsertNewBookUseCase
 import com.example.week12.Domain.UseCases.SaveLanguageUseCase
 import com.example.week12.Domain.UseCases.SetAppLocaleUseCase
 import com.example.week12.Domain.UseCases.UpdateBookUseCase
+import com.example.week12.Presentation.Screens.DetailSavedScreen
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
 import com.example.week12.Presentation.Screens.ProfileScreen
@@ -170,6 +171,17 @@ class MainActivity : ComponentActivity() {
                                 viewModel = databaseViewModel
                             )
                         }
+                        composable<NavigationScreens.DetailSavedScreen> { navBackStackEntry ->
+                            val bookId: NavigationScreens.DetailScreen = navBackStackEntry.toRoute()
+                            val certainBook = savedBooks.find { it.title == bookId.id }
+                            DetailSavedScreen(
+                                certainBook = certainBook,
+                                navigateToMainScreen = {
+                                    navController.popBackStack()
+                                },
+                                theme = themeState,
+                            )
+                        }
                         composable<NavigationScreens.ProfileScreen> {
                             ProfileScreen(
                                 data = profileData,
@@ -179,7 +191,7 @@ class MainActivity : ComponentActivity() {
                             SavedScreen(
                                 savedBooks = savedBooks,
                                 navigateToDetailScreen = { itemId ->
-                                    navController.navigate(NavigationScreens.DetailScreen(id = itemId))
+                                    navController.navigate(NavigationScreens.DetailSavedScreen(id = itemId))
                                 },
                                 navigateToProfilePage = {
                                     navController.navigate(NavigationScreens.ProfileScreen)

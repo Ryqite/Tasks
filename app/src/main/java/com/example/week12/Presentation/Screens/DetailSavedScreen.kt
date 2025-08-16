@@ -1,6 +1,5 @@
 package com.example.week12.Presentation.Screens
 
-
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,8 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,10 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.week12.Domain.Models.AppTheme
-import com.example.week12.Presentation.Mappers.toBooksDatabaseItem
 import com.example.week12.Presentation.Models.BooksDatabaseItem
-import com.example.week12.Presentation.Models.BooksNetworkItem
-import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 import com.example.week12.R
 
 /**
@@ -40,15 +34,12 @@ import com.example.week12.R
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(
-    viewModel: DatabaseViewModel,
-    certainBook: BooksNetworkItem?,
+fun DetailSavedScreen(
+    certainBook: BooksDatabaseItem?,
     navigateToMainScreen: () -> Unit,
     theme: AppTheme
 ) {
     var backButtonEnabled by remember { mutableStateOf(true) }
-    val savedBooksIds by viewModel.savedBooksIds.collectAsState()
-    val isBookSaved = certainBook?.title?.let { it in savedBooksIds } ?: false
     val configuration = LocalConfiguration.current
     if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) {
         Scaffold(
@@ -180,29 +171,6 @@ fun DetailScreen(
                                     modifier = Modifier.testTag("PublishedAt")
                                 )
                             }
-                        }
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Button(
-                                modifier = Modifier.wrapContentSize(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = when (isBookSaved) {
-                                        true -> Color.DarkGray
-                                        false -> Color(0xFFCDDC39)
-                                    }
-                                ),
-                                onClick = {
-                                    if (!isBookSaved) {
-                                        certainBook?.let { book ->
-                                            viewModel.insertNewBook(book.toBooksDatabaseItem())
-                                        }
-                                    }
-                                },
-                                enabled = !isBookSaved
-                            ) { Text(stringResource(R.string.Save)) }
                         }
                     }
                 }
@@ -340,29 +308,6 @@ fun DetailScreen(
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Row(modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center) {
-                            Button(
-                                modifier = Modifier.wrapContentSize(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = when (isBookSaved) {
-                                        true -> Color.DarkGray
-                                        false -> Color(0xFFCDDC39)
-                                    }
-                                ),
-                                onClick = {
-                                    if (!isBookSaved) {
-                                        certainBook?.let { book ->
-                                            viewModel.insertNewBook(book.toBooksDatabaseItem())
-                                        }
-                                    }
-                                },
-                                enabled = !isBookSaved
-                            ) {
-                                Text(text = stringResource(R.string.Save))
-                            }
-                        }
                         }
                     }
                 }

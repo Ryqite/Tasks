@@ -25,7 +25,8 @@ class DatabaseViewModel @Inject constructor(
 ) : ViewModel() {
     private val _booksFromDb = MutableStateFlow<List<BooksDatabaseItem>>(emptyList())
     val booksFromDb: StateFlow<List<BooksDatabaseItem>> = _booksFromDb
-
+    private val _savedBooksIds = MutableStateFlow<Set<String>>(emptySet())
+    val savedBooksIds: StateFlow<Set<String>> = _savedBooksIds
     init {
         getAllBooksFromDb()
     }
@@ -34,6 +35,7 @@ class DatabaseViewModel @Inject constructor(
         viewModelScope.launch {
             insertNewBookUseCase(book.toBooksFromDatabase())
             getAllBooksFromDb()
+            _savedBooksIds.value += book.title
         }
     }
 
@@ -48,12 +50,14 @@ class DatabaseViewModel @Inject constructor(
         viewModelScope.launch {
             deleteBookUseCase(book.toBooksFromDatabase())
             getAllBooksFromDb()
+            _savedBooksIds.value -= book.title
         }
     }
 
     private fun getAllBooksFromDb() {
         viewModelScope.launch {
             _booksFromDb.value = getAllBooksUseCase().map { it.toBooksDatabaseItem() }
+            _savedBooksIds.value = _booksFromDb.value.map { it.title }.toSet()
         }
     }
 }
