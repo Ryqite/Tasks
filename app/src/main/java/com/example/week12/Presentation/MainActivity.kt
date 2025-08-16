@@ -197,7 +197,8 @@ class MainActivity : ComponentActivity() {
                                 },
                                 navigateToSavedScreen = {
                                     navController.navigate(NavigationScreens.SavedScreen)
-                                }
+                                },
+                                viewModel = databaseViewModel
                             )
                         }
                     }

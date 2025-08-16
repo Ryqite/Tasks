@@ -13,11 +13,13 @@ import com.example.week12.Presentation.Models.BooksDatabaseItem
 import com.example.week12.Presentation.UIComponents.AppBottomAppBar
 import com.example.week12.Presentation.UIComponents.SavedBookItemCard
 import com.example.week12.Presentation.UIComponents.SavedScreenTopAppBar
+import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 
 
 @Composable
 fun SavedScreen(
     back: () -> Unit,
+    viewModel: DatabaseViewModel,
     savedBooks: List<BooksDatabaseItem>,
     navigateToDetailScreen: (String) -> Unit,
     navigateToMainScreen:()->Unit,
@@ -56,7 +58,8 @@ fun SavedScreen(
                         onFilmsItemClick = { itemId ->
                             navigateToDetailScreen(itemId)
                         },
-                        theme = theme
+                        theme = theme,
+                        viewModel = viewModel
                     )
                 }
             }
