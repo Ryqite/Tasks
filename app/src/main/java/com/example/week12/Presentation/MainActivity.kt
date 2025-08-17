@@ -184,8 +184,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<NavigationScreens.ProfileScreen> {
                             ProfileScreen(
-                                data = profileData,
-                                backIcon = { navController.popBackStack() })
+                                backIcon = { navController.popBackStack() },
+                                viewModel = databaseViewModel
+                            )
                         }
                         composable<NavigationScreens.SavedScreen> {
                             SavedScreen(

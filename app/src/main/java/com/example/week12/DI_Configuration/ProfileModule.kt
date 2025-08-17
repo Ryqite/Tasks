@@ -2,7 +2,7 @@ package com.example.week12.DI_Configuration
 
 import com.example.week12.Data.DataSource.Local.ProfileDataSource
 import com.example.week12.Data.DataSource.Local.ProfileDataSourceImpl
-import com.example.week12.Data.Entity.Profile
+import com.example.week12.Data.Entity.DBO.Profile
 import com.example.week12.Data.Repository.ProfileRepositoryImpl
 import com.example.week12.Domain.ProfileRepository
 import dagger.Binds

@@ -1,6 +1,7 @@
 package com.example.week12.Data.DataSource.Local
 
 import com.example.week12.Data.Entity.DBO.BooksDbModel
+import com.example.week12.Data.Entity.DBO.Profile
 import com.example.week12.Domain.Models.BooksFromNetwork
 import kotlinx.coroutines.flow.Flow
 
@@ -14,4 +15,7 @@ interface LocalDataSource {
 
     suspend fun getAllBooks(): List<BooksDbModel>
 
+    suspend fun insertNewUser(user: Profile)
+
+    suspend fun getAllUsers(): List<Profile>
 }

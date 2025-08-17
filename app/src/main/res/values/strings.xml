@@ -10,4 +10,7 @@
     <string name="ChangeTheme">Change app theme</string>
     <string name="ChangeLanguage">Change app language</string>
     <string name="Save">Save book</string>
+    <string name="CreateProfile">Create Profile</string>
+    <string name="LoginProfile">Login Profile</string>
+    <string name="NotAuthenticated">You are not authenticated</string>
 </resources>

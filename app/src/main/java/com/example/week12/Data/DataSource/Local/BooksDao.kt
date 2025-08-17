@@ -6,8 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.week12.Data.Entity.DBO.BooksDbModel
-import com.example.week12.Domain.Models.BooksFromNetwork
-import kotlinx.coroutines.flow.Flow
+import com.example.week12.Data.Entity.DBO.Profile
 
 @Dao
 interface BooksDao {
@@ -19,4 +18,8 @@ interface BooksDao {
     suspend fun deleteBook(book: BooksDbModel)
     @Query("SELECT * FROM Books")
     suspend fun getAllBooks(): List<BooksDbModel>
+    @Insert
+    suspend fun insertNewUser(user: Profile)
+    @Query("SELECT * FROM Users")
+    suspend fun getAllUsers(): List<Profile>
 }
