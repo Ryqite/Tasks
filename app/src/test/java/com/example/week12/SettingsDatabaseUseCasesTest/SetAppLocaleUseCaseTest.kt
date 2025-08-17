@@ -1,4 +1,4 @@
-package com.example.week12.UseCaseTest.SettingsDatabaseUseCasesTest
+package com.example.week12.SettingsDatabaseUseCasesTest
 
 import android.content.Context
 import com.example.week12.Domain.SettingsRepository
