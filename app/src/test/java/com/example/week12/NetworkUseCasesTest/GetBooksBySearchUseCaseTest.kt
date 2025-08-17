@@ -1,10 +1,8 @@
-package com.example.week12.UseCaseTest
+package com.example.week12.NetworkUseCasesTest
 
 import com.example.week12.Domain.BooksNetworkRepository
 import com.example.week12.Domain.Models.BooksFromNetwork
-import com.example.week12.Domain.SettingsRepository
 import com.example.week12.Domain.UseCases.GetBooksBySearchUseCase
-import com.example.week12.Domain.UseCases.SetAppLocaleUseCase
 import io.mockk.coEvery
 import org.junit.Assert.*
 import io.mockk.coVerify

@@ -1,4 +1,4 @@
-package com.example.week12.UseCaseTest.SettingsDatabaseUseCasesTest
+package com.example.week12.SettingsDatabaseUseCasesTest
 
 import com.example.week12.Domain.BooksDatabaseRepository
 import com.example.week12.Domain.SettingsRepository

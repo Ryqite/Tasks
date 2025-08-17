@@ -1,20 +1,22 @@
-package com.example.week12.UseCaseTest.BookDatabaseUseCasesTest
+package com.example.week12.BookDatabaseUseCasesTest
 
 import com.example.week12.Domain.BooksDatabaseRepository
 import com.example.week12.Domain.Models.BooksFromDatabase
 import com.example.week12.Domain.UseCases.InsertNewBookUseCase
+import com.example.week12.Domain.UseCases.UpdateBookUseCase
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class InsertNewBookUseCaseTest {
+class UpdateBookUseCaseTest {
     private val repository = mockk<BooksDatabaseRepository>(relaxed = true)
-    private val insertNewBookUseCaseTest = InsertNewBookUseCase(repository)
+    private val updateBookUseCaseTest = UpdateBookUseCase(repository)
     @Test
-    fun `insertNewBookUseCase should call insertNewBook from repository`() = runTest{
+    fun `updateBookUseCase should call updateBook from repository`() = runTest{
         val testBook = BooksFromDatabase()
-        insertNewBookUseCaseTest(testBook)
-        coVerify(exactly = 1) { repository.insertNewBook(testBook) }
+        updateBookUseCaseTest(testBook)
+        coVerify(exactly = 1) { repository.updateBook(testBook) }
     }
 }

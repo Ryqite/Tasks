@@ -81,6 +81,8 @@ dependencies {
     //Testing
     testImplementation("io.mockk:mockk:1.13.10")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    androidTestImplementation("io.mockk:mockk-android:1.13.8")
+    testImplementation("io.mockk:mockk-agent-jvm:1.13.10")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
