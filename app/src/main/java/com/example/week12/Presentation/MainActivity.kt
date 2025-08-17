@@ -18,22 +18,21 @@ import androidx.navigation.toRoute
 import com.example.week12.Data.DataSource.Local.BooksDao
 import com.example.week12.Data.DataSource.Local.DataStoreSourceImpl
 import com.example.week12.Data.DataSource.Local.LocalDataSourceImpl
-import com.example.week12.Data.DataSource.Local.ProfileDataSourceImpl
 import com.example.week12.Data.DataSource.Local.SharedPreferencesDataSourceImpl
 import com.example.week12.Data.DataSource.Remote.BooksAPI
 import com.example.week12.Data.DataSource.Remote.RemoteDataSourceImpl
 import com.example.week12.Data.Repository.BooksDatabaseRepositoryImpl
 import com.example.week12.Data.Repository.BooksNetworkRepositoryImpl
-import com.example.week12.Data.Repository.ProfileRepositoryImpl
 import com.example.week12.Data.Repository.SettingsRepositoryImpl
 import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Domain.UseCases.ChangeDarkThemeUseCase
 import com.example.week12.Domain.UseCases.DeleteBookUseCase
 import com.example.week12.Domain.UseCases.GetAllBooksUseCase
+import com.example.week12.Domain.UseCases.GetAllUsersUseCase
 import com.example.week12.Domain.UseCases.GetBooksBySearchUseCase
 import com.example.week12.Domain.UseCases.GetLanguageUseCase
-import com.example.week12.Domain.UseCases.GetProfileDataUseCase
 import com.example.week12.Domain.UseCases.InsertNewBookUseCase
+import com.example.week12.Domain.UseCases.InsertNewUserUseCase
 import com.example.week12.Domain.UseCases.SaveLanguageUseCase
 import com.example.week12.Domain.UseCases.SetAppLocaleUseCase
 import com.example.week12.Domain.UseCases.UpdateBookUseCase
@@ -45,7 +44,6 @@ import com.example.week12.Presentation.Screens.SavedScreen
 import com.example.week12.Presentation.Utils.NavigationScreens
 import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 import com.example.week12.Presentation.ViewModels.NetworkViewModel
-import com.example.week12.Presentation.ViewModels.ProfileViewModel
 import com.example.week12.Presentation.ViewModels.SettingsViewModel
 import com.example.week12.Presentation.theme.Week12Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,8 +57,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var localDataSourceImpl: LocalDataSourceImpl
     @Inject
-    lateinit var profileDataSource: ProfileDataSourceImpl
-    @Inject
     lateinit var dataStoreSource: DataStoreSourceImpl
     @Inject
     lateinit var sharedPreferencesDataSourceImpl: SharedPreferencesDataSourceImpl
@@ -69,8 +65,6 @@ class MainActivity : ComponentActivity() {
     lateinit var booksNetworkRepositoryImpl: BooksNetworkRepositoryImpl
     @Inject
     lateinit var booksDatabaseRepositoryImpl: BooksDatabaseRepositoryImpl
-    @Inject
-    lateinit var profileRepository: ProfileRepositoryImpl
     @Inject
     lateinit var settingsRepositoryImpl: SettingsRepositoryImpl
 
@@ -85,7 +79,10 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var getAllBooksUseCase: GetAllBooksUseCase
     @Inject
-    lateinit var getProfileDataUseCase: GetProfileDataUseCase
+    lateinit var insertNewUserUseCase: InsertNewUserUseCase
+    @Inject
+    lateinit var getAllUsersUseCase: GetAllUsersUseCase
+
     @Inject
     lateinit var changeDarkThemeUseCase: ChangeDarkThemeUseCase
     @Inject
@@ -97,7 +94,6 @@ class MainActivity : ComponentActivity() {
 
     private val networkViewModel: NetworkViewModel by viewModels()
     private val databaseViewModel: DatabaseViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +118,6 @@ class MainActivity : ComponentActivity() {
                     val books by networkViewModel.booksBySearch.collectAsState()
                     val searchQuery by networkViewModel.searchQuery.collectAsState()
                     val savedBooks by databaseViewModel.booksFromDb.collectAsState()
-                    val profileData by profileViewModel.profileData.collectAsState()
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,

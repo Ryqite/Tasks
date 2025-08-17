@@ -78,6 +78,9 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.9.3")
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.7")
+    //Testing
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
