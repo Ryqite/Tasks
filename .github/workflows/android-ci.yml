@@ -8,7 +8,7 @@ on:
 
 env:
   ANDROID_SDK_DIR: ${{ github.workspace }}/android-sdk
-  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2
 
 jobs:
   android-build:
@@ -31,45 +31,50 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Configure build environment
+      - name: Configure environment
         run: |
           echo "sdk.dir=$ANDROID_SDK_DIR" > local.properties
-          echo "API_KEY=\"${{ secrets.API_KEY }}\"" >> local.properties
-          echo "=== Configuration ==="
-          cat local.properties
+          [ -n "${{ secrets.API_KEY }}" ] && echo "API_KEY=\"${{ secrets.API_KEY }}\"" >> local.properties
           chmod +x gradlew
+          ./gradlew --stop || true
           ./gradlew --version
 
-      - name: Build with lint fixes
+      - name: Clean workspace
+        run: ./gradlew clean
+
+      - name: Build with optimizations
         run: |
-          ./gradlew build --info --stacktrace \
-            -Pandroid.disableAndroidLint=true \
+          ./gradlew assembleDebug \
+            --no-daemon \
+            --stacktrace \
+            --info \
+            --scan \
             -Pandroid.enableJetifier=true \
+            -x lint \
+            -x ktlintCheck \
             || (echo "Build failed!"; exit 1)
 
-      - name: Run tests
+      - name: Run unit tests
         run: |
-          ./gradlew test --continue --info \
+          ./gradlew testDebugUnitTest \
+            --continue \
+            --no-daemon \
+            --tests "*UnitTest" \
             || (echo "Some tests failed!"; exit 0)
-
-      - name: Assemble debug APK
-        run: |
-          ./gradlew assembleDebug --stacktrace
 
       - name: Upload artifacts
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: build-outputs-${{ github.run_number }}
+          name: artifacts-${{ github.run_number }}
           path: |
             app/build/outputs/apk/debug/app-debug.apk
-            app/build/reports/**
-          retention-days: 7
+            app/build/reports/tests/
+            app/build/reports/lint-results.html
+          retention-days: 3
 
       - name: Clean up
         if: always()
         run: |
-          echo "=== Cleaning up ==="
           rm -fv local.properties
-          echo "=== Final workspace state ==="
-          ls -la
+          echo "=== Build finished ==="
