@@ -1,6 +1,7 @@
 package com.example.week12.Data.DataSource.Local
 
 import com.example.week12.Data.Entity.DBO.BooksDbModel
+import com.example.week12.Data.Entity.DBO.Profile
 import com.example.week12.Domain.Models.BooksFromNetwork
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -20,5 +21,13 @@ class LocalDataSourceImpl @Inject constructor(private val booksDao: BooksDao): L
 
     override suspend fun getAllBooks(): List<BooksDbModel> {
         return booksDao.getAllBooks()
+    }
+
+    override suspend fun insertNewUser(user: Profile) {
+        booksDao.insertNewUser(user)
+    }
+
+    override suspend fun getAllUsers(): List<Profile> {
+        return booksDao.getAllUsers()
     }
 }

@@ -2,6 +2,8 @@ package com.example.week12.DI_Configuration
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.week12.Data.DataSource.Local.BooksDao
 import com.example.week12.Data.DataSource.Local.BooksDatabase
 import com.example.week12.Data.DataSource.Local.LocalDataSource
@@ -33,6 +35,18 @@ abstract class DatabaseRepository{
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule{
+    val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("""
+            CREATE TABLE IF NOT EXISTS Users (
+                image TEXT NOT NULL,
+                nickname TEXT NOT NULL PRIMARY KEY,
+                fullName TEXT NOT NULL,
+                password TEXT NOT NULL
+            )
+        """)
+        }
+    }
     @Provides
     @Singleton
     fun provideBooksDatabase(@ApplicationContext context: Context): BooksDatabase{
@@ -41,6 +55,7 @@ object DatabaseModule{
                 BooksDatabase::class.java,
                 "BooksDatabase"
             )
+            .addMigrations(MIGRATION_1_2)
             .build()
     }
     @Provides

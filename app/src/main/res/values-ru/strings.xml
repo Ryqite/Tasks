@@ -9,4 +9,7 @@
     <string name="ChangeTheme">Поменять тему приложения</string>
     <string name="ChangeLanguage">Поменять язык приложения</string>
     <string name="Save">Сохранить текст</string>
+    <string name="CreateProfile">Создать профиль</string>
+    <string name="LoginProfile">Войти в профиль</string>
+    <string name="NotAuthenticated">Вы не авторизованы</string>
 </resources>

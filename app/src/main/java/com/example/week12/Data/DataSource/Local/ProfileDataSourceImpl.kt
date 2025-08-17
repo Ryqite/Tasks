@@ -1,6 +1,6 @@
 package com.example.week12.Data.DataSource.Local
 
-import com.example.week12.Data.Entity.Profile
+import com.example.week12.Data.Entity.DBO.Profile
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Inject
 

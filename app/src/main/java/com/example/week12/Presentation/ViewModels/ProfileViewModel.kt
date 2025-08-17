@@ -15,7 +15,7 @@ class ProfileViewModel @Inject constructor(
     private val getProfileDataUseCase: GetProfileDataUseCase
 ) : ViewModel() {
     private val _profileData = MutableStateFlow(ProfileData(
-        img = R.drawable.ic_launcher_foreground,
+        img = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS0IQhVr9DDJCq61QX28zCoiqDrvezBh5ylw&s",
         nickName = "",
         fullName = ""
     )
