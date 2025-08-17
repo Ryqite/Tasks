@@ -31,17 +31,14 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Configure environment
+      - name: Configure build environment
         run: |
           echo "sdk.dir=$ANDROID_SDK_DIR" > local.properties
           echo "API_KEY=\"${{ secrets.API_KEY }}\"" >> local.properties
-          echo "=== local.properties content ==="
+          echo "=== Configuration ==="
           cat local.properties
-          
           chmod +x gradlew
-          echo "=== Gradle environment ==="
           ./gradlew --version
-          ./gradlew --stop
 
       - name: Build with lint fixes
         run: |
@@ -50,15 +47,14 @@ jobs:
             -Pandroid.enableJetifier=true \
             || (echo "Build failed!"; exit 1)
 
-      - name: Run unit tests
+      - name: Run tests
         run: |
-          ./gradlew test --continue --info --tests "*UnitTest" \
-            || (echo "Some unit tests failed!"; exit 0)
+          ./gradlew test --continue --info \
+            || (echo "Some tests failed!"; exit 0)
 
       - name: Assemble debug APK
         run: |
-          ./gradlew assembleDebug --stacktrace \
-            -Pandroid.disableAndroidLint=true
+          ./gradlew assembleDebug --stacktrace
 
       - name: Upload artifacts
         if: success()
@@ -68,12 +64,12 @@ jobs:
           path: |
             app/build/outputs/apk/debug/app-debug.apk
             app/build/reports/**
-          retention-days: 3
+          retention-days: 7
 
       - name: Clean up
         if: always()
         run: |
           echo "=== Cleaning up ==="
           rm -fv local.properties
-          echo "=== Final workspace contents ==="
+          echo "=== Final workspace state ==="
           ls -la
