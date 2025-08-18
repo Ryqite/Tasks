@@ -98,7 +98,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsViewModel.setAppLocale(this,settingsViewModel.getLanguage())
+        val appContext = applicationContext
+        settingsViewModel.setAppLocale(appContext,settingsViewModel.getLanguage())
         setContent {
             val context = LocalContext.current
             var currentLanguage by remember { mutableStateOf(settingsViewModel.getLanguage()) }
@@ -119,6 +120,7 @@ class MainActivity : ComponentActivity() {
                     val searchQuery by networkViewModel.searchQuery.collectAsState()
                     val savedBooks by databaseViewModel.booksFromDb.collectAsState()
                     val savedBooksIds by databaseViewModel.savedBooksIds.collectAsState()
+                    val currentUser by databaseViewModel.currentUser.collectAsState()
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
@@ -184,7 +186,13 @@ class MainActivity : ComponentActivity() {
                         composable<NavigationScreens.ProfileScreen> {
                             ProfileScreen(
                                 backIcon = { navController.popBackStack() },
-                                viewModel = databaseViewModel
+                                currentUser = currentUser,
+                                insertNewUser = {newUser->
+                                    databaseViewModel.insertNewUser(newUser)
+                                },
+                                loginUser = {nickname,password->
+                                    databaseViewModel.loginUser(nickname = nickname, password = password)},
+                                logoutUser = {databaseViewModel.logoutUser()}
                             )
                         }
                         composable<NavigationScreens.SavedScreen> {

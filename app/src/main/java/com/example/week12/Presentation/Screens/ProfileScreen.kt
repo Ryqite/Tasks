@@ -49,9 +49,11 @@ import com.example.week12.R
 @Composable
 fun ProfileScreen(
     backIcon: () -> Unit,
-    viewModel: DatabaseViewModel
+    currentUser: ProfileData?,
+    insertNewUser: (ProfileData) -> Unit,
+    loginUser: (String,String)->Boolean,
+    logoutUser: () -> Unit
 ) {
-    val currentUser by viewModel.currentUser.collectAsState()
     var showCreateProfile by remember { mutableStateOf(false) }
     var showLoginProfile by remember { mutableStateOf(false) }
     var loginError by remember { mutableStateOf(false) }
@@ -88,13 +90,13 @@ fun ProfileScreen(
         ) {
             when {
                 currentUser != null -> {
-                    AuthenticatedProfileView(currentUser!!,viewModel)
+                    AuthenticatedProfileView(currentUser, logoutUser = logoutUser)
                 }
                 showCreateProfile -> {
                     CreateProfileForm(
                         onBack = { showCreateProfile = false },
                         onSubmit = {profileData ->
-                            viewModel.insertNewUser(profileData)
+                            insertNewUser(profileData)
                             showCreateProfile = false
                         }
                     )
@@ -106,7 +108,7 @@ fun ProfileScreen(
                             loginError = false
                         },
                         onSubmit = {nickname,password->
-                            if(viewModel.loginUser(nickname,password)){
+                            if(loginUser(nickname,password)){
                                 showLoginProfile = false
                                 loginError = false
                             }
@@ -250,7 +252,7 @@ private fun LoginProfileForm(
     }
 }
 @Composable
-private fun AuthenticatedProfileView(data: ProfileData,viewModel: DatabaseViewModel) {
+private fun AuthenticatedProfileView(data: ProfileData,logoutUser:()->Unit) {
     Card(
         shape = CircleShape,
         modifier = Modifier
@@ -287,9 +289,7 @@ private fun AuthenticatedProfileView(data: ProfileData,viewModel: DatabaseViewMo
         thickness = 1.dp,
         color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     )
-    Button(onClick = {
-        viewModel.logoutUser()
-    },
+    Button(onClick = logoutUser,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp, vertical = 8.dp)

@@ -34,6 +34,7 @@ import com.example.week12.Presentation.Models.BooksNetworkItem
 import com.example.week12.Presentation.Screens.DetailSavedScreen
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
+import com.example.week12.Presentation.Screens.ProfileScreen
 import com.example.week12.Presentation.Screens.SavedScreen
 import com.example.week12.Presentation.Utils.BackgroundColorKey
 import com.example.week12.Presentation.Utils.NavigationScreens
@@ -204,6 +205,40 @@ class E2ETest {
 
     @Test
     fun `End-to-end test of profile functionality`() {
+        composeRule.setContent {
+            Week12Theme {
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = NavigationScreens.MainScreen
+                ) {
+                    composable<NavigationScreens.MainScreen> {
+                        MainScreen(
+                            books = emptyList(),
+                            navigateToDetailScreen = {},
+                            onSearchQueryChanged = {},
+                            searchQuery = "",
+                            onCancelNewSearchBooks = {},
+                            navigateToProfilePage = { navController.navigate(NavigationScreens.ProfileScreen)},
+                            changeTheme = {},
+                            theme = AppTheme.DARK,
+                            changeLanguage = {},
+                            navigateToSavedScreen = {},
+                            navigateToMainScreen = {}
+                        )
+                    }
+//                    composable<NavigationScreens.ProfileScreen> {
+//                        ProfileScreen(
+//                            backIcon = { navController.popBackStack() },
+//                            currentUser = ,
+//                            insertNewUser = {},
+//                            loginUser = {},
+//                            logoutUser = {}
+//                        )
+//                    }
+                }
+            }
+        }
     }
 
     @Test
