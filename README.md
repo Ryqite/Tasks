@@ -16,8 +16,8 @@ NavigationComponent(для навигации по приложению)
 Кратко об архитектуре проекта:
 ----
 Быстрый просмотр раздела:
-1. [Domain](https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#1-domain)
-2. [Data](https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#2-data)
+1. [Domain]([https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#1-domain](https://github.com/Ryqite/Tasks/tree/main?tab=readme-ov-file#1-domain))
+2. [Data]([https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#2-data](https://github.com/Ryqite/Tasks/tree/main?tab=readme-ov-file#2-data))
 3. [Presentation](https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#3-presentation)
 4. DI_Configuration
 -------
@@ -55,7 +55,7 @@ NavigationComponent(для навигации по приложению)
 * -`BooksDatabaseRepositoryImpl`, `BooksNetworkRepositoryImpl`, `SettingsRepositoryImpl`
 * Утилиты:
 * `Constants`
------
+
 Репозитории использует источники данных с моделями для получения данных локально и удаленно, преображают их с помощью мапперов,
 а также реализуют интерфейсы и используются в юз-кейсах из _Domain-слоя_
 -----
