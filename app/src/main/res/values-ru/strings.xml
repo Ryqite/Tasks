@@ -12,4 +12,5 @@
     <string name="CreateProfile">Создать профиль</string>
     <string name="LoginProfile">Войти в профиль</string>
     <string name="NotAuthenticated">Вы не авторизованы</string>
+    <string name="Logout">Выйти</string>
 </resources>

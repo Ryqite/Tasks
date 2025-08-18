@@ -8,7 +8,7 @@ on:
 
 env:
   ANDROID_SDK_DIR: ${{ github.workspace }}/android-sdk
-
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
 jobs:
   android-build:
     runs-on: ubuntu-latest
@@ -23,6 +23,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'gradle'
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
@@ -36,12 +37,30 @@ jobs:
             echo "API_KEY=\"test_key\"" >> local.properties
           fi
           chmod +x gradlew
+      - name: Run unit tests
+        run: ./gradlew test --stacktrace --info
+      - name: Run Android tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: Nexus 6
+          script: |
+              ./gradlew connectedCheck --stacktrace --info
 
       - name: Build release APK and AAB after test
         run: |
-          ./gradlew test --stacktrace --info
           ./gradlew assembleRelease --stacktrace --info
           ./gradlew bundleRelease --stacktrace --info
+
+      - name: Save test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            app/build/reports/**/*
+            app/build/outputs/androidTest-results/connected/*
 
       - name: Save build logs
         if: failure()
@@ -51,7 +70,6 @@ jobs:
           path: |
             app/build/**/*.log
             app/build/tmp/**/*.log
-            app/build/reports/**/*
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

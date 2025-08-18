@@ -22,6 +22,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,6 +32,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Presentation.Models.BooksDatabaseItem
 import com.example.week12.Presentation.Models.BooksNetworkItem
+import com.example.week12.Presentation.Models.ProfileData
 import com.example.week12.Presentation.Screens.DetailSavedScreen
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
@@ -51,7 +53,8 @@ import java.util.Locale
 class E2ETest {
     @get:Rule
     val composeRule = createComposeRule()
-
+    val userList = MutableStateFlow<List<ProfileData?>>(emptyList())
+    val currentUserFlow = MutableStateFlow<ProfileData?>(null)
     @Test
     fun `End-to-end test of main functionality with books`() = runTest {
         val databaseBooks = MutableStateFlow(
@@ -205,7 +208,9 @@ class E2ETest {
 
     @Test
     fun `End-to-end test of profile functionality`() {
+
         composeRule.setContent {
+            val currentUser by currentUserFlow.collectAsState()
             Week12Theme {
                 val navController = rememberNavController()
                 NavHost(
@@ -227,18 +232,53 @@ class E2ETest {
                             navigateToMainScreen = {}
                         )
                     }
-//                    composable<NavigationScreens.ProfileScreen> {
-//                        ProfileScreen(
-//                            backIcon = { navController.popBackStack() },
-//                            currentUser = ,
-//                            insertNewUser = {},
-//                            loginUser = {},
-//                            logoutUser = {}
-//                        )
-//                    }
+                    composable<NavigationScreens.ProfileScreen> {
+                        ProfileScreen(
+                            backIcon = { navController.popBackStack() },
+                            currentUser = currentUser,
+                            insertNewUser = {user->
+                                userList.value += user
+                                currentUserFlow.value = user
+                            },
+                            loginUser = {nickname,password->
+                                loginUser(nickname,password)
+                            },
+                            logoutUser = {
+                                currentUserFlow.value = null
+                            }
+                        )
+                    }
                 }
             }
         }
+        composeRule.onNodeWithTag("Books").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("ProfileIcon").assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("TextUnauthenticated").assertIsDisplayed()
+
+        composeRule.onNodeWithTag("Create").performClick()
+        composeRule.onNodeWithTag("TextUnauthenticated").assertIsNotDisplayed()
+        composeRule.onNodeWithTag("NicknameCreateTextField").performTextInput("Ryqit")
+        composeRule.onNodeWithTag("FullNameCreateTextField").performTextInput("raf milk coffee")
+        composeRule.onNodeWithTag("PasswordCreateTextField").performTextInput("5566")
+        composeRule.onNodeWithTag("CreateProfileButton").performClick()
+
+        composeRule.onNodeWithContentDescription("Avatar").assertIsDisplayed()
+        composeRule.onNodeWithTag("Nickname").assertTextEquals("Ryqit")
+        composeRule.onNodeWithTag("FullName").assertTextEquals("raf milk coffee")
+        composeRule.onNodeWithTag("LogoutButton").performClick()
+
+        composeRule.onNodeWithTag("TextUnauthenticated").assertIsDisplayed()
+        composeRule.onNodeWithTag("Login").performClick()
+        composeRule.onNodeWithTag("TextUnauthenticated").assertIsNotDisplayed()
+        composeRule.onNodeWithTag("NicknameLoginTextField").performTextInput("Ryqit")
+        composeRule.onNodeWithTag("PasswordLoginTextField").performTextInput("5566")
+        composeRule.onNodeWithTag("LoginProfileButton").performClick()
+        composeRule.onNodeWithTag("Nickname").assertTextEquals("Ryqit")
+        composeRule.onNodeWithTag("FullName").assertTextEquals("raf milk coffee")
+        composeRule.onNodeWithTag("LogoutButton").performClick()
+
+        composeRule.onNodeWithContentDescription("BackFromProfile").performClick()
+        composeRule.onNodeWithTag("Books").assertIsDisplayed()
     }
 
     @Test
@@ -328,4 +368,16 @@ class E2ETest {
 
     private fun hasBackgroundColor(expected: Color): SemanticsMatcher =
         SemanticsMatcher.expectValue(BackgroundColorKey, expected)
+
+    private fun loginUser(nickname: String, password: String): Boolean {
+        val user = userList.value.find {
+            it?.nickName == nickname && it.password == password
+        }
+        return if (user != null) {
+            currentUserFlow.value = user
+            true
+        } else {
+            false
+        }
+    }
 }

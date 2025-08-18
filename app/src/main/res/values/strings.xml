@@ -13,4 +13,5 @@
     <string name="CreateProfile">Create Profile</string>
     <string name="LoginProfile">Login Profile</string>
     <string name="NotAuthenticated">You are not authenticated</string>
+    <string name="Logout">Log out</string>
 </resources>

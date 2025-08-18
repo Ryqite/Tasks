@@ -150,7 +150,7 @@ private fun CreateProfileForm(
             onClick = onBack,
             modifier = Modifier.align(Alignment.Start)
         ) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, "BackFromCreate")
         }
         OutlinedTextField(
             value = image,
@@ -159,6 +159,7 @@ private fun CreateProfileForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .testTag("ImageTextField")
         )
         OutlinedTextField(
             value = nickname,
@@ -167,6 +168,7 @@ private fun CreateProfileForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .testTag("NicknameCreateTextField")
         )
         OutlinedTextField(
             value = fullName,
@@ -175,6 +177,7 @@ private fun CreateProfileForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .testTag("FullNameCreateTextField")
         )
         OutlinedTextField(
             value = password,
@@ -184,14 +187,16 @@ private fun CreateProfileForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .testTag("PasswordCreateTextField")
         )
         Button(
             onClick = { onSubmit(ProfileData(img = image,nickName = nickname,fullName = fullName,password = password))},
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+                .testTag("CreateProfileButton")
         ) {
-            Text("Создать профиль")
+            Text(text = stringResource(R.string.CreateProfile))
         }
     }
 }
@@ -215,7 +220,7 @@ private fun LoginProfileForm(
             onClick = onBack,
             modifier = Modifier.align(Alignment.Start)
         ) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, "BackFromLogin")
         }
         if (error) {
             Text(
@@ -231,6 +236,7 @@ private fun LoginProfileForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .testTag("NicknameLoginTextField")
         )
         OutlinedTextField(
             value = password,
@@ -240,14 +246,16 @@ private fun LoginProfileForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .testTag("PasswordLoginTextField")
         )
         Button(
             onClick = { onSubmit(nickname, password) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+                .testTag("LoginProfileButton")
         ) {
-            Text("Войти")
+            Text(text = stringResource(R.string.LoginProfile))
         }
     }
 }
@@ -293,8 +301,9 @@ private fun AuthenticatedProfileView(data: ProfileData,logoutUser:()->Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp, vertical = 8.dp)
+            .testTag("LogoutButton")
     ) {
-        Text("Выйти")
+        Text(text = stringResource(R.string.Logout))
     }
 }
 @Composable
@@ -310,12 +319,14 @@ private fun UnauthenticatedProfileView(
             text = stringResource(R.string.NotAuthenticated),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 24.dp)
+                .testTag("TextUnauthenticated")
         )
         Button(
             onClick = onLoginClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp, vertical = 8.dp)
+                .testTag("Login")
         ) {
             Text(text = stringResource(R.string.LoginProfile))
         }
@@ -324,6 +335,7 @@ private fun UnauthenticatedProfileView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp, vertical = 8.dp)
+                .testTag("Create")
         ) {
             Text(text = stringResource(R.string.CreateProfile))
         }
