@@ -18,12 +18,6 @@ NavigationComponent(для навигации по приложению)
 
 Кратко об архитектуре проекта:
 ----
-Быстрый просмотр раздела:
-1. [Domain]([https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#1-domain](https://github.com/Ryqite/Tasks/tree/main?tab=readme-ov-file#1-domain))
-2. [Data]([https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#2-data](https://github.com/Ryqite/Tasks/tree/main?tab=readme-ov-file#2-data))
-3. [Presentation](https://github.com/Ryqite/Tasks/wiki/Architecture-of-NewsApp#3-presentation)
-4. DI_Configuration
--------
 ## 1. _Domain_
 Содержит:
 * интерфейсы репозитория `BooksNetworkRepository`, который будет получать данные из сети, `BooksDatabaseRepository` который будет получать локальные данные из базы данных,
@@ -71,15 +65,19 @@ NavigationComponent(для навигации по приложению)
 
 ## 3. _Presentation_
 Содержит:
-* composable-функции (`MainScreen`,`NewsItemCard`,`DetailScreen`), которые отображают UI и автомотически рекомпозируются под изменением данных
-* модель данных `NewsItem` для использования в UI
-* маппер-расширение `News.toNewsItem` преобразующий список новостей _Domain_ слоя в модель данных _Presentation_ слоя `NewsItem`
-* `NewsViewModel` для хранения, управления состоянием UI в виде StateFlow, а также вызова `GetLatestNewsUseCase` и обрабатывания ошибки при попытке получить из него данные
-* `NewsViewModelFactory` для создания своей версии viewmodel
-* sealed class `NavigationScreens`, для хранения объектов навигации (точек навигации) таких как `MainScreen` и `DetailScreen`
+* composable-функции (`MainScreen`,`ProfileScreen`,`DetailScreen`,`DetailSavedScreen`,`SavedScreen`), которые отображают UI и автомотически рекомпозируются под изменением данных
+* модели данных `BooksNetworkItem`, `BooksDatabaseItem`, `ProfileData` для использования в UI
+* мапперы-расширения `BooksDatabaseItem.toBooksFromDatabase`, `BooksFromDatabase.toBooksDatabaseItem`, `BooksFromNetwork.toBooksNetworkItem`, `BooksNetworkItem.toBooksDatabaseItem`
+* `ProfileData.toProfileParametersData`, `ProfileParametersData.toProfileData` преобразующие модели из _Domain_ слоя в модели данных _Presentation_ слоя `
+* `DatabaseViewModel`, `NetworkViewModel`, `SettingsViewModel` для хранения, управления состоянием UI в виде StateFlow, а также вызовов юз-кейсов и обрабатывания ошибки при попытке получить из них данных
+* utils `NavigationScreens`, `SemanticsKey` для хранения объектов навигации (точек навигации) и облегчения тестов
 * навигацию в активити `MainActivity`, реализованной через navController и navHost
 ------
 ### _ Файлы: _
-* `MainScreen`,`NewsItemCard`,`DetailScreen`, `NavigationScreens`, `NewsItem`, `News.toNewsItem`,
-* `MainActivity`, `NewsViewModel`, `NewsViewModelFactory`
+* `MainScreen`,`ProfileScreen`,`DetailScreen`, `DetailSavedScreen`, `SavedScreen`, `BooksNetworkItem`,
+* `BooksDatabaseItem`, `ProfileData`, `BooksDatabaseItem.toBooksFromDatabase`
+* `BooksFromDatabase.toBooksDatabaseItem`, `BooksFromNetwork.toBooksNetworkItem`, `BooksNetworkItem.toBooksDatabaseItem`,
+*  `ProfileData.toProfileParametersData`, `ProfileParametersData.toProfileData`
+* `DatabaseViewModel`, `NetworkViewModel`, `SettingsViewModel`
+* `NavigationScreens`,`SemanticsKey`,`MainActivity`
 ---
