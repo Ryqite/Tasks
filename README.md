@@ -1,5 +1,5 @@
 Main branch status
-https://github.com/Ryqite/Tasks/workflows/android-ci.yml/badge.svg
+[![Main Status]https://github.com/Ryqite/Tasks/workflows/android-ci.yml/badge.svg](https://github.com/Ryqite/Tasks/actions/workflows/android-ci.yml)
 ----
 #Описание проекта:
 
