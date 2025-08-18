@@ -1,5 +1,6 @@
 Main branch status
-[![Main Status](https://github.com/Ryqite/Tasks/workflows/android-ci.yml/badge.svg)]
+https://github.com/Ryqite/Tasks/workflows/android-ci.yml/badge.svg
+----
 #Описание проекта:
 
 BooksApp - андроид проект, служащий для удобного поиска нужных книг. Оно позволяет искать нужные книги по 
