@@ -60,8 +60,11 @@ NavigationComponent(для навигации по приложению)
 а также реализуют интерфейсы и используются в юз-кейсах из _Domain-слоя_
 -----
 ### _ Файлы: _
-* `Constants`, `Article.toNews`, `Article`, `NewsResponse`, `Source`, `NewsAPI`
-* `RetryInterceptor`, `RetrofitInstanse`, `RemoteDataSource`, `RemoteDataSourceImpl`, `NewsRepositoryImpl`
+* `BooksDbModel`, `Profile`, `BooksResponse`, `Item`, `VolumeInfo`, `BooksDbModel.toBooksFromDatabase`
+* `BooksFromDatabase.toBooksDbModel`, `Profile.toProfileParametersData`, `ProfileParametersData.toProfile`, `VolumeInfo.toBooksFromNetwork`,
+* `AppSharedPreferences`, `SharedPreferencesDataSource`, `SharedPreferencesDataSourceImpl`, `AppDataStore`, `DataStoreSource`, `DataStoreSourceImpl`, `BooksDao`
+* `BooksDatabase`, `LocalDataSource`, `LocalDataSourceImpl`, `BooksAPI`, `RemoteDataSource`
+* `RetryInterceptor`, `RemoteDataSourceImpl`, `BooksDatabaseRepositoryImpl`, `BooksNetworkRepositoryImpl`, `SettingsRepositoryImpl`, `Constants`
 
 ## 3. _Presentation_
 Содержит:
