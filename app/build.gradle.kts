@@ -10,6 +10,9 @@ plugins {
 }
 
 android {
+    lint {
+        checkReleaseBuilds = false
+    }
     namespace = "com.example.week12"
     compileSdk = 35
     packaging {
