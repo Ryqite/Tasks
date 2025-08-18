@@ -41,13 +41,20 @@ NavigationComponent(для навигации по приложению)
 
 ## 2. _Data_
 Содержит:
-* константы `Constants` для работы сетевого запроса
-* маппер-расширение `Article.toNews` преобразующий список новостей в модель данных `News` _Domain_ слоя
-* модели данных `Article`, `NewsResponse`, `Source` работают вложенно как DTO
-* API интерфейс `NewsAPI`, интерсептор `RetryInterceptor` и сущность `RetrofitInstanse` для осуществления сетевых запросов на получение списка новостей
-* Интерфейс `RemoteDataSource` и его имплементацию `RemoteDataSourceImpl` как способ делегирования вызова методов `NewsAPI`
-* Реализацию `NewsRepository` из _Domain_ слоя в виде `NewsRepositoryImpl`, который использует `RemoteDataSourceImpl` для получение данных
-из сетевого запроса, далее он преобразовывает их с помощью маппера-расширение `Article.toNews` и возвращает новый(преобразованный) список данных\
+* Локальные данные:
+* -Preferences: AppSharedPreferences, SharedPreferencesDataSource, SharedPreferencesDataSourceImpl
+* -DataStore: AppDataStore, DataStoreSource, DataStoreSourceImpl
+* -База данных: BooksDatabase, BooksDao, LocalDataSource, LocalDataSourceImpl
+* Удаленные данные
+* -API: BooksAPI
+* -Сетевые компоненты: RemoteDataSource, RemoteDataSourceImpl, RetryInterceptor
+* Модели: BooksDbModel, Profile, BooksResponse, Item, VolumeInfo
+* Мапперы
+* -BooksDbModel.toBooksFromDatabase, BooksFromDatabase.toBooksDbModel, Profile.toProfileParametersData, ProfileParametersData.toProfile, VolumeInfo.toBooksFromNetwork
+* Репозитории
+* -BooksDatabaseRepositoryImpl, BooksNetworkRepositoryImpl, SettingsRepositoryImpl
+* Утилиты:
+* Constants  
 -----
 ### _ Файлы: _
 * `Constants`, `Article.toNews`, `Article`, `NewsResponse`, `Source`, `NewsAPI`
