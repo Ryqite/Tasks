@@ -54,7 +54,10 @@ NavigationComponent(для навигации по приложению)
 * Репозитории
 * -BooksDatabaseRepositoryImpl, BooksNetworkRepositoryImpl, SettingsRepositoryImpl
 * Утилиты:
-* Constants  
+* Constants
+-----
+Репозитории использует источники данных с моделями для получения данных локально и удаленно, преображают их с помощью мапперов,
+а также реализуют интерфейсы и используются в юз-кейсах из _Domain-слоя_
 -----
 ### _ Файлы: _
 * `Constants`, `Article.toNews`, `Article`, `NewsResponse`, `Source`, `NewsAPI`
