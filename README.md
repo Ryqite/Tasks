@@ -42,19 +42,19 @@ NavigationComponent(для навигации по приложению)
 ## 2. _Data_
 Содержит:
 * Локальные данные:
-* -Preferences: AppSharedPreferences, SharedPreferencesDataSource, SharedPreferencesDataSourceImpl
-* -DataStore: AppDataStore, DataStoreSource, DataStoreSourceImpl
-* -База данных: BooksDatabase, BooksDao, LocalDataSource, LocalDataSourceImpl
+* -Preferences: `AppSharedPreferences`, `SharedPreferencesDataSourc`e, `SharedPreferencesDataSourceImpl`
+* -DataStore: `AppDataStore`, `DataStoreSource`, `DataStoreSourceImpl`
+* -База данных: `BooksDatabase`, `BooksDao`, `LocalDataSource`, `LocalDataSourceImpl`
 * Удаленные данные
-* -API: BooksAPI
-* -Сетевые компоненты: RemoteDataSource, RemoteDataSourceImpl, RetryInterceptor
-* Модели: BooksDbModel, Profile, BooksResponse, Item, VolumeInfo
+* -API: `BooksAPI`
+* -Сетевые компоненты: `RemoteDataSource`, `RemoteDataSourceImpl`, `RetryInterceptor`
+* Модели: `BooksDbModel`, `Profile`, `BooksResponse`, `Item`, `VolumeInfo`
 * Мапперы
-* -BooksDbModel.toBooksFromDatabase, BooksFromDatabase.toBooksDbModel, Profile.toProfileParametersData, ProfileParametersData.toProfile, VolumeInfo.toBooksFromNetwork
+* -`BooksDbModel.toBooksFromDatabase`, `BooksFromDatabase.toBooksDbModel`, `Profile.toProfileParametersData`, `ProfileParametersData.toProfile`, `VolumeInfo.toBooksFromNetwork`
 * Репозитории
-* -BooksDatabaseRepositoryImpl, BooksNetworkRepositoryImpl, SettingsRepositoryImpl
+* -`BooksDatabaseRepositoryImpl`, `BooksNetworkRepositoryImpl`, `SettingsRepositoryImpl`
 * Утилиты:
-* Constants
+* `Constants`
 -----
 Репозитории использует источники данных с моделями для получения данных локально и удаленно, преображают их с помощью мапперов,
 а также реализуют интерфейсы и используются в юз-кейсах из _Domain-слоя_
