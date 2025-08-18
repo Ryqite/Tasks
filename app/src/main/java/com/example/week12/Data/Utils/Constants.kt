@@ -4,7 +4,7 @@ import com.example.week12.BuildConfig
 
 class Constants {
     companion object{
-        const val API_KEY = BuildConfig.API_KEY
+        val API_KEY = BuildConfig.API_KEY
         const val BASE_URL = "https://www.googleapis.com/"
     }
 }

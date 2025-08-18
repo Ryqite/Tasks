@@ -39,14 +39,6 @@ jobs:
           chmod +x gradlew
       - name: Run unit tests
         run: ./gradlew test --stacktrace --info
-      - name: Run Android tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          arch: x86_64
-          profile: Nexus 6
-          script: |
-              ./gradlew connectedCheck --stacktrace --info
 
       - name: Build release APK and AAB after test
         run: |

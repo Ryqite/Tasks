@@ -35,9 +35,9 @@ android {
         val localProperties = Properties().apply {
             load(rootProject.file("local.properties").inputStream())
         }
-        buildConfigField("String", "API_KEY", localProperties.getProperty("API_KEY"))
+        buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
+    }
 
-}
 
     buildTypes {
         release {
