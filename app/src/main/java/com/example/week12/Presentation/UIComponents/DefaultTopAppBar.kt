@@ -16,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import com.example.week12.Domain.Models.AppTheme
+import com.example.week12.Presentation.Utils.backgroundColor
 import com.example.week12.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +47,13 @@ fun DefaultTopAppBar(
                 AppTheme.LIGHT -> Color.DarkGray
             }
         ),
+        modifier = Modifier.semantics {
+            backgroundColor = when (theme) {
+                AppTheme.DARK -> Color.Black
+                AppTheme.LIGHT -> Color.LightGray
+            }
+        }
+            .testTag("TopBar"),
         navigationIcon = {
             IconButton(onClick = onSearchClicked) {
                 Icon(Icons.Default.Search, contentDescription = "SearchIcon")

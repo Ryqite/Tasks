@@ -1,42 +1,49 @@
 package com.example.week12
 
+import android.content.Context
+import android.content.res.Configuration
+import android.os.LocaleList
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.week12.Domain.Models.AppTheme
 import com.example.week12.Presentation.Models.BooksDatabaseItem
 import com.example.week12.Presentation.Models.BooksNetworkItem
 import com.example.week12.Presentation.Screens.DetailSavedScreen
 import com.example.week12.Presentation.Screens.DetailScreen
 import com.example.week12.Presentation.Screens.MainScreen
-import com.example.week12.Presentation.Screens.ProfileScreen
 import com.example.week12.Presentation.Screens.SavedScreen
+import com.example.week12.Presentation.Utils.BackgroundColorKey
 import com.example.week12.Presentation.Utils.NavigationScreens
-import com.example.week12.Presentation.ViewModels.DatabaseViewModel
-import com.example.week12.Presentation.ViewModels.NetworkViewModel
 import com.example.week12.Presentation.theme.Week12Theme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Locale
 
 @RunWith(AndroidJUnit4::class)
 
@@ -48,10 +55,27 @@ class E2ETest {
     fun `End-to-end test of main functionality with books`() = runTest {
         val databaseBooks = MutableStateFlow(
             listOf(
-            BooksDatabaseItem(id = 1, title = "Test Book 1", image = "Image 1", description = "Description 1", rating = 3.3, publishedAt = "2100")))
+                BooksDatabaseItem(
+                    id = 1,
+                    title = "Test Book 1",
+                    image = "Image 1",
+                    description = "Description 1",
+                    rating = 3.3,
+                    publishedAt = "2100"
+                )
+            )
+        )
         val networkBooks = MutableStateFlow(
             listOf(
-            BooksNetworkItem(title = "Test Book 1", image = "Image 1", description = "Description 1", rating = 3.3, publishedAt = "2100")))
+                BooksNetworkItem(
+                    title = "Test Book 1",
+                    image = "Image 1",
+                    description = "Description 1",
+                    rating = 3.3,
+                    publishedAt = "2100"
+                )
+            )
+        )
         composeRule.setContent {
             Week12Theme {
                 val navController = rememberNavController()
@@ -65,7 +89,13 @@ class E2ETest {
                     composable<NavigationScreens.MainScreen> {
                         MainScreen(
                             books = testNetworkBooks,
-                            navigateToDetailScreen = { navController.navigate(NavigationScreens.DetailScreen(it)) },
+                            navigateToDetailScreen = {
+                                navController.navigate(
+                                    NavigationScreens.DetailScreen(
+                                        it
+                                    )
+                                )
+                            },
                             onSearchQueryChanged = { searchQuery = it },
                             searchQuery = searchQuery,
                             onCancelNewSearchBooks = { searchQuery = " " },
@@ -87,7 +117,7 @@ class E2ETest {
                             },
                             theme = AppTheme.DARK,
                             savedBooksIds = testDatabaseBooks.map { it.title }.toSet(),
-                            insertNewBook = {book->
+                            insertNewBook = { book ->
                                 databaseBooks.value += book
                             }
                         )
@@ -120,7 +150,7 @@ class E2ETest {
                             navigateToSavedScreen = {
                                 navController.navigate(NavigationScreens.SavedScreen)
                             },
-                            deleteBook = {book->
+                            deleteBook = { book ->
                                 databaseBooks.value -= book
                             }
                         )
@@ -174,11 +204,93 @@ class E2ETest {
 
     @Test
     fun `End-to-end test of profile functionality`() {
-
     }
 
     @Test
     fun `End-to-end test of settings functionality`() {
+        val flowAppTheme = MutableStateFlow(AppTheme.DARK)
+        composeRule.setContent {
+            val context = LocalContext.current
+            var currentLanguage by remember { mutableStateOf("en") }
+            val updatedContext = remember(currentLanguage) {
+                setAppLocale(context, currentLanguage)
+            }
+            CompositionLocalProvider(LocalContext provides updatedContext) {
+                val themeState by flowAppTheme.collectAsState(initial = AppTheme.DARK)
+                Week12Theme(
+                    darkTheme = when (themeState) {
+                        AppTheme.DARK -> true
+                        AppTheme.LIGHT -> false
+                    }
+                ) {
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = NavigationScreens.MainScreen
+                    ) {
+                        composable<NavigationScreens.MainScreen> {
+                            MainScreen(
+                                books = emptyList(),
+                                navigateToDetailScreen = {},
+                                onSearchQueryChanged = {},
+                                searchQuery = "",
+                                onCancelNewSearchBooks = {},
+                                navigateToProfilePage = {},
+                                changeTheme = {
+                                    flowAppTheme.value =
+                                        if (flowAppTheme.value == AppTheme.DARK) AppTheme.LIGHT
+                                        else AppTheme.DARK
+                                },
+                                theme = themeState,
+                                changeLanguage = {
+                                    currentLanguage = if (currentLanguage == "en") "ru" else "en"
+                                },
+                                navigateToSavedScreen = {},
+                                navigateToMainScreen = {}
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        val colorLight = Color.LightGray
+        val colorDark = Color.Black
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        composeRule.onNodeWithText("Books").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Menu").assertIsDisplayed().performClick()
+        composeRule.onNodeWithText("Change app language")
+            .assertIsDisplayed().performClick()
+        composeRule.onNodeWithText("Книги").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Menu").assertIsDisplayed().performClick()
+        composeRule.onNodeWithText("Поменять язык приложения")
+            .assertIsDisplayed().performClick()
+        composeRule.onNodeWithText("Books").assertIsDisplayed()
 
+        composeRule.onNodeWithTag("TopBar").assert(hasBackgroundColor(colorDark))
+        composeRule.onNodeWithContentDescription("Menu").assertIsDisplayed().performClick()
+        composeRule.onNodeWithText(context.getString(R.string.ChangeTheme))
+            .assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("TopBar").assert(hasBackgroundColor(colorLight))
+        composeRule.onNodeWithContentDescription("Menu").assertIsDisplayed().performClick()
+        composeRule.onNodeWithText(context.getString(R.string.ChangeTheme))
+            .assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("TopBar").assert(hasBackgroundColor(colorDark))
     }
+    private fun setAppLocale(context: Context, language: String): Context {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+
+
+        val resources = context.resources
+        val config = Configuration(resources.configuration)
+        config.setLocale(locale)
+
+        config.setLocales(LocaleList(locale))
+        val newContext = context.createConfigurationContext(config)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        return newContext
+    }
+
+    private fun hasBackgroundColor(expected: Color): SemanticsMatcher =
+        SemanticsMatcher.expectValue(BackgroundColorKey, expected)
 }
