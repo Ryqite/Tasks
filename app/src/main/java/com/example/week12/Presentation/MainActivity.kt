@@ -118,6 +118,7 @@ class MainActivity : ComponentActivity() {
                     val books by networkViewModel.booksBySearch.collectAsState()
                     val searchQuery by networkViewModel.searchQuery.collectAsState()
                     val savedBooks by databaseViewModel.booksFromDb.collectAsState()
+                    val savedBooksIds by databaseViewModel.savedBooksIds.collectAsState()
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
@@ -163,7 +164,10 @@ class MainActivity : ComponentActivity() {
                                     navController.popBackStack()
                                 },
                                 theme = themeState,
-                                viewModel = databaseViewModel
+                                savedBooksIds = savedBooksIds,
+                                insertNewBook = {book->
+                                    databaseViewModel.insertNewBook(book)
+                                }
                             )
                         }
                         composable<NavigationScreens.DetailSavedScreen> { navBackStackEntry ->
@@ -206,7 +210,9 @@ class MainActivity : ComponentActivity() {
                                 navigateToSavedScreen = {
                                     navController.navigate(NavigationScreens.SavedScreen)
                                 },
-                                viewModel = databaseViewModel
+                                deleteBook = {book->
+                                    databaseViewModel.deleteBook(book)
+                                }
                             )
                         }
                     }

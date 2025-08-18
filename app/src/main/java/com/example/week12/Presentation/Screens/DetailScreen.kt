@@ -35,19 +35,19 @@ import com.example.week12.R
 /**
  * Экран деталей приложения,отображающий данные выбранной новости
  *
- * @param certainfilms Экземпляр выбранной новости
+ * @param certainBook Экземпляр выбранной книги
  * @param navigateToMainScreen лямбда-функция для возврата на экран [MainScreen]
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    viewModel: DatabaseViewModel,
+    savedBooksIds: Set<String>,
+    insertNewBook: (BooksDatabaseItem)->Unit,
     certainBook: BooksNetworkItem?,
     navigateToMainScreen: () -> Unit,
     theme: AppTheme
 ) {
     var backButtonEnabled by remember { mutableStateOf(true) }
-    val savedBooksIds by viewModel.savedBooksIds.collectAsState()
     val isBookSaved = certainBook?.title?.let { it in savedBooksIds } ?: false
     val configuration = LocalConfiguration.current
     if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) {
@@ -67,7 +67,7 @@ fun DetailScreen(
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = "BackButton"
+                                contentDescription = "BackButtonDetailScreen"
                             )
                         }
                     },
@@ -99,7 +99,6 @@ fun DetailScreen(
                         contentDescription = "PictureDetailScreen",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .testTag("DetailAvatar")
                             .height(500.dp),
                         contentScale = ContentScale.Crop
                     )
@@ -125,7 +124,7 @@ fun DetailScreen(
                                 },
                                 modifier = Modifier
                                     .padding(bottom = 8.dp)
-                                    .testTag("Title")
+                                    .testTag("DetailScreenTitle")
                             )
                         }
                         certainBook?.description?.let {
@@ -136,7 +135,7 @@ fun DetailScreen(
                                     AppTheme.DARK -> Color.LightGray
                                     AppTheme.LIGHT -> Color.DarkGray
                                 },
-                                modifier = Modifier.testTag("Description")
+                                modifier = Modifier.testTag("DetailScreenDescription")
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -156,7 +155,7 @@ fun DetailScreen(
                                         AppTheme.DARK -> Color.LightGray
                                         AppTheme.LIGHT -> Color.DarkGray
                                     },
-                                    modifier = Modifier.testTag("Rating")
+                                    modifier = Modifier.testTag("DetailScreenRating")
                                 )
                             }
                         }
@@ -177,7 +176,7 @@ fun DetailScreen(
                                         AppTheme.DARK -> Color.LightGray
                                         AppTheme.LIGHT -> Color.DarkGray
                                     },
-                                    modifier = Modifier.testTag("PublishedAt")
+                                    modifier = Modifier.testTag("DetailScreenPublishedAt")
                                 )
                             }
                         }
@@ -187,7 +186,7 @@ fun DetailScreen(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Button(
-                                modifier = Modifier.wrapContentSize(),
+                                modifier = Modifier.wrapContentSize().testTag("SaveButton"),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = when (isBookSaved) {
                                         true -> Color.DarkGray
@@ -197,7 +196,7 @@ fun DetailScreen(
                                 onClick = {
                                     if (!isBookSaved) {
                                         certainBook?.let { book ->
-                                            viewModel.insertNewBook(book.toBooksDatabaseItem())
+                                            insertNewBook(book.toBooksDatabaseItem())
                                         }
                                     }
                                 },
@@ -225,7 +224,7 @@ fun DetailScreen(
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = "BackButton"
+                                contentDescription = "BackButtonDetailScreen"
                             )
                         }
                     },
@@ -258,7 +257,6 @@ fun DetailScreen(
                             contentDescription = "PictureDetailScreen",
                             modifier = Modifier
                                 .fillMaxWidth(0.5f)
-                                .testTag("DetailAvatar")
                                 .height(500.dp),
                             contentScale = ContentScale.Crop
                         )
@@ -284,7 +282,7 @@ fun DetailScreen(
                                     },
                                     modifier = Modifier
                                         .padding(bottom = 8.dp)
-                                        .testTag("Title")
+                                        .testTag("DetailScreenTitle")
                                 )
                             }
                             certainBook?.description?.let {
@@ -295,7 +293,7 @@ fun DetailScreen(
                                         AppTheme.DARK -> Color.LightGray
                                         AppTheme.LIGHT -> Color.DarkGray
                                     },
-                                    modifier = Modifier.testTag("Description")
+                                    modifier = Modifier.testTag("DetailScreenDescription")
                                 )
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -315,7 +313,7 @@ fun DetailScreen(
                                             AppTheme.DARK -> Color.LightGray
                                             AppTheme.LIGHT -> Color.DarkGray
                                         },
-                                        modifier = Modifier.testTag("Rating")
+                                        modifier = Modifier.testTag("DetailScreenRating")
                                     )
                                 }
                             }
@@ -336,7 +334,7 @@ fun DetailScreen(
                                             AppTheme.DARK -> Color.LightGray
                                             AppTheme.LIGHT -> Color.DarkGray
                                         },
-                                        modifier = Modifier.testTag("PublishedAt")
+                                        modifier = Modifier.testTag("DetailScreenPublishedAt")
                                     )
                                 }
                             }
@@ -344,7 +342,7 @@ fun DetailScreen(
                             Row(modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center) {
                             Button(
-                                modifier = Modifier.wrapContentSize(),
+                                modifier = Modifier.wrapContentSize().testTag("SaveButton"),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = when (isBookSaved) {
                                         true -> Color.DarkGray
@@ -354,7 +352,7 @@ fun DetailScreen(
                                 onClick = {
                                     if (!isBookSaved) {
                                         certainBook?.let { book ->
-                                            viewModel.insertNewBook(book.toBooksDatabaseItem())
+                                            insertNewBook(book.toBooksDatabaseItem())
                                         }
                                     }
                                 },

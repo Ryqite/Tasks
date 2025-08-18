@@ -30,7 +30,7 @@ fun DefaultTopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.MainScreen),
-            modifier = Modifier.testTag("Films")) },
+            modifier = Modifier.testTag("Books")) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = when (theme) {
                 AppTheme.DARK -> Color.Black

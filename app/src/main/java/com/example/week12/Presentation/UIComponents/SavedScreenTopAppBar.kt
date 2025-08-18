@@ -37,7 +37,7 @@ fun SavedScreenTopAppBar(
     var backButtonEnabled by remember { mutableStateOf(true) }
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.SavedScreen),
-            modifier = Modifier.testTag("Films")) },
+            modifier = Modifier.testTag("SavedBooks")) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = when (theme) {
                 AppTheme.DARK -> Color.Black
@@ -60,12 +60,12 @@ fun SavedScreenTopAppBar(
                 }
             },
                 enabled = backButtonEnabled) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "BackIcon")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "BackIconSavedScreen")
             }
         },
         actions = {
             IconButton(onClick = navigateToProfilePage) {
-                Icon(Icons.Default.AccountCircle, contentDescription = "ProfileIcon")
+                Icon(Icons.Default.AccountCircle, contentDescription = "ProfileIconSavedScreen")
             }
             TopAppBarMenu(changeTheme,changeLanguage)
         }

@@ -12,6 +12,17 @@ plugins {
 android {
     namespace = "com.example.week12"
     compileSdk = 35
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE-notice.md",
+                "META-INF/LICENSE.md",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
 
     defaultConfig {
         applicationId = "com.example.week12"

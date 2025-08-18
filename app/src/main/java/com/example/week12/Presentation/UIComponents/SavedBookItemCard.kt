@@ -39,7 +39,7 @@ import com.example.week12.R
 
 @Composable
 fun SavedBookItemCard(
-    viewModel: DatabaseViewModel,
+    deleteBook: (BooksDatabaseItem)->Unit,
     book: BooksDatabaseItem,
     onFilmsItemClick: (String) -> Unit,
     theme: AppTheme
@@ -48,7 +48,7 @@ fun SavedBookItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .testTag("Card")
+            .testTag("CardSavedScreen")
             .clickable(onClick = { onFilmsItemClick(book.title) }),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -115,7 +115,7 @@ fun SavedBookItemCard(
                 }
             }
             IconButton(
-                onClick = { viewModel.deleteBook(book) },
+                onClick = { deleteBook(book) },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
                 Icon(Icons.Default.Delete, contentDescription = "DeleteIcon")

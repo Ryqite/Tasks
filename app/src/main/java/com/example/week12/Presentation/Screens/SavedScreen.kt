@@ -19,7 +19,7 @@ import com.example.week12.Presentation.ViewModels.DatabaseViewModel
 @Composable
 fun SavedScreen(
     back: () -> Unit,
-    viewModel: DatabaseViewModel,
+    deleteBook: (BooksDatabaseItem) -> Unit,
     savedBooks: List<BooksDatabaseItem>,
     navigateToDetailScreen: (String) -> Unit,
     navigateToMainScreen:()->Unit,
@@ -59,7 +59,7 @@ fun SavedScreen(
                             navigateToDetailScreen(itemId)
                         },
                         theme = theme,
-                        viewModel = viewModel
+                        deleteBook = deleteBook
                     )
                 }
             }

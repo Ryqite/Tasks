@@ -58,7 +58,7 @@ fun DetailSavedScreen(
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = "BackButton"
+                                contentDescription = "BackButtonDetailSavedScreen"
                             )
                         }
                     },
@@ -87,10 +87,9 @@ fun DetailSavedScreen(
                 item {
                     AsyncImage(
                         model = certainBook?.image?.replace("http://", "https://"),
-                        contentDescription = "PictureDetailScreen",
+                        contentDescription = "PictureDetailSavedScreen",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .testTag("DetailAvatar")
                             .height(500.dp),
                         contentScale = ContentScale.Crop
                     )
@@ -116,7 +115,7 @@ fun DetailSavedScreen(
                                 },
                                 modifier = Modifier
                                     .padding(bottom = 8.dp)
-                                    .testTag("Title")
+                                    .testTag("DetailSavedScreenTitle")
                             )
                         }
                         certainBook?.description?.let {
@@ -127,7 +126,7 @@ fun DetailSavedScreen(
                                     AppTheme.DARK -> Color.LightGray
                                     AppTheme.LIGHT -> Color.DarkGray
                                 },
-                                modifier = Modifier.testTag("Description")
+                                modifier = Modifier.testTag("DetailSavedScreenDescription")
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -147,7 +146,7 @@ fun DetailSavedScreen(
                                         AppTheme.DARK -> Color.LightGray
                                         AppTheme.LIGHT -> Color.DarkGray
                                     },
-                                    modifier = Modifier.testTag("Rating")
+                                    modifier = Modifier.testTag("DetailSavedScreenRating")
                                 )
                             }
                         }
@@ -168,7 +167,7 @@ fun DetailSavedScreen(
                                         AppTheme.DARK -> Color.LightGray
                                         AppTheme.LIGHT -> Color.DarkGray
                                     },
-                                    modifier = Modifier.testTag("PublishedAt")
+                                    modifier = Modifier.testTag("DetailSavedScreenPublishedAt")
                                 )
                             }
                         }
@@ -193,7 +192,7 @@ fun DetailSavedScreen(
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = "BackButton"
+                                contentDescription = "BackButtonDetailSavedScreen"
                             )
                         }
                     },
@@ -223,10 +222,9 @@ fun DetailSavedScreen(
                     Row {
                         AsyncImage(
                             model = certainBook?.image?.replace("http://", "https://"),
-                            contentDescription = "PictureDetailScreen",
+                            contentDescription = "PictureDetailSavedScreen",
                             modifier = Modifier
                                 .fillMaxWidth(0.5f)
-                                .testTag("DetailAvatar")
                                 .height(500.dp),
                             contentScale = ContentScale.Crop
                         )
@@ -252,7 +250,7 @@ fun DetailSavedScreen(
                                     },
                                     modifier = Modifier
                                         .padding(bottom = 8.dp)
-                                        .testTag("Title")
+                                        .testTag("DetailSavedScreenTitle")
                                 )
                             }
                             certainBook?.description?.let {
@@ -263,7 +261,7 @@ fun DetailSavedScreen(
                                         AppTheme.DARK -> Color.LightGray
                                         AppTheme.LIGHT -> Color.DarkGray
                                     },
-                                    modifier = Modifier.testTag("Description")
+                                    modifier = Modifier.testTag("DetailSavedScreenDescription")
                                 )
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -283,7 +281,7 @@ fun DetailSavedScreen(
                                             AppTheme.DARK -> Color.LightGray
                                             AppTheme.LIGHT -> Color.DarkGray
                                         },
-                                        modifier = Modifier.testTag("Rating")
+                                        modifier = Modifier.testTag("DetailSavedScreenRating")
                                     )
                                 }
                             }
@@ -304,7 +302,7 @@ fun DetailSavedScreen(
                                             AppTheme.DARK -> Color.LightGray
                                             AppTheme.LIGHT -> Color.DarkGray
                                         },
-                                        modifier = Modifier.testTag("PublishedAt")
+                                        modifier = Modifier.testTag("DetailSavedScreenPublishedAt")
                                     )
                                 }
                             }
