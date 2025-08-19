@@ -15,8 +15,24 @@ NavigationComponent(для навигации по приложению)
 -Retrofit и OkHttp(для работы с сетью)
 -JUnit,MockK,Kotlinx Coroutines Test, Compose-Testing(для тестирования приложения)
 -Jetpack Compose(для UI)
+----
+Кратко об структуре проекта:
 
-Кратко об архитектуре проекта:
+1.Data слой (хранит всё, что связано с данными):
+-Local - работа с базой данных (Room)
+-Remote - работа с API (Retrofit)
+-Repository - реализация репозиториев
+
+Domain слой (содержит бизнес-правила приложения):
+-Модели данных 
+-Интерфейсы репозиториев
+-UseCases - отдельные операции (например, получение списка фильмов)
+
+Presentation слой (отвечает за отображение информации):
+-ViewModel - готовит данные для экрана
+-Activity/Fragment/Composables - отображает UI
+
+Архитектура проекта:
 ----
 ## 1. _Domain_
 Содержит:
@@ -81,3 +97,22 @@ NavigationComponent(для навигации по приложению)
 * `DatabaseViewModel`, `NetworkViewModel`, `SettingsViewModel`
 * `NavigationScreens`,`SemanticsKey`,`MainActivity`
 ---
+Тестирование:
+Compose Testing:
+------
+Покрыл все виджеты тестами на подобии "composeTestRule.onNodeWithTag("Card").assertIsDisplayed()", также проверил все иконки в приложении
+и навигацию между экранами с помощью проверок наличия элементов после перехода на другой экран по типу
+"composeTestRule.onNodeWithContentDescription("ProfileIcon").performClick()
+ composeTestRule.onNodeWithContentDescription("Avatar").assertIsDisplayed()"
+Тестами покрыты все виджеты и использующие их экраны в директории UIComponents и Screens
+------
+MockK/JUnit/Kotlin Coroutines Test:
+-----
+Использовал mock обьекты для замены реальных зависимостей вместе с coEvery и coVerify для асинхронных методов
+при тесте юз-кейсов(MockK), а также runTest из Kotlin Coroutines Test для запуска coEvery и coVerify
+Тестами покрыты все юз-кейсы
+-------
+Инструкции по запуску:
+1. скопировать проект;
+2. зайти в local.properties.example и скопировать строчку API_KEY в local.properties;
+3. поменять значение API_KEY в local.properties на ваш API ключ тут [Goodle Apies](https://console.cloud.google.com/apis/credentials?hl=ru&inv=1&invt=Ab52eA&project=books-468915)
