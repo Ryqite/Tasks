@@ -112,6 +112,13 @@ MockK/JUnit/Kotlin Coroutines Test:
 при тесте юз-кейсов(MockK), а также runTest из Kotlin Coroutines Test для запуска coEvery и coVerify
 Тестами покрыты все юз-кейсы
 -------
+Ветки в локальном репозитории:
+<img width="974" height="631" alt="image" src="https://github.com/user-attachments/assets/2ce8906c-6469-4219-b38b-2819767f3b72" />
+<img width="951" height="896" alt="image" src="https://github.com/user-attachments/assets/fc08194c-e204-4595-9bea-f4f15e073210" />
+p.s. ниже показано что каждая ветка постепенно вносила изменения в итоговую ветку _main_
+<img width="974" height="563" alt="image" src="https://github.com/user-attachments/assets/b32ae847-880f-4a43-88ab-6c23cb6457cf" />
+<img width="974" height="617" alt="image" src="https://github.com/user-attachments/assets/297930a5-5673-44ea-b34e-ce901219981a" />
+----
 Инструкции по запуску:
 1. скопировать проект;
 2. зайти в local.properties.example и скопировать строчку API_KEY в local.properties;
