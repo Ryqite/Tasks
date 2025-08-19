@@ -1,5 +1,5 @@
 Main branch status
-[![Main Status](https://github.com/Ryqite/Tasks/workflows/android-ci.yml/badge.svg)](https://github.com/Ryqite/Tasks/actions/workflows/android-ci.yml)
+[![Main CI Pipeline](https://github.com/Ryqite/Tasks/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/Ryqite/Tasks/actions/workflows/android-ci.yml)
 ----
 #Описание проекта:
 
